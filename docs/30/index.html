@@ -467,14 +467,24 @@
     [FA, 0.75], [FA, 0.25], [MI, 1], [DO, 1], [RE, 1], [DO, 2]
   ];
 
-  var ctx = null, fin = null;
+  var ctx = null, fin = null, enCours = false, oscs = [];
   var bouton = document.getElementById("btnSon");
+
+  // Un seul contexte pour toute la page : sur iOS, en recreer un hors d'un
+  // geste utilisateur est refuse.
+  function contexte() {
+    if (!ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC();
+    }
+    return ctx;
+  }
 
   function jouer() {
     arreter();
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return;
-    ctx = new AC();
+    if (!contexte()) return;
+    enCours = true;
     var t = ctx.currentTime + 0.2;
     var noire = 0.46; // tempo
 
@@ -493,17 +503,23 @@
         gain.connect(ctx.destination);
         osc.start(t);
         osc.stop(t + duree);
+        oscs.push(osc);
       });
       t += duree;
     });
     bouton.classList.remove("coupe");
-    // Libere le contexte a la fin : le bouton redevient un "rejouer".
-    fin = setTimeout(function () { arreter(); }, (t - ctx.currentTime + 0.3) * 1000);
+    // A la fin, le bouton redevient un "rejouer" (sans fermer le contexte).
+    fin = setTimeout(function () {
+      enCours = false;
+      oscs = [];
+    }, (t - ctx.currentTime + 0.3) * 1000);
   }
 
   function arreter() {
     if (fin) { clearTimeout(fin); fin = null; }
-    if (ctx) { ctx.close(); ctx = null; }
+    oscs.forEach(function (o) { try { o.stop(); } catch (err) {} });
+    oscs = [];
+    enCours = false;
   }
 
   var lance = false;
@@ -511,22 +527,34 @@
     // Un appui sur le bouton est gere par son propre handler.
     if (e && e.target && e.target.closest && e.target.closest("#btnSon")) return;
     if (lance) return;
+    var c = contexte();
+    if (!c) return;
     lance = true;
-    jouer();
+    // Le contexte nait suspendu : il faut le reveiller dans le geste meme.
+    if (c.state === "suspended" && c.resume) {
+      c.resume().then(jouer).catch(function () { lance = false; });
+    } else {
+      jouer();
+    }
   }
-  ["pointerdown", "touchstart", "keydown", "scroll"].forEach(function (ev) {
+  // touchend / click / keydown sont les seuls gestes que Safari iOS accepte
+  // comme activation valide pour l'audio.
+  ["touchend", "click", "keydown", "pointerup", "scroll"].forEach(function (ev) {
     window.addEventListener(ev, demarrer, { passive: true });
   });
 
   bouton.addEventListener("click", function (e) {
     e.stopPropagation();
-    if (ctx) {
+    lance = true;
+    if (enCours) {
       arreter();
       bouton.classList.add("coupe");
-    } else {
-      lance = true;
-      jouer();
+      return;
     }
+    var c = contexte();
+    if (!c) return;
+    if (c.state === "suspended" && c.resume) c.resume().then(jouer);
+    else jouer();
   });
 })();
 
