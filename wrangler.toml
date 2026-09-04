@@ -1,9 +1,0 @@
-name = "mikv-redirect"
-main = "src/index.js"
-compatibility_date = "2026-09-04"
-
-# Route à ajouter plus tard, une fois prêt à déployer sur le domaine mikv.io :
-# routes = [
-#   { pattern = "mikv.io/30", zone_name = "mikv.io" },
-#   { pattern = "mikv.io/30/", zone_name = "mikv.io" }
-# ]

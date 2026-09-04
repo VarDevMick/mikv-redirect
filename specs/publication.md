@@ -62,8 +62,8 @@ façon, seul le code source devient visible.
 ## Écarté
 
 **Cloudflare Workers** — première approche, abandonnée : l'ajout du domaine
-dans Cloudflare restait bloqué, et il aurait fallu déplacer tout le DNS.
-`src/index.js` et `wrangler.toml` en sont les reliquats, inutilisés.
+dans Cloudflare restait bloqué, et il aurait fallu confier tout le DNS. Ses
+fichiers ont été supprimés du dépôt.
 
 **GitHub Pages sur dépôt privé** — nécessite GitHub Pro.
 

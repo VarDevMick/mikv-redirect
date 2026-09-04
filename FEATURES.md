@@ -212,10 +212,18 @@ en 301 vers `/30/` et sert la page — vérifié de bout en bout.
 
 ---
 
+## Commandes
+
+| Commande | Effet |
+|---|---|
+| `npm run build` | Exporte les pages statiques dans `docs/` |
+| `npm run preview` | Exporte puis sert sur `localhost:8080` |
+| `npm run qr -- "<texte>" "<centre>" <mm>` | Régénère la plaque QR |
+
 ## Dette connue
 
 - `src/page-30.js` reste monolithique (~1200 lignes) : c'est voulu, la page
-  est gelée. `/31` a été découpée en composants sous `src/components/`.
-- `src/index.js` et `wrangler.toml` sont les reliquats de la première
-  tentative d'hébergement sur Cloudflare Workers, abandonnée. Non utilisés.
-- `.wrangler/` traîne dans le dépôt sans être ignoré.
+  est gelée. `/31` est découpée en composants sous `src/components/`.
+- Elle porte aussi un bloc CSS malformé, hérité d'un nettoyage. Sans effet —
+  les navigateurs l'ignorent — et corrigé dans `/31`. Laissé tel quel
+  puisque la page est gelée et fonctionne.
