@@ -1,11 +1,30 @@
 // Page surprise pour le trek GR58 (Tour du Queyras).
-// Pour ajouter une photo à une étape : cherche PHOTO_PLACEHOLDER et remplace
-// le <div class="photo-frame">...</div> par <img class="photo-frame" src="...">.
-// Pour ajouter la vidéo : cherche VIDEO_PLACEHOLDER dans la dernière section.
+// Pour changer une photo d'étape : modifie l'url dans PHOTOS ci-dessous.
+// Pour ajouter la vidéo : renseigne la constante VIDEO.
 
-const mountainDivider = (fill) => `
-<svg class="divider" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M0,60 L0,35 L40,10 L70,30 L110,5 L150,32 L190,15 L230,38 L270,12 L310,34 L350,8 L400,30 L400,60 Z" fill="${fill}"></path>
+// Paysage au trait : crêtes, collines et sapins, dessinés d'un seul jet.
+const mountainDivider = (fond) => `
+<svg class="divider" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
+  <!-- chaîne lointaine, bleutée par la distance -->
+  <path d="M0,90 L0,44 L44,14 L76,34 L118,8 L158,36 L200,18 L244,42 L286,16 L330,38 L400,20 L400,90 Z" fill="#c9bda6"></path>
+  <path d="M104,20 L118,8 L131,20 L123,17 L112,19 Z" fill="#fdf8ec"></path>
+  <path d="M274,26 L286,16 L298,27 L290,24 L281,26 Z" fill="#fdf8ec"></path>
+  <path class="d-trait" d="M0,44 L44,14 L76,34 L118,8 L158,36 L200,18 L244,42 L286,16 L330,38 L400,20"></path>
+  <!-- versants boisés -->
+  <path d="M0,90 L0,60 C68,48 116,66 174,58 C242,48 300,64 400,52 L400,90 Z" fill="#6f8a5c"></path>
+  <path class="d-trait" d="M0,60 C68,48 116,66 174,58 C242,48 300,64 400,52"></path>
+  <g class="sapins">
+    <path transform="translate(50,48)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+    <path transform="translate(72,52) scale(0.8)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+    <path transform="translate(212,54)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+    <path transform="translate(340,50)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+    <path transform="translate(360,54) scale(0.85)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+  </g>
+  <!-- alpage, puis le premier plan dans la couleur de la section suivante -->
+  <path d="M0,90 L0,72 C92,64 182,78 268,70 C330,65 362,69 400,65 L400,90 Z" fill="#d8c68a"></path>
+  <path class="d-trait" d="M0,72 C92,64 182,78 268,70 C330,65 362,69 400,65"></path>
+  <path d="M0,90 L0,82 C110,76 210,88 300,81 C346,77 372,80 400,78 L400,90 Z" fill="${fond}"></path>
+  <path class="d-trait" d="M0,82 C110,76 210,88 300,81 C346,77 372,80 400,78"></path>
 </svg>`;
 
 // Photos réelles des lieux, libres de droits (Wikimedia Commons).
@@ -28,9 +47,7 @@ const PHOTOS = {
 // La randonneuse, de profil : cheveux roux ondulés, sac à dos, bâton.
 const RANDONNEUSE = `
 <svg viewBox="0 0 44 62" aria-hidden="true">
-  <!-- baton de marche -->
   <line x1="29" y1="27" x2="29" y2="54" stroke="#a5804d" stroke-width="1.6" stroke-linecap="round"></line>
-  <!-- jambes : pantalon clair, sinon invisible sur le fond bleu nuit -->
   <g class="jambe jambe-arriere">
     <path d="M21,36 L16,50" stroke="#9c7f52" stroke-width="4" stroke-linecap="round" fill="none"></path>
     <path d="M16,50.5 L13,52.5" stroke="#3a2b1c" stroke-width="4" stroke-linecap="round" fill="none"></path>
@@ -40,73 +57,85 @@ const RANDONNEUSE = `
     <path d="M26,50.5 L29,52.5" stroke="#4a3826" stroke-width="4" stroke-linecap="round" fill="none"></path>
   </g>
   <g class="buste">
-    <!-- sac a dos, colle au dos -->
     <rect x="12" y="20" width="9.5" height="13.5" rx="4" fill="#e2b53b"></rect>
     <rect x="13.5" y="24" width="6.5" height="1.8" rx="0.9" fill="#b8860b"></rect>
-    <!-- corps -->
     <path d="M21.5,36 L22,20" stroke="#2f5233" stroke-width="7" stroke-linecap="round" fill="none"></path>
-    <!-- bras vers le baton -->
     <path class="bras" d="M22.5,24 L28.4,29" stroke="#2f5233" stroke-width="3.2" stroke-linecap="round" fill="none"></path>
-    <!-- masse de cheveux, derriere la tete -->
     <ellipse cx="22" cy="12.4" rx="6.6" ry="6.3" fill="#c4551a"></ellipse>
     <path class="meche" d="M16.4,13 q-3.4,4.6 -2,9.4 q0.8,2.6 2.6,3.6 q-1.9,-4.8 0.3,-7 q-1.6,-2.6 -0.9,-6 z" fill="#c4551a"></path>
     <path class="meche" d="M15.2,18.5 q-2.4,3.4 -1,6.6 q0.9,-2.6 2.1,-3.4 z" fill="#a8410f"></path>
-    <!-- visage, pose par-dessus : les cheveux ne le recouvrent pas -->
     <circle cx="23.2" cy="13.6" r="5.2" fill="#e9c39c"></circle>
-    <!-- frange -->
     <path d="M18.4,10.8 q3.6,-3.4 8.6,-1.4 q-3.8,-0.2 -6.6,2.8 z" fill="#a8410f"></path>
   </g>
 </svg>`;
 
 // La tente du bivouac, qui se déplie à côté d'elle.
 const BIVOUAC = `
-<svg viewBox="0 0 34 24" aria-hidden="true">
-  <path d="M2,21 L17,3 L32,21 Z" fill="#c1440e"></path>
-  <path d="M17,3 L17,21" stroke="#8f3209" stroke-width="1.2"></path>
-  <path d="M12,21 L17,9 L22,21 Z" fill="#5c2a12"></path>
-  <line x1="0" y1="21" x2="34" y2="21" stroke="#e2b53b" stroke-width="1.6" stroke-linecap="round"></line>
+<svg viewBox="0 0 34 26" aria-hidden="true">
+  <path d="M3,22 L17,4 L31,22 Z" fill="#c1440e"></path>
+  <path d="M17,4 L17,22" stroke="#8f3209" stroke-width="1.2"></path>
+  <path d="M12.5,22 L17,10 L21.5,22 Z" fill="#5c2a12"></path>
+  <line x1="0.5" y1="22" x2="33.5" y2="22" stroke="#e2b53b" stroke-width="1.8" stroke-linecap="round"></line>
 </svg>`;
 
 // Fin du parcours : elle dort dans son duvet.
 const DODO = `
 <svg viewBox="0 0 140 56" aria-hidden="true">
-  <!-- tapis de sol -->
   <rect x="6" y="41" width="128" height="5" rx="2.5" fill="#6b563a"></rect>
   <g class="souffle">
-    <!-- duvet -->
     <rect x="40" y="26" width="86" height="16" rx="8" fill="#c1440e"></rect>
     <path d="M46,26 q6,-5 14,0" fill="none" stroke="#8f3209" stroke-width="1.4"></path>
     <rect x="112" y="28" width="12" height="12" rx="6" fill="#a83a0c"></rect>
-    <!-- oreiller roule -->
-    <rect x="16" y="31" width="24" height="11" rx="5.5" fill="#f4ecd8"></rect>
-    <!-- cheveux etales -->
+    <rect x="16" y="31" width="24" height="11" rx="5.5" fill="#fdf8ec"></rect>
     <ellipse cx="30" cy="29" rx="12" ry="8.5" fill="#c4551a"></ellipse>
     <path d="M20,26 q-6,3 -7,8 q4,-4 8,-4 z" fill="#c4551a"></path>
-    <!-- tete -->
     <circle cx="34" cy="30" r="7" fill="#e9c39c"></circle>
-    <!-- oeil ferme et sourire -->
-    <path d="M34,28.5 q2.4,2 4.6,0" fill="none" stroke="#2b2018" stroke-width="1.2" stroke-linecap="round"></path>
-    <path d="M35,34 q2,1.6 3.8,0" fill="none" stroke="#2b2018" stroke-width="1" stroke-linecap="round"></path>
+    <path d="M34,28.5 q2.4,2 4.6,0" fill="none" stroke="#3a2f26" stroke-width="1.2" stroke-linecap="round"></path>
+    <path d="M35,34 q2,1.6 3.8,0" fill="none" stroke="#3a2f26" stroke-width="1" stroke-linecap="round"></path>
   </g>
-  <!-- sac a dos pose a cote -->
   <rect x="122" y="30" width="12" height="11" rx="4" fill="#e2b53b"></rect>
-  <!-- ronflements -->
-  <text class="zzz zzz1" x="46" y="20" font-family="Georgia, serif" font-size="11" fill="#f4ecd8">z</text>
-  <text class="zzz zzz2" x="55" y="14" font-family="Georgia, serif" font-size="9" fill="#f4ecd8">z</text>
-  <text class="zzz zzz3" x="63" y="9" font-family="Georgia, serif" font-size="7" fill="#f4ecd8">z</text>
+  <text class="zzz zzz1" x="46" y="20" font-family="Georgia, serif" font-size="11" fill="#7a6a58">z</text>
+  <text class="zzz zzz2" x="55" y="14" font-family="Georgia, serif" font-size="9" fill="#7a6a58">z</text>
+  <text class="zzz zzz3" x="63" y="9" font-family="Georgia, serif" font-size="7" fill="#7a6a58">z</text>
 </svg>`;
 
-const photoFrame = (key, label) => `
-  <figure class="photo-block">
-    <img class="photo-frame" src="${PHOTOS[key].url}" alt="${label}" loading="lazy">
-    <!-- Légende masquée. Pour la réafficher : décommenter la ligne ci-dessous.
-    <figcaption>${PHOTOS[key].credit}</figcaption>
-    -->
-  </figure>`;
+// Photo en tête de carte : deux crêtes superposées et quelques sapins font
+// la transition entre l'image et le texte.
+const carteEnTete = (key, label) => `
+  <div class="carte-photo">
+    <img src="${PHOTOS[key].url}" alt="${label}" loading="lazy">
+    <svg class="crete" viewBox="0 0 340 58" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,58 L52,20 L96,40 L152,12 L206,36 L262,18 L340,52 L340,58 Z" fill="#6f8a5c"></path>
+      <path class="d-trait" d="M0,58 L52,20 L96,40 L152,12 L206,36 L262,18 L340,52"></path>
+      <g class="sapins">
+        <path transform="translate(78,30) scale(0.8)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+        <path transform="translate(232,28) scale(0.75)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+        <path transform="translate(296,36) scale(0.65)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+      </g>
+      <path d="M0,58 L60,40 L110,50 L168,34 L226,48 L286,38 L340,56 L340,58 Z" fill="#fdf8ec"></path>
+      <path class="d-trait" d="M0,58 L60,40 L110,50 L168,34 L226,48 L286,38 L340,56"></path>
+    </svg>
+  </div>`;
 
 // Vidéo : mets ici le nom du fichier déposé dans docs/ (ex. "message.mp4").
 // Tant que c'est vide, la section n'apparaît pas.
 const VIDEO = "";
+
+// Tracé du sentier de la colonne : lacets réguliers sur 1000 unités de haut.
+// La randonneuse suit exactement cette courbe, et la portion déjà parcourue
+// se dessine derrière elle.
+const SENTIER_D = (function () {
+  var d = "M34,0", lobes = 8, pas = 1000 / lobes;
+  for (var i = 0; i < lobes; i++) {
+    var y = i * pas;
+    var a = i % 2 ? 14 : 54;
+    var b = i % 2 ? 54 : 14;
+    d += " C" + a + "," + (y + pas * 0.32) +
+         " " + b + "," + (y + pas * 0.68) +
+         " 34," + (y + pas);
+  }
+  return d;
+})();
 
 // Coordonnées du tracé stylisé (pas géographiquement exactes, juste évocatrices).
 const TRAIL_D = "M10,120 C35,95 50,55 70,45 C88,58 98,62 112,75 C124,92 132,112 142,122 C158,100 168,62 182,52 C198,66 202,86 212,92 C228,72 238,42 252,32 C270,52 286,92 300,112";
@@ -125,13 +154,27 @@ export const PAGE_30_HTML = `<!doctype html>
 <title>Une surprise pour toi</title>
 <style>
   :root {
-    --cream: #f4ecd8;
-    --paper: #efe3c7;
-    --ink: #2b2018;
+    /* Dessin au trait : fonds très clairs, une encre, un accent chaud. */
+    /* Palette chaude d'affiche, gardée sur un dessin au trait. */
+    --papier: #fdf8ec;
+    --papier2: #f8f0dd;
+    --papier3: #f3e8d0;
+    --encre: #3a2f26;
+    --trait: #7a6a58;
+    --soleil: #c1440e;
+    --sapin: #2f5233;
+    --sapin2: #3f6b40;
+    --sauge: #6f8a5c;
+    --alpage: #d8c68a;
+    --roche: #c9bda6;
+    --bois: #6b4a2f;
+    --cream: #fdf8ec;
+    --paper: #f8f0dd;
+    --ink: #3a2f26;
     --terracotta: #c1440e;
     --forest: #2f5233;
     --mustard: #e2b53b;
-    --navy: #1b2a41;
+    --navy: #3a2f26;
   }
   * { box-sizing: border-box; }
   /* Le défilement appartient au document : sinon window.scrollY reste à 0
@@ -145,10 +188,9 @@ export const PAGE_30_HTML = `<!doctype html>
   body::-webkit-scrollbar { width: 0; height: 0; display: none; }
   body {
     margin: 0;
-    padding-left: 58px; /* colonne du sentier */
     font-family: Georgia, "Times New Roman", serif;
-    color: var(--cream);
-    background: var(--navy);
+    color: var(--encre);
+    background: var(--papier);
   }
   .panel {
     min-height: 100svh;
@@ -158,7 +200,7 @@ export const PAGE_30_HTML = `<!doctype html>
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 3rem 1.5rem 4.5rem;
+    padding: 3rem 1.5rem 4.5rem 74px; /* dégage la place du sentier */
     position: relative;
     overflow: hidden;
   }
@@ -167,16 +209,29 @@ export const PAGE_30_HTML = `<!doctype html>
     bottom: -1px;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 74px;
   }
-  .p1 {
-    background:
-      radial-gradient(circle at 50% 20%, rgba(226,181,59,0.25), transparent 60%),
-      var(--navy);
+  .d-trait {
+    fill: none;
+    stroke: var(--trait);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
   }
-  .p2 { background: var(--forest); }
-  .p3 { background: var(--terracotta); }
-  .p7 { background: var(--navy); }
+  .d-neige { stroke: var(--encre); stroke-width: 1.8; }
+  .sapins path,
+  .d-sapin path {
+    fill: var(--sapin);
+    stroke: var(--encre);
+    stroke-width: 1;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .p1 { background: var(--papier); }
+  .p2 { background: var(--papier2); }
+  .p3 { background: var(--papier3); }
+  .p7 { background: var(--papier2); }
 
   .eyebrow {
     text-transform: uppercase;
@@ -215,38 +270,45 @@ export const PAGE_30_HTML = `<!doctype html>
     align-items: baseline;
     justify-content: center;
     gap: 0.08em;
-    background: linear-gradient(100deg,
-      #b8860b 0%, #e2b53b 30%, #fff6d5 45%, #e2b53b 60%, #b8860b 100%);
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 4.5s ease-in-out infinite;
-    filter: drop-shadow(0 4px 18px rgba(226,181,59,0.35));
+    color: var(--encre);
+    position: relative;
+    z-index: 1;
   }
   .big-thirty .ans {
     font-size: 0.34em;
     letter-spacing: 0.04em;
-  }
-  @keyframes shimmer {
-    0%, 100% { background-position: 130% 0; }
-    50% { background-position: -30% 0; }
+    color: var(--sapin);
   }
 
-  .stars { position: absolute; inset: 0; pointer-events: none; }
-  .stars span {
+  /* Feu d'artifice de bienvenue, derrière le texte. */
+  .feu {
     position: absolute;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: var(--mustard);
-    opacity: 0;
-    animation: twinkle 4s ease-in-out infinite;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
   }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.6); }
-    50% { opacity: 0.85; transform: scale(1); }
+  /* Le texte de l'ouverture passe devant le décor et les fusées. */
+  .p1 > .eyebrow,
+  .p1 > h1,
+  .p1 > .big-thirty,
+  .p1 > p { position: relative; z-index: 2; }
+
+  /* Le massif, dessiné derrière le chiffre. */
+  .massif {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: min(58vh, 420px);
+    z-index: 0;
+    opacity: 0.9;
+    animation: leve 1.8s ease-out both;
+  }
+  @keyframes leve {
+    from { opacity: 0; transform: translateY(26px); }
+    to { opacity: 0.9; transform: none; }
   }
 
   .reveal {
@@ -264,8 +326,7 @@ export const PAGE_30_HTML = `<!doctype html>
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .stars span, .big-thirty { animation: none; opacity: 1; transform: none; }
-    .big-thirty { color: var(--mustard); -webkit-text-fill-color: var(--mustard); }
+    .reveal, .soleil { animation: none; opacity: 1; transform: none; }
   }
 
   .trek-title {
@@ -286,8 +347,7 @@ export const PAGE_30_HTML = `<!doctype html>
     top: 0;
     z-index: 2;
     background: var(--paper);
-    border-bottom: 2px solid rgba(43,32,24,0.15);
-    padding: 0.8rem 1rem 0.4rem;
+    padding: 0.8rem 1rem 0.6rem;
   }
   .route-svg { width: 100%; height: auto; display: block; }
   .trail-bg, .trail-progress {
@@ -323,17 +383,44 @@ export const PAGE_30_HTML = `<!doctype html>
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 2rem 1.5rem 3rem;
+    padding: 2rem 1.5rem 3rem 74px;
   }
 
   .day-card {
-    background: rgba(255,255,255,0.5);
-    border: 1px solid rgba(43,32,24,0.15);
-    border-radius: 4px;
-    padding: 1.4rem;
+    position: relative;
+    background: var(--papier);
+    /* Coins biseautés plutôt qu'un filet : la carte est taillée, pas cerclée. */
+    clip-path: polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px),
+                       calc(100% - 16px) 100%, 0 100%);
+    padding: 0;
     max-width: 340px;
     width: 100%;
+    overflow: hidden;
+    box-shadow: 0 10px 26px rgba(51,48,44,0.12);
   }
+  /* Photo en tête de carte, fondue dans le papier par la crête. */
+  .carte-photo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .carte-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    display: block;
+  }
+  .crete {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 58px;
+    display: block;
+  }
+  .carte-corps { padding: 0.4rem 1.4rem 1.5rem; }
   .day-num {
     font-size: 0.8rem;
     letter-spacing: 0.15em;
@@ -345,38 +432,6 @@ export const PAGE_30_HTML = `<!doctype html>
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 0.8rem;
-  }
-
-  .photo-frame {
-    width: 100%;
-    max-width: 320px;
-    /* Assez vertical pour que l'arche se lise, sans trop rogner les photos
-       qui sont toutes en format paysage. */
-    aspect-ratio: 4 / 5;
-    border-radius: 50% 50% 14px 14px / 30% 30% 14px 14px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-    border: 6px solid var(--cream);
-    box-shadow: 0 6px 20px rgba(43,32,24,0.28);
-  }
-  img.photo-frame {
-    object-fit: cover;
-    object-position: center 45%; /* garde l'horizon et les sommets dans le cadre */
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-  .photo-block {
-    margin: 0 0 1rem;
-    max-width: 320px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .photo-block figcaption {
-    font-size: 0.68rem;
-    opacity: 0.55;
-    line-height: 1.3;
   }
 
   .day-note {
@@ -407,18 +462,32 @@ export const PAGE_30_HTML = `<!doctype html>
     left: 0;
     top: 0;
     bottom: 0;
-    width: 58px;
-    background: var(--navy);
-    border-right: 1px solid rgba(244,236,216,0.12);
+    /* Aucun fond : le sentier passe simplement au-dessus des sections. */
+    width: 68px;
     z-index: 4;
     pointer-events: none;
   }
-  .piste {
-    position: absolute;
-    left: 28px;
-    top: 0;
-    bottom: 0;
-    border-left: 2px dashed rgba(244,236,216,0.28);
+  .trace {
+    width: 68px;
+    height: 100%;
+    display: block;
+    /* Une ombre porte le tracé aussi bien sur le papier que sur le bleu nuit. */
+  }
+  .trace-avenir {
+    fill: none;
+    stroke: var(--trait);
+    opacity: 0.55;
+    stroke-width: 2;
+    stroke-dasharray: 5 9;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .trace-passe {
+    fill: none;
+    stroke: var(--sapin2);
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
   }
 
   /* --- Randonneuse, en surimpression au-dessus de la bande --- */
@@ -432,9 +501,24 @@ export const PAGE_30_HTML = `<!doctype html>
     will-change: transform;
     opacity: 0; /* cachée tant que le défilement n'a pas commencé */
     transition: transform 0.15s ease-out, opacity 0.25s ease;
-    filter: drop-shadow(0 3px 7px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 2px 3px rgba(51,48,44,0.18));
   }
   .marcheuse svg { width: 100%; height: auto; display: block; }
+    fill: none;
+    stroke: var(--encre);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .perso .visage,
+  .perso .oreiller { fill: var(--papier); }
+  .perso .toile { fill: var(--alpage); }
+  .perso .torse { fill: var(--sapin2); }
+  .perso .duvet { fill: var(--soleil); }
+  .perso .porte { fill: var(--sapin); }
+  .perso .sac { fill: var(--soleil); }
+  .perso .cheveux { fill: #d2691e; stroke: none; }
+  .perso .oeil { stroke-width: 1.3; }
   /* Le buste tangue légèrement : c'est ce qui donne la démarche. */
   .buste { animation: tangage 0.62s ease-in-out infinite alternate; }
   @keyframes tangage {
@@ -472,7 +556,7 @@ export const PAGE_30_HTML = `<!doctype html>
   /* Fin de parcours : le couchage, au milieu bas de la page. */
   .dodo {
     position: fixed;
-    left: calc(50% + 29px);   /* centré sur le contenu, hors colonne */
+    left: calc(50% + 34px);   /* centré sur le contenu, hors colonne */
     bottom: 7%;
     width: 160px;
     margin-left: -80px;
@@ -481,7 +565,7 @@ export const PAGE_30_HTML = `<!doctype html>
     opacity: 0;
     transform: translateY(12px);
     transition: opacity 0.6s ease, transform 0.6s ease;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+    filter: drop-shadow(0 2px 4px rgba(51,48,44,0.18));
   }
   .dodo.dort { opacity: 1; transform: translateY(0); }
   .dodo svg { width: 100%; height: auto; display: block; }
@@ -512,7 +596,7 @@ export const PAGE_30_HTML = `<!doctype html>
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.4s ease;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 2px 3px rgba(51,48,44,0.16));
   }
   .camp svg { width: 100%; height: auto; display: block; }
   .camp.plante { opacity: 1; }
@@ -529,9 +613,9 @@ export const PAGE_30_HTML = `<!doctype html>
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 1px solid rgba(244,236,216,0.4);
-    background: rgba(27,42,65,0.5);
-    color: var(--cream);
+    border: 1.5px solid rgba(51,48,44,0.35);
+    background: rgba(253,251,246,0.85);
+    color: var(--encre);
     font-size: 1.1rem;
     line-height: 1;
     cursor: pointer;
@@ -546,8 +630,8 @@ export const PAGE_30_HTML = `<!doctype html>
     z-index: 10;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
-    color: var(--cream);
-    background: rgba(27,42,65,0.75);
+    color: var(--papier);
+    background: rgba(51,48,44,0.8);
     padding: 5px 9px;
     border-radius: 12px;
     opacity: 0;
@@ -578,33 +662,47 @@ export const PAGE_30_HTML = `<!doctype html>
   <button class="son" id="btnSon" type="button" aria-label="Couper ou relancer la musique">&#9835;</button>
   <div class="son-astuce" id="astuceSon">Appuie pour la musique</div>
 
-  <div class="sentier" aria-hidden="true"><div class="piste"></div></div>
+  <div class="sentier" aria-hidden="true">
+    <svg class="trace" viewBox="0 0 68 1000" preserveAspectRatio="none">
+      <path class="trace-avenir" d="${SENTIER_D}"></path>
+      <path class="trace-passe" id="tracePasse" d="${SENTIER_D}"></path>
+    </svg>
+  </div>
   <div class="camp" id="camp" aria-hidden="true">${BIVOUAC}</div>
   <div class="dodo" id="dodo" aria-hidden="true">${DODO}</div>
   <div class="marcheuse" id="marcheuse" aria-hidden="true">${RANDONNEUSE}</div>
 
   <section class="panel p1">
-    <div class="stars" aria-hidden="true">
-      ${Array.from({ length: 18 }, (_, i) => {
-        const left = (i * 37) % 100;
-        const top = (i * 53) % 70;
-        const delay = (i % 6) * 0.7;
-        return `<span style="left:${left}%; top:${top}%; animation-delay:${delay}s"></span>`;
-      }).join("")}
-    </div>
+    <canvas class="feu" id="feu" aria-hidden="true"></canvas>
+    <svg class="massif" viewBox="0 0 400 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <!-- sommets, du plus lointain au plus proche -->
+      <path d="M0,240 L0,150 L58,84 L104,124 L150,60 L206,132 L248,96 L300,150 L344,110 L400,166 L400,240 Z" fill="#c9bda6"></path>
+      <path d="M128,80 L150,60 L172,80 L160,74 L142,78 Z" fill="#fdf8ec"></path>
+      <path d="M184,102 L206,132 L228,104 L212,110 Z" fill="#fdf8ec" opacity="0.8"></path>
+      <path class="d-trait" d="M0,150 L58,84 L104,124 L150,60 L206,132 L248,96 L300,150 L344,110 L400,166"></path>
+      <path d="M0,240 L0,186 C74,164 128,196 196,180 C266,164 318,192 400,178 L400,240 Z" fill="#6f8a5c"></path>
+      <path class="d-trait" d="M0,186 C74,164 128,196 196,180 C266,164 318,192 400,178"></path>
+      <g class="sapins">
+        <path transform="translate(74,176) scale(1.5)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+        <path transform="translate(104,184) scale(1.1)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+        <path transform="translate(258,190) scale(1.2)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+        <path transform="translate(320,180) scale(1.5)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
+      </g>
+      <path d="M0,240 L0,214 C90,202 190,224 282,212 C334,205 366,210 400,206 L400,240 Z" fill="#d8c68a"></path>
+      <path class="d-trait" d="M0,214 C90,202 190,224 282,212 C334,205 366,210 400,206"></path>
+    </svg>
     <div class="eyebrow reveal r1">Joyeux anniversaire</div>
     <h1 class="name reveal r2">Charlotte</h1>
     <div class="big-thirty reveal r3" id="grosTrente" aria-label="30 ans">30<span class="ans">ans</span></div>
     <p class="reveal r4">Ça se fête en altitude.</p>
     <p class="reveal r5" style="opacity:0.7">Continue de descendre.</p>
-    ${mountainDivider("var(--forest)")}
   </section>
 
   <section class="panel p2">
     <h1>Et si on partait crapahuter ensemble ?</h1>
     <p>Rien que toi et moi, dans la montagne.</p>
     <p style="opacity:0.75; font-size:0.95rem;">Quand tu veux, tu choisis.</p>
-    ${mountainDivider("var(--terracotta)")}
+    ${mountainDivider("var(--papier3)")}
   </section>
 
   <section class="panel p3">
@@ -619,7 +717,7 @@ export const PAGE_30_HTML = `<!doctype html>
     <p style="margin-top:1rem">3 jours · 2 nuits en refuge</p>
     <p style="opacity:0.85; font-size:0.95rem;">Les étapes les plus douces du tour : 4 à 5 h de marche par jour.</p>
     <p style="opacity:0.7; font-size:0.9rem;">Fais défiler pour suivre le tracé →</p>
-    ${mountainDivider("var(--paper)")}
+    ${mountainDivider("var(--papier)")}
   </section>
 
   <section class="route-section">
@@ -639,8 +737,9 @@ export const PAGE_30_HTML = `<!doctype html>
     </div>
 
     <div class="route-step" data-idx="1">
-      ${photoFrame("souliers", "Souliers → Chalp d'Arvieux")}
       <div class="day-card">
+        ${carteEnTete("souliers", "Souliers → Chalp d'Arvieux")}
+        <div class="carte-corps">
         <div class="day-num">Jour 1 · mise en jambes</div>
         <div class="day-route">Souliers → Chalp d'Arvieux</div>
         <p class="day-note">Par le col Tronchet, tranquille pour commencer.</p>
@@ -649,12 +748,14 @@ export const PAGE_30_HTML = `<!doctype html>
           <div class="stat"><b>+510 m</b><span>D+</span></div>
           <div class="stat"><b>-660 m</b><span>D-</span></div>
         </div>
+        </div>
       </div>
     </div>
 
     <div class="route-step" data-idx="2">
-      ${photoFrame("arvieux", "Chalp d'Arvieux → Refuge de Furfande")}
       <div class="day-card">
+        ${carteEnTete("arvieux", "Chalp d'Arvieux → Refuge de Furfande")}
+        <div class="carte-corps">
         <div class="day-num">Jour 2 · la belle montée</div>
         <div class="day-route">Chalp d'Arvieux → Refuge de Furfande</div>
         <p class="day-note">La seule vraie grimpette, avec un refuge perché en récompense.</p>
@@ -663,12 +764,14 @@ export const PAGE_30_HTML = `<!doctype html>
           <div class="stat"><b>+820 m</b><span>D+</span></div>
           <div class="stat"><b>-210 m</b><span>D-</span></div>
         </div>
+        </div>
       </div>
     </div>
 
     <div class="route-step" data-idx="3">
-      ${photoFrame("ceillac", "Refuge de Furfande → Bramousse")}
       <div class="day-card">
+        ${carteEnTete("ceillac", "Refuge de Furfande → Bramousse")}
+        <div class="carte-corps">
         <div class="day-num">Jour 3 · la grande descente</div>
         <div class="day-route">Refuge de Furfande → Bramousse</div>
         <p class="day-note">Par le col Lauze, puis on redescend tranquillement dans la vallée.</p>
@@ -676,6 +779,7 @@ export const PAGE_30_HTML = `<!doctype html>
           <div class="stat"><b>4h30</b><span>Marche</span></div>
           <div class="stat"><b>+210 m</b><span>D+</span></div>
           <div class="stat"><b>-1000 m</b><span>D-</span></div>
+        </div>
         </div>
       </div>
     </div>
@@ -839,6 +943,104 @@ export const PAGE_30_HTML = `<!doctype html>
   });
 })();
 
+// Feu d'artifice d'accueil : quelques gerbes au-dessus du "30", puis le
+// canvas s'efface. Rien ne tourne en fond une fois la fete passee.
+(function () {
+  var canvas = document.getElementById("feu");
+  if (!canvas || !canvas.getContext) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var ctx = canvas.getContext("2d");
+  var COULEURS = ["#c1440e", "#e2b53b", "#c4551a", "#2f5233", "#e9c39c"];
+  var particules = [], fusees = [], dpr = window.devicePixelRatio || 1;
+  var largeur = 0, hauteur = 0;
+
+  function dimensionner() {
+    var r = canvas.getBoundingClientRect();
+    largeur = r.width; hauteur = r.height;
+    canvas.width = largeur * dpr;
+    canvas.height = hauteur * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  dimensionner();
+  window.addEventListener("resize", dimensionner);
+
+  function lancer() {
+    fusees.push({
+      x: largeur * (0.18 + Math.random() * 0.64),
+      y: hauteur,
+      vy: -(hauteur / 78) * (0.85 + Math.random() * 0.4),
+      cible: hauteur * (0.16 + Math.random() * 0.24),
+      couleur: COULEURS[Math.floor(Math.random() * COULEURS.length)]
+    });
+  }
+
+  function exploser(x, y, couleur) {
+    var n = 34 + Math.floor(Math.random() * 16);
+    for (var i = 0; i < n; i++) {
+      var a = (Math.PI * 2 * i) / n + Math.random() * 0.2;
+      var v = 1.4 + Math.random() * 2.6;
+      particules.push({
+        x: x, y: y,
+        vx: Math.cos(a) * v,
+        vy: Math.sin(a) * v,
+        vie: 1,
+        couleur: Math.random() < 0.72 ? couleur : COULEURS[Math.floor(Math.random() * COULEURS.length)]
+      });
+    }
+  }
+
+  var debut = null, fini = false;
+  var DUREE = 7200;      // durée de la fête
+  var prochaine = 400;   // date du prochain tir
+
+  function boucle(t) {
+    if (debut === null) debut = t;
+    var age = t - debut;
+    ctx.clearRect(0, 0, largeur, hauteur);
+
+    if (age > prochaine && age < DUREE) {
+      lancer();
+      prochaine = age + 700 + Math.random() * 700;
+    }
+
+    fusees = fusees.filter(function (f) {
+      f.y += f.vy;
+      f.vy += 0.045;
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = f.couleur;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+      if (f.y <= f.cible || f.vy >= 0) { exploser(f.x, f.y, f.couleur); return false; }
+      return true;
+    });
+
+    particules = particules.filter(function (p) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.985;
+      p.vy = p.vy * 0.985 + 0.055;
+      p.vie -= 0.016;
+      if (p.vie <= 0) return false;
+      ctx.globalAlpha = Math.max(0, p.vie);
+      ctx.fillStyle = p.couleur;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.1, 0, Math.PI * 2);
+      ctx.fill();
+      return true;
+    });
+
+    ctx.globalAlpha = 1;
+    if (age > DUREE && !particules.length && !fusees.length) {
+      if (!fini) { fini = true; ctx.clearRect(0, 0, largeur, hauteur); }
+      return; // on arrête complètement l'animation
+    }
+    requestAnimationFrame(boucle);
+  }
+  requestAnimationFrame(boucle);
+})();
+
 // La randonneuse descend le sentier au rythme du défilement, et plante
 // sa tente quand elle arrive au niveau d'une étape.
 (function () {
@@ -846,13 +1048,24 @@ export const PAGE_30_HTML = `<!doctype html>
   var camp = document.getElementById("camp");
   if (!marcheuse || !camp) return;
 
-  var LACETS = 2.5;    // nombre de virages du sentier sur toute la page
   var SORTIE = 0.07;   // fraction de scroll pendant laquelle elle sort du "30"
   var APPROCHE = 0.88; // à partir d'ici, elle converge vers le bas de page
   var COUCHEE = 0.985; // au-delà, elle est dans son duvet
   var etapes = [];
   var depart = null;   // position du "30", son point d'apparition
   var dodo = document.getElementById("dodo");
+  var trace = document.getElementById("tracePasse");
+  var longueurTrace = 0;
+
+  // Convertit une fraction de parcours en position à l'écran, en suivant
+  // la courbe du sentier. Le viewBox fait 1000 de haut, étiré sur la fenêtre.
+  function pointSur(f) {
+    if (!trace || !longueurTrace) {
+      return { x: 34, y: 0.1 * window.innerHeight + f * window.innerHeight * 0.72 };
+    }
+    var p = trace.getPointAtLength(Math.max(0, Math.min(1, f)) * longueurTrace);
+    return { x: p.x, y: p.y * (window.innerHeight / 1000) };
+  }
 
   function defilement() {
     var doc = document.documentElement;
@@ -862,6 +1075,11 @@ export const PAGE_30_HTML = `<!doctype html>
   }
 
   function mesurer() {
+    if (trace) {
+      longueurTrace = trace.getTotalLength();
+      trace.style.strokeDasharray = longueurTrace;
+      trace.style.strokeDashoffset = longueurTrace;
+    }
     // Point de départ : le "30" doré, mesuré page en haut.
     var trente = document.getElementById("grosTrente");
     if (trente) {
@@ -886,23 +1104,26 @@ export const PAGE_30_HTML = `<!doctype html>
     var hauteur = window.innerHeight;
     var taille = marcheuse.offsetWidth || 52;
 
-    // Lacets autour de la bande du sentier : la descente est régulière,
-    // la dérive horizontale suit une sinusoïde. Elle déborde un peu sur la
-    // page, sans jamais aller au-delà du tiers gauche.
-    var gauche = 3;
-    var droite = Math.min(112, largeur * 0.34) - taille;
-    var amplitude = Math.max(8, (droite - gauche) / 2);
-    var x = gauche + amplitude + Math.sin(f * Math.PI * 2 * LACETS) * amplitude;
-    var yy = 0.1 * hauteur + f * (hauteur * 0.72);
-    var sens = Math.cos(f * Math.PI * 2 * LACETS) >= 0 ? 1 : -1;
+    // Elle se place exactement sur le tracé du sentier, et le chemin
+    // parcouru se dessine derrière elle.
+    var pos = pointSur(f);
+    var suivant = pointSur(Math.min(1, f + 0.012));
+    var x = pos.x - taille / 2;
+    var yy = pos.y - 56;
+    var sens = suivant.x >= pos.x ? 1 : -1;
+    if (trace && longueurTrace) {
+      trace.style.strokeDashoffset = longueurTrace * (1 - f);
+    }
 
     // Bivouac : au niveau d'une étape, elle s'arrête et rejoint le sentier
     // pour se tenir à côté de sa tente, qui reste dans la colonne.
     var proche = etapes.some(function (p) { return Math.abs(f - p) < 0.035; });
     if (proche) {
-      x = 56;
+      // La tente se plante sur le sentier, la marcheuse se tient à côté.
+      var surSentier = Math.max(2, Math.min(34, pos.x - 17));
+      camp.style.transform = "translate(" + surSentier + "px," + (pos.y - 6) + "px)";
+      x = surSentier + 30;
       sens = -1; // tournée vers la tente
-      camp.style.transform = "translate(12px," + (yy + 24) + "px)";
     }
 
     // Apparition : invisible en haut de page, elle émerge du "30" dès que
