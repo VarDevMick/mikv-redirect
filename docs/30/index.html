@@ -275,6 +275,64 @@
 
   .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
 
+  /* --- Sentier vertical et randonneuse --- */
+  /* Colonne réservée au sentier, à gauche, sur toute la hauteur. */
+  body { padding-left: 58px; }
+
+  .sentier {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 58px;
+    background: var(--navy);
+    border-right: 1px solid rgba(244,236,216,0.12);
+    z-index: 6;
+    pointer-events: none;
+  }
+  .piste {
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    border-left: 2px dashed rgba(244,236,216,0.28);
+  }
+  .marcheuse {
+    position: absolute;
+    left: 7px;
+    width: 44px;
+    margin-top: -31px; /* centre la silhouette sur sa position */
+    transition: top 0.12s linear;
+  }
+  .marcheuse svg { width: 100%; height: auto; display: block; }
+
+  /* Balancement des jambes, uniquement pendant le défilement. */
+  .jambe { transform-box: fill-box; transform-origin: 50% 0%; }
+  .marcheuse.marche .jambe-avant { animation: pas 0.5s ease-in-out infinite alternate; }
+  .marcheuse.marche .jambe-arriere { animation: pas 0.5s ease-in-out infinite alternate-reverse; }
+  @keyframes pas {
+    from { transform: rotate(-16deg); }
+    to { transform: rotate(16deg); }
+  }
+
+  .camp {
+    position: absolute;
+    left: 26px;
+    width: 30px;
+    margin-top: -14px;
+    opacity: 0;
+    transform: translateX(-14px) scale(0.7);
+    transform-origin: left bottom;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  .camp svg { width: 100%; height: auto; display: block; }
+  .camp.plante { opacity: 1; transform: translateX(0) scale(1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marcheuse.marche .jambe-avant,
+    .marcheuse.marche .jambe-arriere { animation: none; }
+  }
+
   .son {
     position: fixed;
     top: 14px;
@@ -307,6 +365,60 @@
 <body>
 
   <button class="son" id="btnSon" type="button" aria-label="Couper ou relancer la musique">&#9835;</button>
+
+  <div class="sentier" id="sentier" aria-hidden="true">
+    <div class="piste"></div>
+    <div class="camp" data-camp="1">
+<svg viewBox="0 0 34 24" aria-hidden="true">
+  <path d="M2,21 L17,3 L32,21 Z" fill="#c1440e"></path>
+  <path d="M17,3 L17,21" stroke="#8f3209" stroke-width="1.2"></path>
+  <path d="M12,21 L17,9 L22,21 Z" fill="#5c2a12"></path>
+  <line x1="0" y1="21" x2="34" y2="21" stroke="#e2b53b" stroke-width="1.6" stroke-linecap="round"></line>
+</svg></div>
+    <div class="camp" data-camp="2">
+<svg viewBox="0 0 34 24" aria-hidden="true">
+  <path d="M2,21 L17,3 L32,21 Z" fill="#c1440e"></path>
+  <path d="M17,3 L17,21" stroke="#8f3209" stroke-width="1.2"></path>
+  <path d="M12,21 L17,9 L22,21 Z" fill="#5c2a12"></path>
+  <line x1="0" y1="21" x2="34" y2="21" stroke="#e2b53b" stroke-width="1.6" stroke-linecap="round"></line>
+</svg></div>
+    <div class="camp" data-camp="3">
+<svg viewBox="0 0 34 24" aria-hidden="true">
+  <path d="M2,21 L17,3 L32,21 Z" fill="#c1440e"></path>
+  <path d="M17,3 L17,21" stroke="#8f3209" stroke-width="1.2"></path>
+  <path d="M12,21 L17,9 L22,21 Z" fill="#5c2a12"></path>
+  <line x1="0" y1="21" x2="34" y2="21" stroke="#e2b53b" stroke-width="1.6" stroke-linecap="round"></line>
+</svg></div>
+    <div class="marcheuse" id="marcheuse">
+<svg viewBox="0 0 44 62" aria-hidden="true">
+  <!-- baton de marche -->
+  <line x1="29" y1="27" x2="29" y2="54" stroke="#a5804d" stroke-width="1.6" stroke-linecap="round"></line>
+  <!-- jambes : pantalon clair, sinon invisible sur le fond bleu nuit -->
+  <g class="jambe jambe-arriere">
+    <path d="M21,36 L16,50" stroke="#9c7f52" stroke-width="4" stroke-linecap="round" fill="none"></path>
+    <path d="M16,50.5 L13,52.5" stroke="#3a2b1c" stroke-width="4" stroke-linecap="round" fill="none"></path>
+  </g>
+  <g class="jambe jambe-avant">
+    <path d="M21,36 L26,50" stroke="#b39262" stroke-width="4" stroke-linecap="round" fill="none"></path>
+    <path d="M26,50.5 L29,52.5" stroke="#4a3826" stroke-width="4" stroke-linecap="round" fill="none"></path>
+  </g>
+  <!-- sac a dos, colle au dos -->
+  <rect x="12" y="20" width="9.5" height="13.5" rx="4" fill="#e2b53b"></rect>
+  <rect x="13.5" y="24" width="6.5" height="1.8" rx="0.9" fill="#b8860b"></rect>
+  <!-- corps -->
+  <path d="M21.5,36 L22,20" stroke="#2f5233" stroke-width="7" stroke-linecap="round" fill="none"></path>
+  <!-- bras vers le baton -->
+  <path d="M22.5,24 L28.4,29" stroke="#2f5233" stroke-width="3.2" stroke-linecap="round" fill="none"></path>
+  <!-- masse de cheveux, derriere la tete -->
+  <ellipse cx="22" cy="12.4" rx="6.6" ry="6.3" fill="#c4551a"></ellipse>
+  <path d="M16.4,13 q-3.4,4.6 -2,9.4 q0.8,2.6 2.6,3.6 q-1.9,-4.8 0.3,-7 q-1.6,-2.6 -0.9,-6 z" fill="#c4551a"></path>
+  <path d="M15.2,18.5 q-2.4,3.4 -1,6.6 q0.9,-2.6 2.1,-3.4 z" fill="#a8410f"></path>
+  <!-- visage, pose par-dessus : les cheveux ne le recouvrent pas -->
+  <circle cx="23.2" cy="13.6" r="5.2" fill="#e9c39c"></circle>
+  <!-- frange -->
+  <path d="M18.4,10.8 q3.6,-3.4 8.6,-1.4 q-3.8,-0.2 -6.6,2.8 z" fill="#a8410f"></path>
+</svg></div>
+  </div>
 
   <section class="panel p1">
     <div class="stars" aria-hidden="true">
@@ -561,6 +673,61 @@
     if (c.state === "suspended" && c.resume) c.resume().then(jouer);
     else jouer();
   });
+})();
+
+// La randonneuse descend le sentier au rythme du défilement, et plante
+// sa tente quand elle arrive au niveau d'une étape.
+(function () {
+  var sentier = document.getElementById("sentier");
+  var marcheuse = document.getElementById("marcheuse");
+  var camps = [].slice.call(document.querySelectorAll(".camp"));
+  if (!sentier || !marcheuse) return;
+
+  var hauteurRail = 0, positions = [];
+
+  // Position de chaque étape, en fraction du défilement total.
+  function mesurer() {
+    hauteurRail = sentier.clientHeight;
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    positions = [].slice.call(document.querySelectorAll(".route-step")).map(function (el) {
+      var centre = el.offsetTop + el.offsetHeight / 2 - window.innerHeight / 2;
+      return total > 0 ? Math.min(1, Math.max(0, centre / total)) : 0;
+    });
+    camps.forEach(function (c, i) {
+      if (positions[i] === undefined) return;
+      // La tente est plantée un peu au-dessus du pied de la marcheuse.
+      c.style.top = (positions[i] * (hauteurRail - 70) + 46) + "px";
+    });
+    placer();
+  }
+
+  function placer() {
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    var f = total > 0 ? window.scrollY / total : 0;
+    f = Math.min(1, Math.max(0, f));
+    marcheuse.style.top = (f * (hauteurRail - 70) + 35) + "px";
+
+    // Elle bivouaque quand elle est à hauteur d'une étape.
+    camps.forEach(function (c, i) {
+      var p = positions[i];
+      c.classList.toggle("plante", p !== undefined && Math.abs(f - p) < 0.05);
+    });
+  }
+
+  var minuteur = null;
+  function auScroll() {
+    placer();
+    marcheuse.classList.add("marche");
+    clearTimeout(minuteur);
+    minuteur = setTimeout(function () {
+      marcheuse.classList.remove("marche");
+    }, 180);
+  }
+
+  window.addEventListener("scroll", auScroll, { passive: true });
+  window.addEventListener("resize", mesurer);
+  window.addEventListener("load", mesurer);
+  mesurer();
 })();
 
 (function () {
