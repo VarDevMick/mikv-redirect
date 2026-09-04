@@ -507,8 +507,11 @@ export const PAGE_30_HTML = `<!doctype html>
     if (!contexte()) return;
     enCours = true;
     var t = ctx.currentTime + 0.2;
-    var noire = 0.46; // tempo
+    var noire = 0.46;   // tempo
+    var PASSES = 2;     // 2 x 11 s = environ 22 s
+    var PAUSE = 0.7;    // respiration entre deux passes
 
+    for (var p = 0; p < PASSES; p++) {
     MELODIE.forEach(function (n) {
       var duree = n[1] * noire;
       // Deux oscillateurs a l'octave : le son est plus chaud qu'une onde seule.
@@ -528,6 +531,8 @@ export const PAGE_30_HTML = `<!doctype html>
       });
       t += duree;
     });
+      t += PAUSE;
+    }
     bouton.classList.remove("coupe");
     // A la fin, le bouton redevient un "rejouer" (sans fermer le contexte).
     fin = setTimeout(function () {
