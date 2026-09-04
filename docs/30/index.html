@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Une surprise pour toi</title>
+<style>
+  :root {
+    --cream: #f4ecd8;
+    --paper: #efe3c7;
+    --ink: #2b2018;
+    --terracotta: #c1440e;
+    --forest: #2f5233;
+    --mustard: #e2b53b;
+    --navy: #1b2a41;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    scroll-snap-type: y proximity;
+    overflow-y: scroll;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--cream);
+    background: var(--navy);
+  }
+  .panel {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .divider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 60px;
+  }
+  .p1 {
+    background:
+      radial-gradient(circle at 50% 20%, rgba(226,181,59,0.25), transparent 60%),
+      var(--navy);
+  }
+  .p2 { background: var(--forest); }
+  .p3 { background: var(--terracotta); }
+  .p7 { background: var(--navy); }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.7rem;
+    opacity: 0.75;
+    margin-bottom: 0.9rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    line-height: 1.3;
+    margin: 0 0 0.6rem;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.8rem;
+    font-weight: 700;
+  }
+  p { font-size: 1.02rem; line-height: 1.55; margin: 0.4rem 0; opacity: 0.9; }
+
+  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--mustard); }
+
+  /* --- Ouverture anniversaire --- */
+  .name {
+    font-size: 2.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.2rem;
+  }
+  .big-thirty {
+    font-size: clamp(6rem, 38vw, 11rem);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0.2rem 0 0.8rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.08em;
+    background: linear-gradient(100deg,
+      #b8860b 0%, #e2b53b 30%, #fff6d5 45%, #e2b53b 60%, #b8860b 100%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4.5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 18px rgba(226,181,59,0.35));
+  }
+  .big-thirty .ans {
+    font-size: 0.34em;
+    letter-spacing: 0.04em;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 130% 0; }
+    50% { background-position: -30% 0; }
+  }
+
+  .stars { position: absolute; inset: 0; pointer-events: none; }
+  .stars span {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--mustard);
+    opacity: 0;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.6); }
+    50% { opacity: 0.85; transform: scale(1); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise 0.9s ease forwards;
+  }
+  .r1 { animation-delay: 0.15s; }
+  .r2 { animation-delay: 0.5s; }
+  .r3 { animation-delay: 0.9s; }
+  .r4 { animation-delay: 1.5s; }
+  .r5 { animation-delay: 2.1s; }
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .stars span, .big-thirty { animation: none; opacity: 1; transform: none; }
+    .big-thirty { color: var(--mustard); -webkit-text-fill-color: var(--mustard); }
+  }
+
+  .trek-title {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin: 0.2rem 0;
+    letter-spacing: 0.02em;
+  }
+  .trek-sub { font-size: 1.1rem; opacity: 0.9; font-style: italic; }
+
+  /* --- Section carte interactive --- */
+  .route-section {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .route-map-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--paper);
+    border-bottom: 2px solid rgba(43,32,24,0.15);
+    padding: 0.8rem 1rem 0.4rem;
+  }
+  .route-svg { width: 100%; height: auto; display: block; }
+  .trail-bg, .trail-progress {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
+  .trail-progress {
+    stroke: var(--terracotta);
+    stroke-width: 5;
+    transition: stroke-dashoffset 0.5s ease;
+  }
+  .waypoint circle { fill: var(--paper); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint.active circle { fill: var(--terracotta); stroke: var(--terracotta); r: 7; }
+  .waypoint text {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    fill: var(--ink);
+    opacity: 0.65;
+    transition: opacity 0.3s ease;
+  }
+  .waypoint.active text { opacity: 1; font-weight: 700; }
+  .hiker-marker {
+    transition: transform 0.5s ease;
+  }
+  .hiker-marker circle { fill: var(--mustard); stroke: var(--ink); stroke-width: 1.5; }
+
+  .route-step {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+  }
+
+  .day-card {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(43,32,24,0.15);
+    border-radius: 4px;
+    padding: 1.4rem;
+    max-width: 340px;
+    width: 100%;
+  }
+  .day-num {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 0.4rem;
+  }
+  .day-route {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+
+  .photo-frame {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 4 / 3;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 4px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+  img.photo-frame { object-fit: cover; display: block; margin-bottom: 0.3rem; }
+  .photo-block { margin: 0 0 1rem; max-width: 340px; width: 100%; }
+  .photo-block figcaption {
+    font-size: 0.68rem;
+    opacity: 0.55;
+    line-height: 1.3;
+  }
+
+  .day-note {
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.8;
+    margin: 0 0 0.4rem;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.3rem;
+    flex-wrap: wrap;
+    margin-top: 0.8rem;
+  }
+  .stat { text-align: center; }
+  .stat b { display: block; font-size: 1.1rem; }
+  .stat span { font-size: 0.7rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .info-list { max-width: 340px; text-align: left; margin-top: 1rem; }
+  .info-list li { margin-bottom: 0.6rem; }
+
+  .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
+</style>
+</head>
+<body>
+
+  <section class="panel p1">
+    <div class="stars" aria-hidden="true">
+      <span style="left:0%; top:0%; animation-delay:0s"></span><span style="left:37%; top:53%; animation-delay:0.7s"></span><span style="left:74%; top:36%; animation-delay:1.4s"></span><span style="left:11%; top:19%; animation-delay:2.0999999999999996s"></span><span style="left:48%; top:2%; animation-delay:2.8s"></span><span style="left:85%; top:55%; animation-delay:3.5s"></span><span style="left:22%; top:38%; animation-delay:0s"></span><span style="left:59%; top:21%; animation-delay:0.7s"></span><span style="left:96%; top:4%; animation-delay:1.4s"></span><span style="left:33%; top:57%; animation-delay:2.0999999999999996s"></span><span style="left:70%; top:40%; animation-delay:2.8s"></span><span style="left:7%; top:23%; animation-delay:3.5s"></span><span style="left:44%; top:6%; animation-delay:0s"></span><span style="left:81%; top:59%; animation-delay:0.7s"></span><span style="left:18%; top:42%; animation-delay:1.4s"></span><span style="left:55%; top:25%; animation-delay:2.0999999999999996s"></span><span style="left:92%; top:8%; animation-delay:2.8s"></span><span style="left:29%; top:61%; animation-delay:3.5s"></span>
+    </div>
+    <div class="eyebrow reveal r1">Joyeux anniversaire</div>
+    <h1 class="name reveal r2">Charlotte</h1>
+    <div class="big-thirty reveal r3" aria-label="30 ans">30<span class="ans">ans</span></div>
+    <p class="reveal r4">Ça se fête en altitude.</p>
+    <p class="reveal r5" style="opacity:0.7">Continue de descendre.</p>
+    
+<svg class="divider" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,60 L0,35 L40,10 L70,30 L110,5 L150,32 L190,15 L230,38 L270,12 L310,34 L350,8 L400,30 L400,60 Z" fill="var(--forest)"></path>
+</svg>
+  </section>
+
+  <section class="panel p2">
+    <h1>Et si on partait crapahuter ensemble ?</h1>
+    <p>Rien que toi et moi, dans la montagne.</p>
+    <p style="opacity:0.75; font-size:0.95rem;">Quand tu veux, tu choisis.</p>
+    
+<svg class="divider" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,60 L0,35 L40,10 L70,30 L110,5 L150,32 L190,15 L230,38 L270,12 L310,34 L350,8 L400,30 L400,60 Z" fill="var(--terracotta)"></path>
+</svg>
+  </section>
+
+  <section class="panel p3">
+    <svg class="compass" viewBox="0 0 60 60" aria-hidden="true">
+      <circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+      <path d="M30,6 L34,28 L30,54 L26,28 Z" fill="currentColor"></path>
+      <path d="M6,30 L28,26 L54,30 L28,34 Z" fill="currentColor" opacity="0.5"></path>
+    </svg>
+    <div class="eyebrow">Destination</div>
+    <div class="trek-title">GR58</div>
+    <div class="trek-sub">Tour du Queyras</div>
+    <p style="margin-top:1rem">3 jours · 2 nuits en refuge</p>
+    <p style="opacity:0.85; font-size:0.95rem;">Les étapes les plus douces du tour : 4 à 5 h de marche par jour.</p>
+    <p style="opacity:0.7; font-size:0.9rem;">Fais défiler pour suivre le tracé →</p>
+    
+<svg class="divider" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,60 L0,35 L40,10 L70,30 L110,5 L150,32 L190,15 L230,38 L270,12 L310,34 L350,8 L400,30 L400,60 Z" fill="var(--paper)"></path>
+</svg>
+  </section>
+
+  <section class="route-section">
+    <div class="route-map-sticky">
+      <svg class="route-svg" viewBox="-30 -5 370 175" id="routeSvg">
+        <path class="trail-bg" d="M10,120 C35,95 50,55 70,45 C88,58 98,62 112,75 C124,92 132,112 142,122 C158,100 168,62 182,52 C198,66 202,86 212,92 C228,72 238,42 252,32 C270,52 286,92 300,112"></path>
+        <path class="trail-progress" id="trailProgress" d="M10,120 C35,95 50,55 70,45 C88,58 98,62 112,75 C124,92 132,112 142,122 C158,100 168,62 182,52 C198,66 202,86 212,92 C228,72 238,42 252,32 C270,52 286,92 300,112"></path>
+        
+        <g class="waypoint" data-idx="0" transform="translate(10,120)">
+          <circle r="5"></circle>
+          <text x="0" y="-12" text-anchor="middle">Souliers</text>
+        </g>
+        <g class="waypoint" data-idx="1" transform="translate(112,75)">
+          <circle r="5"></circle>
+          <text x="0" y="20" text-anchor="middle">Arvieux</text>
+        </g>
+        <g class="waypoint" data-idx="2" transform="translate(212,92)">
+          <circle r="5"></circle>
+          <text x="0" y="-12" text-anchor="middle">Furfande</text>
+        </g>
+        <g class="waypoint" data-idx="3" transform="translate(300,112)">
+          <circle r="5"></circle>
+          <text x="0" y="20" text-anchor="middle">Bramousse</text>
+        </g>
+        <g class="hiker-marker" id="hikerMarker" transform="translate(10,120)">
+          <circle r="6"></circle>
+        </g>
+      </svg>
+    </div>
+
+    <div class="route-step" data-idx="1">
+      
+  <figure class="photo-block">
+    <img class="photo-frame" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Vu_vers_le_Lac_Souliers_de_la_cr%C3%AAte_du_Tronchet_-_panoramio.jpg/1280px-Vu_vers_le_Lac_Souliers_de_la_cr%C3%AAte_du_Tronchet_-_panoramio.jpg" alt="Souliers → Chalp d'Arvieux" loading="lazy">
+    <!-- Légende masquée. Pour la réafficher : décommenter la ligne ci-dessous.
+    <figcaption>Lac de Souliers depuis la crête du Tronchet · Philippe Truillet, CC BY-SA 3.0</figcaption>
+    -->
+  </figure>
+      <div class="day-card">
+        <div class="day-num">Jour 1 · mise en jambes</div>
+        <div class="day-route">Souliers → Chalp d'Arvieux</div>
+        <p class="day-note">Par le col Tronchet, tranquille pour commencer.</p>
+        <div class="stats">
+          <div class="stat"><b>4h</b><span>Marche</span></div>
+          <div class="stat"><b>+510 m</b><span>D+</span></div>
+          <div class="stat"><b>-660 m</b><span>D-</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="route-step" data-idx="2">
+      
+  <figure class="photo-block">
+    <img class="photo-frame" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Arvieux_depuis_la_mont%C3%A9e_du_col_d%27Izoard.jpg/1280px-Arvieux_depuis_la_mont%C3%A9e_du_col_d%27Izoard.jpg" alt="Chalp d'Arvieux → Refuge de Furfande" loading="lazy">
+    <!-- Légende masquée. Pour la réafficher : décommenter la ligne ci-dessous.
+    <figcaption>La vallée d'Arvieux · Mathieu Brossais, CC BY 4.0</figcaption>
+    -->
+  </figure>
+      <div class="day-card">
+        <div class="day-num">Jour 2 · la belle montée</div>
+        <div class="day-route">Chalp d'Arvieux → Refuge de Furfande</div>
+        <p class="day-note">La seule vraie grimpette, avec un refuge perché en récompense.</p>
+        <div class="stats">
+          <div class="stat"><b>5h</b><span>Marche</span></div>
+          <div class="stat"><b>+820 m</b><span>D+</span></div>
+          <div class="stat"><b>-210 m</b><span>D-</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="route-step" data-idx="3">
+      
+  <figure class="photo-block">
+    <img class="photo-frame" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Vall%C3%A9e_de_Ceillac.jpg/1280px-Vall%C3%A9e_de_Ceillac.jpg" alt="Refuge de Furfande → Bramousse" loading="lazy">
+    <!-- Légende masquée. Pour la réafficher : décommenter la ligne ci-dessous.
+    <figcaption>La vallée de Ceillac · ThomasInTheSky, CC BY 4.0</figcaption>
+    -->
+  </figure>
+      <div class="day-card">
+        <div class="day-num">Jour 3 · la grande descente</div>
+        <div class="day-route">Refuge de Furfande → Bramousse</div>
+        <p class="day-note">Par le col Lauze, puis on redescend tranquillement dans la vallée.</p>
+        <div class="stats">
+          <div class="stat"><b>4h30</b><span>Marche</span></div>
+          <div class="stat"><b>+210 m</b><span>D+</span></div>
+          <div class="stat"><b>-1000 m</b><span>D-</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel p7 no-arrow">
+    <h2>Le bon plan</h2>
+    <ul class="info-list">
+      <li>Nuits en refuge de montagne (demi-pension).</li>
+      <li>Sac léger, bonnes chaussures, on prend son temps.</li>
+      <li>Possible de fin juin à mi-septembre : on choisit ensemble.</li>
+      <li>Je m'occupe des réservations, toi tu ramènes ton sourire.</li>
+    </ul>
+    <!-- VIDEO_PLACEHOLDER: remplace ce commentaire par une balise vidéo -->
+    <p class="signature">À très vite dans le Queyras.</p>
+  </section>
+
+<script>
+(function () {
+  var waypoints = [{"x":10,"y":120,"label":"Souliers"},{"x":112,"y":75,"label":"Arvieux"},{"x":212,"y":92,"label":"Furfande"},{"x":300,"y":112,"label":"Bramousse"}];
+  var progressPath = document.getElementById("trailProgress");
+  var marker = document.getElementById("hikerMarker");
+  var waypointEls = document.querySelectorAll(".waypoint");
+  var total = progressPath.getTotalLength();
+  progressPath.style.strokeDasharray = total;
+
+  // Fraction du tracé parcourue à chaque point clé (approx, basé sur l'ordre des points).
+  var fractions = [0.02, 0.36, 0.68, 1];
+
+  function setStep(idx) {
+    var w = waypoints[idx];
+    marker.setAttribute("transform", "translate(" + w.x + "," + w.y + ")");
+    progressPath.style.strokeDashoffset = total * (1 - fractions[idx]);
+    waypointEls.forEach(function (el) {
+      el.classList.toggle("active", Number(el.dataset.idx) === idx);
+    });
+  }
+
+  setStep(0);
+
+  var steps = document.querySelectorAll(".route-step");
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setStep(Number(entry.target.dataset.idx));
+      }
+    });
+  }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
+
+  steps.forEach(function (s) { observer.observe(s); });
+})();
+</script>
+</body>
+</html>
