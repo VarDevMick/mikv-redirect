@@ -29,6 +29,22 @@
     --navy: #3a2f26;
   }
   * { box-sizing: border-box; }
+  /* Bandeau de la page de travail : rappelle qu'on n'est pas sur /30. */
+  .bandeau-dev {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: #c1440e;
+    color: #fdf8ec;
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    padding: 4px 0 3px;
+    pointer-events: none;
+  }
   /* Le défilement appartient au document : sinon window.scrollY reste à 0
      et rien de ce qui suit le scroll ne fonctionne. */
   html {
@@ -520,6 +536,8 @@
 </style>
 </head>
 <body>
+
+  <div class="bandeau-dev">DEV</div>
 
   <button class="son" id="btnSon" type="button" aria-label="Couper ou relancer la musique">&#9835;</button>
   <div class="son-astuce" id="astuceSon">Appuie pour la musique</div>
