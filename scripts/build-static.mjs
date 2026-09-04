@@ -3,6 +3,8 @@
 //   docs/31/index.html -> https://mikv.io/31  (page de travail)
 import { PAGE_30_HTML } from "../src/page-30.js";
 import { PAGE_31_HTML } from "../src/pages/page-31.js";
+import { PAGE_60_HTML } from "../src/pages/page-60.js";
+import { PAGE_61_HTML } from "../src/pages/page-61.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 
 const DOMAINE = "mikv.io";
@@ -12,6 +14,12 @@ writeFileSync("docs/30/index.html", PAGE_30_HTML);
 
 mkdirSync("docs/31", { recursive: true });
 writeFileSync("docs/31/index.html", PAGE_31_HTML);
+
+mkdirSync("docs/60", { recursive: true });
+writeFileSync("docs/60/index.html", PAGE_60_HTML);
+
+mkdirSync("docs/61", { recursive: true });
+writeFileSync("docs/61/index.html", PAGE_61_HTML);
 
 // Indique à GitHub Pages le domaine personnalisé à servir.
 writeFileSync("docs/CNAME", `${DOMAINE}\n`);
@@ -48,5 +56,7 @@ writeFileSync(
 console.log("Export statique :");
 console.log("  docs/30/index.html  ->  https://mikv.io/30  (gelée)");
 console.log("  docs/31/index.html  ->  https://mikv.io/31  (travail)");
+console.log("  docs/60/index.html  ->  https://mikv.io/60  (Carol)");
+console.log("  docs/61/index.html  ->  https://mikv.io/61  (travail)");
 console.log("  docs/index.html     ->  https://mikv.io");
 console.log(`  docs/CNAME          ->  ${DOMAINE}`);
