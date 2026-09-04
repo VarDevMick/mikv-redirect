@@ -38,7 +38,7 @@ export const css = `
     z-index: 10;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
-    color: var(--papier);
+    color: var(--fond);
     background: rgba(51,48,44,0.8);
     padding: 5px 9px;
     border-radius: 12px;

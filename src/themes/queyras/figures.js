@@ -1,7 +1,7 @@
-// Les trois dessins du personnage : en marche, sa tente, son couchage.
-// Aplats colorés, contours implicites — voir F-14, F-15, F-16.
+// Thème Queyras — les trois dessins du personnage : en marche, sa tente,
+// son couchage. Aplats colorés. Voir F-14, F-15, F-16.
 
-export const RANDONNEUSE = `
+export const MARCHEUR = `
 <svg viewBox="0 0 44 62" aria-hidden="true">
   <line x1="29" y1="27" x2="29" y2="54" stroke="#a5804d" stroke-width="1.6" stroke-linecap="round"></line>
   <g class="jambe jambe-arriere">
@@ -25,7 +25,7 @@ export const RANDONNEUSE = `
   </g>
 </svg>`;
 
-export const BIVOUAC = `
+export const ETAPE = `
 <svg viewBox="0 0 34 26" aria-hidden="true">
   <path d="M3,22 L17,4 L31,22 Z" fill="#c1440e"></path>
   <path d="M17,4 L17,22" stroke="#8f3209" stroke-width="1.2"></path>
@@ -33,7 +33,7 @@ export const BIVOUAC = `
   <line x1="0.5" y1="22" x2="33.5" y2="22" stroke="#e2b53b" stroke-width="1.8" stroke-linecap="round"></line>
 </svg>`;
 
-export const DODO = `
+export const REPOS = `
 <svg viewBox="0 0 140 56" aria-hidden="true">
   <rect x="6" y="41" width="128" height="5" rx="2.5" fill="#6b563a"></rect>
   <g class="souffle">

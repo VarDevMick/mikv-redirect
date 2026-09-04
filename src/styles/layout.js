@@ -22,8 +22,8 @@ export const css = `
     position: relative;
     overflow: hidden;
   }
-  .p1 { background: var(--papier); }
-  .p2 { background: var(--papier2); }
-  .p3 { background: var(--papier3); }
-  .p7 { background: var(--papier2); }
+  .p1 { background: var(--fond); }
+  .p2 { background: var(--fond-2); }
+  .p3 { background: var(--fond-3); }
+  .p7 { background: var(--fond-2); }
 `;

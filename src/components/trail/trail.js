@@ -1,5 +1,4 @@
 // F-13 · Sentier vertical · F-14 · Randonneuse · F-15 · Bivouacs · F-16 · Couchage
-import { RANDONNEUSE, BIVOUAC, DODO } from "./figures.js";
 
 // Tracé du sentier : lacets réguliers sur 1000 unités de haut. La randonneuse
 // suit exactement cette courbe, et la portion parcourue se dessine derrière.
@@ -15,16 +14,17 @@ export const SENTIER_D = (() => {
   return d;
 })();
 
-export const html = `
+// `figures` vient du thème : qui marche, où il s'arrête, où il se repose.
+export const html = (figures) => `
   <div class="sentier" aria-hidden="true">
     <svg class="trace" viewBox="0 0 68 1000" preserveAspectRatio="none">
       <path class="trace-avenir" d="${SENTIER_D}"></path>
       <path class="trace-passe" id="tracePasse" d="${SENTIER_D}"></path>
     </svg>
   </div>
-  <div class="camp" id="camp" aria-hidden="true">${BIVOUAC}</div>
-  <div class="dodo" id="dodo" aria-hidden="true">${DODO}</div>
-  <div class="marcheuse" id="marcheuse" aria-hidden="true">${RANDONNEUSE}</div>`;
+  <div class="camp" id="camp" aria-hidden="true">${figures.etape}</div>
+  <div class="dodo" id="dodo" aria-hidden="true">${figures.repos}</div>
+  <div class="marcheuse" id="marcheuse" aria-hidden="true">${figures.marcheur}</div>`;
 
 export const css = `
   /* Aucun fond : le sentier passe simplement au-dessus des sections. */
@@ -49,7 +49,7 @@ export const css = `
   }
   .trace-passe {
     fill: none;
-    stroke: var(--sapin2);
+    stroke: var(--parcouru);
     stroke-width: 2.8;
     stroke-linecap: round;
     vector-effect: non-scaling-stroke;

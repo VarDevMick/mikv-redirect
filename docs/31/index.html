@@ -7,20 +7,15 @@
 <style>
 
   :root {
-    /* Palette chaude d'affiche, posée sur un dessin au trait. */
-    --papier: #fdf8ec;
-    --papier2: #f8f0dd;
-    --papier3: #f3e8d0;
+    --fond: #fdf8ec;
+    --fond-2: #f8f0dd;
+    --fond-3: #f3e8d0;
     --encre: #3a2f26;
     --trait: #7a6a58;
-    --soleil: #c1440e;
-    --sapin: #2f5233;
-    --sapin2: #3f6b40;
-    --sauge: #6f8a5c;
-    --alpage: #d8c68a;
-    --roche: #c9bda6;
-    --bois: #6b4a2f;
-    --mustard: #e2b53b;
+    --accent: #c1440e;
+    --accent-fonce: #2f5233;
+    --accent-clair: #e2b53b;
+    --parcouru: #3f6b40;
   }
   * { box-sizing: border-box; }
 
@@ -28,7 +23,7 @@
     margin: 0;
     font-family: Georgia, "Times New Roman", serif;
     color: var(--encre);
-    background: var(--papier);
+    background: var(--fond);
   }
 
   .eyebrow {
@@ -74,10 +69,10 @@
     position: relative;
     overflow: hidden;
   }
-  .p1 { background: var(--papier); }
-  .p2 { background: var(--papier2); }
-  .p3 { background: var(--papier3); }
-  .p7 { background: var(--papier2); }
+  .p1 { background: var(--fond); }
+  .p2 { background: var(--fond-2); }
+  .p3 { background: var(--fond-3); }
+  .p7 { background: var(--fond-2); }
 
 
   .divider {
@@ -97,7 +92,7 @@
   }
   .d-neige { stroke: var(--encre); stroke-width: 1.8; }
   .sapins path {
-    fill: var(--sapin);
+    fill: var(--accent-fonce);
     stroke: var(--encre);
     stroke-width: 1;
     stroke-linejoin: round;
@@ -126,7 +121,7 @@
   .big-thirty .ans {
     font-size: 0.34em;
     letter-spacing: 0.04em;
-    color: var(--sapin);
+    color: var(--accent-fonce);
   }
 
   .feu {
@@ -177,7 +172,7 @@
   }
 
 
-  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--mustard); }
+  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--accent-clair); }
   .trek-title {
     font-size: 2.3rem;
     font-weight: 700;
@@ -211,7 +206,7 @@
     position: sticky;
     top: 0;
     z-index: 2;
-    background: var(--papier2);
+    background: var(--fond-2);
     padding: 0.8rem 1rem 0.6rem;
   }
   .route-svg { width: 100%; height: auto; display: block; }
@@ -222,12 +217,12 @@
   }
   .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
   .trail-progress {
-    stroke: var(--soleil);
+    stroke: var(--accent);
     stroke-width: 5;
     transition: stroke-dashoffset 0.5s ease;
   }
-  .waypoint circle { fill: var(--papier2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
-  .waypoint.active circle { fill: var(--soleil); stroke: var(--soleil); r: 7; }
+  .waypoint circle { fill: var(--fond-2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint.active circle { fill: var(--accent); stroke: var(--accent); r: 7; }
   .waypoint text {
     font-family: Georgia, serif;
     font-size: 13px;
@@ -237,7 +232,7 @@
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
   .hiker-marker { transition: transform 0.5s ease; }
-  .hiker-marker circle { fill: var(--mustard); stroke: var(--encre); stroke-width: 1.5; }
+  .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 
 
   .route-step {
@@ -252,7 +247,7 @@
 
   .day-card {
     position: relative;
-    background: var(--papier);
+    background: var(--fond);
     /* Coins biseautés plutôt qu'un filet : la carte est taillée, pas cerclée. */
     clip-path: polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px),
                        calc(100% - 16px) 100%, 0 100%);
@@ -343,7 +338,7 @@
   }
   .trace-passe {
     fill: none;
-    stroke: var(--sapin2);
+    stroke: var(--parcouru);
     stroke-width: 2.8;
     stroke-linecap: round;
     vector-effect: non-scaling-stroke;
@@ -473,7 +468,7 @@
     z-index: 10;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
-    color: var(--papier);
+    color: var(--fond);
     background: rgba(51,48,44,0.8);
     padding: 5px 9px;
     border-radius: 12px;
@@ -498,8 +493,8 @@
     left: 0;
     right: 0;
     z-index: 20;
-    background: var(--soleil);
-    color: var(--papier);
+    background: var(--accent);
+    color: var(--fond);
     text-align: center;
     font-family: Georgia, serif;
     font-size: 0.72rem;
@@ -622,7 +617,7 @@
   <!-- alpage, puis le premier plan dans la couleur de la section suivante -->
   <path d="M0,90 L0,72 C92,64 182,78 268,70 C330,65 362,69 400,65 L400,90 Z" fill="#d8c68a"></path>
   <path class="d-trait" d="M0,72 C92,64 182,78 268,70 C330,65 362,69 400,65"></path>
-  <path d="M0,90 L0,82 C110,76 210,88 300,81 C346,77 372,80 400,78 L400,90 Z" fill="var(--papier3)"></path>
+  <path d="M0,90 L0,82 C110,76 210,88 300,81 C346,77 372,80 400,78 L400,90 Z" fill="var(--fond-3)"></path>
   <path class="d-trait" d="M0,82 C110,76 210,88 300,81 C346,77 372,80 400,78"></path>
 </svg>
   </section>
@@ -659,7 +654,7 @@
   <!-- alpage, puis le premier plan dans la couleur de la section suivante -->
   <path d="M0,90 L0,72 C92,64 182,78 268,70 C330,65 362,69 400,65 L400,90 Z" fill="#d8c68a"></path>
   <path class="d-trait" d="M0,72 C92,64 182,78 268,70 C330,65 362,69 400,65"></path>
-  <path d="M0,90 L0,82 C110,76 210,88 300,81 C346,77 372,80 400,78 L400,90 Z" fill="var(--papier)"></path>
+  <path d="M0,90 L0,82 C110,76 210,88 300,81 C346,77 372,80 400,78 L400,90 Z" fill="var(--fond)"></path>
   <path class="d-trait" d="M0,82 C110,76 210,88 300,81 C346,77 372,80 400,78"></path>
 </svg>
   </section>
@@ -758,9 +753,6 @@
 
 <script>
 
-
-
-
 (function () {
   var canvas = document.getElementById("feu");
   if (!canvas || !canvas.getContext) return;
@@ -858,7 +850,6 @@
 })();
 
 
-
 (function () {
   var waypoints = [{"x":10,"y":120,"label":"Souliers"},{"x":112,"y":75,"label":"Arvieux"},{"x":212,"y":92,"label":"Furfande"},{"x":300,"y":112,"label":"Bramousse"}];
   var progressPath = document.getElementById("trailProgress");
@@ -892,7 +883,6 @@
 
   steps.forEach(function (s) { observer.observe(s); });
 })();
-
 
 
 // La randonneuse descend le sentier au rythme du défilement, plante sa tente

@@ -1,5 +1,6 @@
 // F-09 · Fond propre aux étapes · F-10 · Carte en photo pleine
-import { ETAPES } from "../../data/steps.js";
+//
+// Le contenu vient de `src/data/`, jamais d'ici.
 
 // Une étape = un seul bloc. La photo remplit la carte, un voile dégradé
 // garantit la lisibilité du texte quelle que soit l'image.
@@ -21,7 +22,7 @@ export const carte = (etape, index) => `
       </div>
     </div>`;
 
-export const html = ETAPES.map(carte).join("\n");
+export const html = (etapes) => etapes.map(carte).join("\n");
 
 export const css = `
   .route-step {
@@ -36,7 +37,7 @@ export const css = `
 
   .day-card {
     position: relative;
-    background: var(--papier);
+    background: var(--fond);
     /* Coins biseautés plutôt qu'un filet : la carte est taillée, pas cerclée. */
     clip-path: polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px),
                        calc(100% - 16px) 100%, 0 100%);

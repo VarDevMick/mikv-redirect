@@ -1,4 +1,6 @@
-// F-02 · Les trois étapes du trek, et F-11 · leurs photos.
+// Contenu du projet Queyras : étapes, plan et textes.
+//
+// F-02 · les trois étapes du trek, F-11 · leurs photos.
 //
 // Trio consécutif le plus accessible du Tour du Queyras (étapes officielles
 // 7, 8 et 9). Durées et dénivelés issus de lequeyras.com. Les distances en
@@ -56,3 +58,41 @@ export const REPERES = [
   { x: 212, y: 92, label: "Furfande" },
   { x: 300, y: 112, label: "Bramousse" },
 ];
+
+// F-01 · Textes de l'ouverture.
+export const OUVERTURE = {
+  eyebrow: "Joyeux anniversaire",
+  prenom: "Charlotte",
+  age: "30",
+  accroche: "Ça se fête en altitude.",
+  invite: "Continue de descendre.",
+};
+
+// F-03, F-04 · Textes du récit.
+export const TEXTES = {
+  invitation: {
+    titre: "Et si on partait crapahuter ensemble ?",
+    sous: "Rien que toi et moi, dans la montagne.",
+    note: "Quand tu veux, tu choisis.",
+  },
+  destination: {
+    titre: "GR58",
+    sous: "Tour du Queyras",
+    format: "3 jours · 2 nuits en refuge",
+    note: "Les étapes les plus douces du tour : 4 à 5 h de marche par jour.",
+    invite: "Fais défiler pour suivre le tracé →",
+  },
+  conclusion: {
+    titre: "Le bon plan",
+    points: [
+      "Nuits en refuge de montagne (demi-pension).",
+      "Sac léger, bonnes chaussures, on prend son temps.",
+      "Possible de fin juin à mi-septembre : on choisit ensemble.",
+      "Je m'occupe des réservations, toi tu ramènes ton sourire.",
+    ],
+    signature: "À très vite dans le Queyras.",
+  },
+};
+
+// F-05 · Vidéo : nom du fichier déposé dans docs/. Vide = pas de section.
+export const VIDEO = "";

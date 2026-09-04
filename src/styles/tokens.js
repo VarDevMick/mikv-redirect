@@ -1,20 +1,17 @@
-// F-06 · Palette et typographie. Point de changement unique des couleurs.
-export const css = `
+// F-06 · Jetons de style. La palette vient du thème, pas d'ici : c'est ce
+// qui permet à une même page de servir la montagne ou la ville.
+
+export const css = (palette) => `
   :root {
-    /* Palette chaude d'affiche, posée sur un dessin au trait. */
-    --papier: #fdf8ec;
-    --papier2: #f8f0dd;
-    --papier3: #f3e8d0;
-    --encre: #3a2f26;
-    --trait: #7a6a58;
-    --soleil: #c1440e;
-    --sapin: #2f5233;
-    --sapin2: #3f6b40;
-    --sauge: #6f8a5c;
-    --alpage: #d8c68a;
-    --roche: #c9bda6;
-    --bois: #6b4a2f;
-    --mustard: #e2b53b;
+    --fond: ${palette.fond};
+    --fond-2: ${palette.fond2};
+    --fond-3: ${palette.fond3};
+    --encre: ${palette.encre};
+    --trait: ${palette.trait};
+    --accent: ${palette.accent};
+    --accent-fonce: ${palette.accentFonce};
+    --accent-clair: ${palette.accentClair};
+    --parcouru: ${palette.parcouru};
   }
   * { box-sizing: border-box; }
 
@@ -22,7 +19,7 @@ export const css = `
     margin: 0;
     font-family: Georgia, "Times New Roman", serif;
     color: var(--encre);
-    background: var(--papier);
+    background: var(--fond);
   }
 
   .eyebrow {

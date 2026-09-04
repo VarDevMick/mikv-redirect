@@ -1,36 +1,11 @@
-// F-01 · Révélation en cascade · F-08 · Massif d'ouverture · F-12 · Feu d'artifice
-import { SAPIN } from "../scenery/scenery.js";
+// F-01 · Révélation en cascade · F-08 · Décor d'ouverture · F-12 · Feu d'artifice
 
-export const contenu = {
-  eyebrow: "Joyeux anniversaire",
-  prenom: "Charlotte",
-  age: "30",
-  accroche: "Ça se fête en altitude.",
-  invite: "Continue de descendre.",
-};
 
-const massif = `
-    <svg class="massif" viewBox="0 0 400 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
-      <!-- sommets, du plus lointain au plus proche -->
-      <path d="M0,240 L0,150 L58,84 L104,124 L150,60 L206,132 L248,96 L300,150 L344,110 L400,166 L400,240 Z" fill="#c9bda6"></path>
-      <path d="M128,80 L150,60 L172,80 L160,74 L142,78 Z" fill="#fdf8ec"></path>
-      <path d="M184,102 L206,132 L228,104 L212,110 Z" fill="#fdf8ec" opacity="0.8"></path>
-      <path class="d-trait" d="M0,150 L58,84 L104,124 L150,60 L206,132 L248,96 L300,150 L344,110 L400,166"></path>
-      <path d="M0,240 L0,186 C74,164 128,196 196,180 C266,164 318,192 400,178 L400,240 Z" fill="#6f8a5c"></path>
-      <path class="d-trait" d="M0,186 C74,164 128,196 196,180 C266,164 318,192 400,178"></path>
-      <g class="sapins">
-        <path transform="translate(74,176) scale(1.5)" d="${SAPIN}"></path>
-        <path transform="translate(104,184) scale(1.1)" d="${SAPIN}"></path>
-        <path transform="translate(258,190) scale(1.2)" d="${SAPIN}"></path>
-        <path transform="translate(320,180) scale(1.5)" d="${SAPIN}"></path>
-      </g>
-      <path d="M0,240 L0,214 C90,202 190,224 282,212 C334,205 366,210 400,206 L400,240 Z" fill="#d8c68a"></path>
-      <path class="d-trait" d="M0,214 C90,202 190,224 282,212 C334,205 366,210 400,206"></path>
-    </svg>`;
 
-export const html = `
+// `decor` est le dessin de fond fourni par le thème, `contenu` les textes.
+export const html = (decor, contenu) => `
   <section class="panel p1">
-    <canvas class="feu" id="feu" aria-hidden="true"></canvas>${massif}
+    <canvas class="feu" id="feu" aria-hidden="true"></canvas>${decor}
     <div class="eyebrow reveal r1">${contenu.eyebrow}</div>
     <h1 class="name reveal r2">${contenu.prenom}</h1>
     <div class="big-thirty reveal r3" id="grosTrente" aria-label="${contenu.age} ans">${contenu.age}<span class="ans">ans</span></div>
@@ -60,7 +35,7 @@ export const css = `
   .big-thirty .ans {
     font-size: 0.34em;
     letter-spacing: 0.04em;
-    color: var(--sapin);
+    color: var(--accent-fonce);
   }
 
   .feu {

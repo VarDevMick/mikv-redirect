@@ -1,25 +1,23 @@
 // F-17 · Plan interactif des étapes, collé en haut de la section.
-import { TRACE_PLAN, REPERES } from "../../data/steps.js";
-import { html as etapes } from "../step-card/step-card.js";
-
-export const html = `
+// `trace` et `reperes` decrivent le plan ; `cartes` est le HTML des etapes.
+export const html = (trace, reperes, cartes) => `
   <section class="route-section">
     <div class="route-map-sticky">
       <svg class="route-svg" viewBox="-30 -5 370 175" id="routeSvg">
-        <path class="trail-bg" d="${TRACE_PLAN}"></path>
-        <path class="trail-progress" id="trailProgress" d="${TRACE_PLAN}"></path>
-        ${REPERES.map((r, i) => `
+        <path class="trail-bg" d="${trace}"></path>
+        <path class="trail-progress" id="trailProgress" d="${trace}"></path>
+        ${reperes.map((r, i) => `
         <g class="waypoint" data-idx="${i}" transform="translate(${r.x},${r.y})">
           <circle r="5"></circle>
           <text x="0" y="${i % 2 === 0 ? -12 : 20}" text-anchor="middle">${r.label}</text>
         </g>`).join("")}
-        <g class="hiker-marker" id="hikerMarker" transform="translate(${REPERES[0].x},${REPERES[0].y})">
+        <g class="hiker-marker" id="hikerMarker" transform="translate(${reperes[0].x},${reperes[0].y})">
           <circle r="6"></circle>
         </g>
       </svg>
     </div>
 
-${etapes}
+${cartes}
   </section>`;
 
 export const css = `
@@ -34,7 +32,7 @@ export const css = `
     position: sticky;
     top: 0;
     z-index: 2;
-    background: var(--papier2);
+    background: var(--fond-2);
     padding: 0.8rem 1rem 0.6rem;
   }
   .route-svg { width: 100%; height: auto; display: block; }
@@ -45,12 +43,12 @@ export const css = `
   }
   .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
   .trail-progress {
-    stroke: var(--soleil);
+    stroke: var(--accent);
     stroke-width: 5;
     transition: stroke-dashoffset 0.5s ease;
   }
-  .waypoint circle { fill: var(--papier2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
-  .waypoint.active circle { fill: var(--soleil); stroke: var(--soleil); r: 7; }
+  .waypoint circle { fill: var(--fond-2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint.active circle { fill: var(--accent); stroke: var(--accent); r: 7; }
   .waypoint text {
     font-family: Georgia, serif;
     font-size: 13px;
@@ -60,12 +58,12 @@ export const css = `
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
   .hiker-marker { transition: transform 0.5s ease; }
-  .hiker-marker circle { fill: var(--mustard); stroke: var(--encre); stroke-width: 1.5; }
+  .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 `;
 
-export const js = `
+export const js = (reperes) => `
 (function () {
-  var waypoints = ${JSON.stringify(REPERES)};
+  var waypoints = ${JSON.stringify(reperes)};
   var progressPath = document.getElementById("trailProgress");
   var marker = document.getElementById("hikerMarker");
   var waypointEls = document.querySelectorAll(".waypoint");

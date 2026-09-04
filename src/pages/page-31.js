@@ -1,11 +1,16 @@
-// Page de travail servie sur /31.
+// Page de travail servie sur /31 — thème Queyras.
 //
-// Ce fichier n'assemble que des composants : il ne contient ni style ni
-// balisage propre. Chaque composant expose `html`, `css` et parfois `js`,
-// que l'on concatène ici. Pour modifier une fonctionnalité, on va donc
-// directement dans son composant, pas ici.
+// Ce fichier n'assemble que des composants génériques, un thème et des
+// données. Aucun style ni balisage propre, hormis le bandeau DEV.
+//
+// Pour modifier une fonctionnalité : son composant.
+// Pour modifier une couleur ou un dessin : `src/themes/queyras/`.
+// Pour modifier un texte ou une étape : `src/data/queyras.js`.
 //
 // /30 est gelée et reste servie par src/page-30.js, monolithique et intact.
+
+import { theme } from "../themes/queyras/index.js";
+import { ETAPES, TRACE_PLAN, REPERES, OUVERTURE, TEXTES, VIDEO } from "../data/queyras.js";
 
 import * as tokens from "../styles/tokens.js";
 import * as layout from "../styles/layout.js";
@@ -18,13 +23,18 @@ import * as trail from "../components/trail/trail.js";
 import * as music from "../components/music/music.js";
 
 // L'ordre définit la cascade CSS et l'ordre d'exécution des scripts.
-const COMPOSANTS = [
-  tokens, layout, scenery, hero, story,
-  routeMap, stepCard, trail, music,
-];
+const styles = [
+  tokens.css(theme.palette),
+  layout.css, scenery.css, hero.css, story.css,
+  routeMap.css, stepCard.css, trail.css, music.css,
+].join("\n");
 
-const styles = COMPOSANTS.map((c) => c.css || "").join("\n");
-const scripts = COMPOSANTS.map((c) => c.js || "").join("\n");
+const scripts = [
+  hero.js,
+  routeMap.js(REPERES),
+  trail.js,
+  music.js,
+].join("\n");
 
 // Bandeau de la page de travail : rappelle qu'on n'est pas sur /30.
 const bandeauDev = `
@@ -37,8 +47,8 @@ const cssBandeau = `
     left: 0;
     right: 0;
     z-index: 20;
-    background: var(--soleil);
-    color: var(--papier);
+    background: var(--accent);
+    color: var(--fond);
     text-align: center;
     font-family: Georgia, serif;
     font-size: 0.72rem;
@@ -61,11 +71,11 @@ ${cssBandeau}
 <body>
 ${bandeauDev}
 ${music.html}
-${trail.html}
-${hero.html}
-${story.invitation}
-${routeMap.html}
-${story.conclusion}
+${trail.html(theme.figures)}
+${hero.html(theme.decorOuverture, OUVERTURE)}
+${story.invitation(theme.separation, TEXTES)}
+${routeMap.html(TRACE_PLAN, REPERES, stepCard.html(ETAPES))}
+${story.conclusion(TEXTES, VIDEO)}
 <script>
 ${scripts}
 </script>

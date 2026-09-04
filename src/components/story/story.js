@@ -1,17 +1,12 @@
 // F-03 · Proposition ouverte · F-04 · Récapitulatif · F-05 · Vidéo optionnelle
-import { separation } from "../scenery/scenery.js";
-
-// Vidéo : nom du fichier déposé dans docs/ (ex. "message.mp4"). Tant que
-// c'est vide, la section n'existe pas dans le HTML produit.
-export const VIDEO = "";
 
 // Deux sections d'enchaînement : l'invitation, puis la destination.
-export const invitation = `
+export const invitation = (separation, textes) => `
   <section class="panel p2">
-    <h1>Et si on partait crapahuter ensemble ?</h1>
-    <p>Rien que toi et moi, dans la montagne.</p>
-    <p style="opacity:0.75; font-size:0.95rem;">Quand tu veux, tu choisis.</p>
-    ${separation("var(--papier3)")}
+    <h1>${textes.invitation.titre}</h1>
+    <p>${textes.invitation.sous}</p>
+    <p style="opacity:0.75; font-size:0.95rem;">${textes.invitation.note}</p>
+    ${separation("var(--fond-3)")}
   </section>
 
   <section class="panel p3">
@@ -21,37 +16,34 @@ export const invitation = `
       <path d="M6,30 L28,26 L54,30 L28,34 Z" fill="currentColor" opacity="0.5"></path>
     </svg>
     <div class="eyebrow">Destination</div>
-    <div class="trek-title">GR58</div>
-    <div class="trek-sub">Tour du Queyras</div>
-    <p style="margin-top:1rem">3 jours · 2 nuits en refuge</p>
-    <p style="opacity:0.85; font-size:0.95rem;">Les étapes les plus douces du tour : 4 à 5 h de marche par jour.</p>
-    <p style="opacity:0.7; font-size:0.9rem;">Fais défiler pour suivre le tracé →</p>
-    ${separation("var(--papier)")}
+    <div class="trek-title">${textes.destination.titre}</div>
+    <div class="trek-sub">${textes.destination.sous}</div>
+    <p style="margin-top:1rem">${textes.destination.format}</p>
+    <p style="opacity:0.85; font-size:0.95rem;">${textes.destination.note}</p>
+    <p style="opacity:0.7; font-size:0.9rem;">${textes.destination.invite}</p>
+    ${separation("var(--fond)")}
   </section>`;
 
 // Récapitulatif pratique, et la vidéo si elle a été renseignée.
-export const conclusion = `
+export const conclusion = (textes, video) => `
   <section class="panel p7 no-arrow">
-    <h2>Le bon plan</h2>
+    <h2>${textes.conclusion.titre}</h2>
     <ul class="info-list">
-      <li>Nuits en refuge de montagne (demi-pension).</li>
-      <li>Sac léger, bonnes chaussures, on prend son temps.</li>
-      <li>Possible de fin juin à mi-septembre : on choisit ensemble.</li>
-      <li>Je m'occupe des réservations, toi tu ramènes ton sourire.</li>
+${textes.conclusion.points.map((p) => `      <li>${p}</li>`).join("\n")}
     </ul>
-    <p class="signature">À très vite dans le Queyras.</p>
+    <p class="signature">${textes.conclusion.signature}</p>
   </section>
-${VIDEO ? `
+${video ? `
   <section class="panel p2 no-arrow">
     <div class="eyebrow">Un dernier mot</div>
     <video class="video" controls playsinline preload="metadata">
-      <source src="/${VIDEO}" type="video/mp4">
+      <source src="/${video}" type="video/mp4">
     </video>
     <p style="opacity:0.75; font-size:0.9rem;">Appuie pour lancer</p>
   </section>` : ""}`;
 
 export const css = `
-  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--mustard); }
+  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--accent-clair); }
   .trek-title {
     font-size: 2.3rem;
     font-weight: 700;
