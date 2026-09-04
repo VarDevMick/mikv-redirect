@@ -1,8 +1,5 @@
-// Page surprise pour le trek GR58 (Tour du Queyras).
-//
-// GELEE : c'est la page servie sur /30, celle que vise le QR code imprime
-// sur la plaque offerte a Charlotte. NE PLUS LA MODIFIER.
-// Les evolutions se font dans src/page-31.js, servi sur /31.
+// Page de travail, servie sur /31. Copie indépendante de la page /30 :
+// on peut la modifier librement, /30 n'en est jamais affecté.
 // Pour changer une photo d'étape : modifie l'url dans PHOTOS ci-dessous.
 // Pour ajouter la vidéo : renseigne la constante VIDEO.
 
@@ -138,7 +135,7 @@ const WAYPOINTS = [
   { x: 300, y: 112, label: "Bramousse" },
 ];
 
-export const PAGE_30_HTML = `<!doctype html>
+export const PAGE_31_HTML = `<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">

@@ -1,12 +1,17 @@
-// Exporte la page en fichiers statiques pour GitHub Pages (dossier docs/).
-// GitHub Pages sert docs/30/index.html à l'adresse https://mikv.io/30
+// Exporte les pages en fichiers statiques pour GitHub Pages (dossier docs/).
+//   docs/30/index.html -> https://mikv.io/30  (gelée, visée par le QR imprimé)
+//   docs/31/index.html -> https://mikv.io/31  (page de travail)
 import { PAGE_30_HTML } from "../src/page-30.js";
+import { PAGE_31_HTML } from "../src/page-31.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 
 const DOMAINE = "mikv.io";
 
 mkdirSync("docs/30", { recursive: true });
 writeFileSync("docs/30/index.html", PAGE_30_HTML);
+
+mkdirSync("docs/31", { recursive: true });
+writeFileSync("docs/31/index.html", PAGE_31_HTML);
 
 // Indique à GitHub Pages le domaine personnalisé à servir.
 writeFileSync("docs/CNAME", `${DOMAINE}\n`);
@@ -41,6 +46,7 @@ writeFileSync(
 );
 
 console.log("Export statique :");
-console.log("  docs/30/index.html  ->  https://mikv.io/30");
+console.log("  docs/30/index.html  ->  https://mikv.io/30  (gelée)");
+console.log("  docs/31/index.html  ->  https://mikv.io/31  (travail)");
 console.log("  docs/index.html     ->  https://mikv.io");
 console.log(`  docs/CNAME          ->  ${DOMAINE}`);
