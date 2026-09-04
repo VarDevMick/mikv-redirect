@@ -223,16 +223,30 @@
 
   .photo-frame {
     width: 100%;
-    max-width: 340px;
-    aspect-ratio: 4 / 3;
-    border-radius: 4px;
+    max-width: 320px;
+    /* Assez vertical pour que l'arche se lise, sans trop rogner les photos
+       qui sont toutes en format paysage. */
+    aspect-ratio: 4 / 5;
+    border-radius: 50% 50% 14px 14px / 30% 30% 14px 14px;
     overflow: hidden;
     margin-bottom: 1rem;
-    border: 4px solid rgba(255,255,255,0.7);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    border: 6px solid var(--cream);
+    box-shadow: 0 6px 20px rgba(43,32,24,0.28);
   }
-  img.photo-frame { object-fit: cover; display: block; margin-bottom: 0.3rem; }
-  .photo-block { margin: 0 0 1rem; max-width: 340px; width: 100%; }
+  img.photo-frame {
+    object-fit: cover;
+    object-position: center 45%; /* garde l'horizon et les sommets dans le cadre */
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .photo-block {
+    margin: 0 0 1rem;
+    max-width: 320px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .photo-block figcaption {
     font-size: 0.68rem;
     opacity: 0.55;
@@ -260,6 +274,15 @@
   .info-list li { margin-bottom: 0.6rem; }
 
   .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
+
+  .video {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 6px;
+    border: 4px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    margin-bottom: 0.6rem;
+  }
 </style>
 </head>
 <body>
@@ -404,9 +427,10 @@
       <li>Possible de fin juin à mi-septembre : on choisit ensemble.</li>
       <li>Je m'occupe des réservations, toi tu ramènes ton sourire.</li>
     </ul>
-    <!-- VIDEO_PLACEHOLDER: remplace ce commentaire par une balise vidéo -->
     <p class="signature">À très vite dans le Queyras.</p>
   </section>
+
+  
 
 <script>
 (function () {

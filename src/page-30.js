@@ -33,6 +33,10 @@ const photoFrame = (key, label) => `
     -->
   </figure>`;
 
+// Vidéo : mets ici le nom du fichier déposé dans docs/ (ex. "message.mp4").
+// Tant que c'est vide, la section n'apparaît pas.
+const VIDEO = "";
+
 // Coordonnées du tracé stylisé (pas géographiquement exactes, juste évocatrices).
 const TRAIL_D = "M10,120 C35,95 50,55 70,45 C88,58 98,62 112,75 C124,92 132,112 142,122 C158,100 168,62 182,52 C198,66 202,86 212,92 C228,72 238,42 252,32 C270,52 286,92 300,112";
 const WAYPOINTS = [
@@ -267,16 +271,30 @@ export const PAGE_30_HTML = `<!doctype html>
 
   .photo-frame {
     width: 100%;
-    max-width: 340px;
-    aspect-ratio: 4 / 3;
-    border-radius: 4px;
+    max-width: 320px;
+    /* Assez vertical pour que l'arche se lise, sans trop rogner les photos
+       qui sont toutes en format paysage. */
+    aspect-ratio: 4 / 5;
+    border-radius: 50% 50% 14px 14px / 30% 30% 14px 14px;
     overflow: hidden;
     margin-bottom: 1rem;
-    border: 4px solid rgba(255,255,255,0.7);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    border: 6px solid var(--cream);
+    box-shadow: 0 6px 20px rgba(43,32,24,0.28);
   }
-  img.photo-frame { object-fit: cover; display: block; margin-bottom: 0.3rem; }
-  .photo-block { margin: 0 0 1rem; max-width: 340px; width: 100%; }
+  img.photo-frame {
+    object-fit: cover;
+    object-position: center 45%; /* garde l'horizon et les sommets dans le cadre */
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .photo-block {
+    margin: 0 0 1rem;
+    max-width: 320px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .photo-block figcaption {
     font-size: 0.68rem;
     opacity: 0.55;
@@ -304,6 +322,15 @@ export const PAGE_30_HTML = `<!doctype html>
   .info-list li { margin-bottom: 0.6rem; }
 
   .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
+
+  .video {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 6px;
+    border: 4px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    margin-bottom: 0.6rem;
+  }
 </style>
 </head>
 <body>
@@ -414,9 +441,17 @@ export const PAGE_30_HTML = `<!doctype html>
       <li>Possible de fin juin à mi-septembre : on choisit ensemble.</li>
       <li>Je m'occupe des réservations, toi tu ramènes ton sourire.</li>
     </ul>
-    <!-- VIDEO_PLACEHOLDER: remplace ce commentaire par une balise vidéo -->
     <p class="signature">À très vite dans le Queyras.</p>
   </section>
+
+  ${VIDEO ? `
+  <section class="panel p2 no-arrow">
+    <div class="eyebrow">Un dernier mot</div>
+    <video class="video" controls playsinline preload="metadata">
+      <source src="/${VIDEO}" type="video/mp4">
+    </video>
+    <p style="opacity:0.75; font-size:0.9rem;">Appuie pour lancer</p>
+  </section>` : ""}
 
 <script>
 (function () {
