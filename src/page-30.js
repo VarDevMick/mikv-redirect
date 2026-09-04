@@ -99,23 +99,11 @@ const DODO = `
   <text class="zzz zzz3" x="63" y="9" font-family="Georgia, serif" font-size="7" fill="#7a6a58">z</text>
 </svg>`;
 
-// Photo en tête de carte : deux crêtes superposées et quelques sapins font
-// la transition entre l'image et le texte.
+// La photo occupe toute la carte ; le texte se pose dessus sur un voile
+// dégradé, qui garantit la lisibilité quelle que soit l'image.
 const carteEnTete = (key, label) => `
-  <div class="carte-photo">
-    <img src="${PHOTOS[key].url}" alt="${label}" loading="lazy">
-    <svg class="crete" viewBox="0 0 340 58" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,58 L52,20 L96,40 L152,12 L206,36 L262,18 L340,52 L340,58 Z" fill="#6f8a5c"></path>
-      <path class="d-trait" d="M0,58 L52,20 L96,40 L152,12 L206,36 L262,18 L340,52"></path>
-      <g class="sapins">
-        <path transform="translate(78,30) scale(0.8)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
-        <path transform="translate(232,28) scale(0.75)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
-        <path transform="translate(296,36) scale(0.65)" d="M0,0 L-6,10 L-2.5,10 L-7,17 L-2,17 L-2,21 L2,21 L2,17 L7,17 L2.5,10 L6,10 Z"></path>
-      </g>
-      <path d="M0,58 L60,40 L110,50 L168,34 L226,48 L286,38 L340,56 L340,58 Z" fill="#fdf8ec"></path>
-      <path class="d-trait" d="M0,58 L60,40 L110,50 L168,34 L226,48 L286,38 L340,56"></path>
-    </svg>
-  </div>`;
+  <img class="carte-fond" src="${PHOTOS[key].url}" alt="${label}" loading="lazy">
+  <div class="carte-voile"></div>`;
 
 // Vidéo : mets ici le nom du fichier déposé dans docs/ (ex. "message.mp4").
 // Tant que c'est vide, la section n'apparaît pas.
@@ -338,8 +326,11 @@ export const PAGE_30_HTML = `<!doctype html>
   .trek-sub { font-size: 1.1rem; opacity: 0.9; font-style: italic; }
 
   /* --- Section carte interactive --- */
+  /* Les étapes ont leur propre fond : teinte plus soutenue et courbes de
+     niveau, pour qu'on les distingue au premier coup d'œil des autres blocs. */
   .route-section {
-    background: var(--paper);
+    background-color: #efe3ca;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23c2ab7e' stroke-width='1.1' opacity='0.55'%3E%3Cpath d='M-10,24 C30,8 74,40 160,18'/%3E%3Cpath d='M-10,52 C34,34 78,68 160,44'/%3E%3Cpath d='M-10,80 C28,64 82,96 160,72'/%3E%3Cpath d='M-10,108 C36,92 76,124 160,100'/%3E%3Cpath d='M-10,136 C30,120 80,150 160,128'/%3E%3C/g%3E%3C/svg%3E");
     color: var(--ink);
   }
   .route-map-sticky {
@@ -395,38 +386,45 @@ export const PAGE_30_HTML = `<!doctype html>
     padding: 0;
     max-width: 340px;
     width: 100%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* le texte se cale en bas de l'image */
     overflow: hidden;
-    box-shadow: 0 10px 26px rgba(51,48,44,0.12);
+    box-shadow: 0 14px 30px rgba(51,48,44,0.24);
   }
-  /* Photo en tête de carte, fondue dans le papier par la crête. */
-  .carte-photo {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-  }
-  .carte-photo img {
+  /* La photo occupe toute la carte, le texte se pose dessus. */
+  .carte-fond {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center 45%;
     display: block;
   }
-  .crete {
+  .carte-voile {
     position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 100%;
-    height: 58px;
-    display: block;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(45,36,28,0.05) 0%,
+      rgba(45,36,28,0.35) 42%,
+      rgba(45,36,28,0.74) 68%,
+      rgba(45,36,28,0.9) 100%);
   }
-  .carte-corps { padding: 0.4rem 1.4rem 1.5rem; }
+  .carte-corps {
+    position: relative;
+    z-index: 1;
+    padding: 1.2rem 1.4rem 1.5rem;
+    color: #fdf8ec;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  }
   .day-num {
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    opacity: 0.75;
-    margin-bottom: 0.4rem;
+    opacity: 0.9;
+    margin-bottom: 0.35rem;
   }
   .day-route {
     font-size: 1.2rem;
@@ -437,8 +435,8 @@ export const PAGE_30_HTML = `<!doctype html>
   .day-note {
     font-size: 0.9rem;
     font-style: italic;
-    opacity: 0.8;
-    margin: 0 0 0.4rem;
+    opacity: 0.92;
+    margin: 0 0 0.6rem;
   }
   .stats {
     display: flex;
@@ -449,7 +447,7 @@ export const PAGE_30_HTML = `<!doctype html>
   }
   .stat { text-align: center; }
   .stat b { display: block; font-size: 1.1rem; }
-  .stat span { font-size: 0.7rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat span { font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; }
 
   .info-list { max-width: 340px; text-align: left; margin-top: 1rem; }
   .info-list li { margin-bottom: 0.6rem; }
