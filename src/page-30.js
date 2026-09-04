@@ -39,21 +39,23 @@ const RANDONNEUSE = `
     <path d="M21,36 L26,50" stroke="#b39262" stroke-width="4" stroke-linecap="round" fill="none"></path>
     <path d="M26,50.5 L29,52.5" stroke="#4a3826" stroke-width="4" stroke-linecap="round" fill="none"></path>
   </g>
-  <!-- sac a dos, colle au dos -->
-  <rect x="12" y="20" width="9.5" height="13.5" rx="4" fill="#e2b53b"></rect>
-  <rect x="13.5" y="24" width="6.5" height="1.8" rx="0.9" fill="#b8860b"></rect>
-  <!-- corps -->
-  <path d="M21.5,36 L22,20" stroke="#2f5233" stroke-width="7" stroke-linecap="round" fill="none"></path>
-  <!-- bras vers le baton -->
-  <path d="M22.5,24 L28.4,29" stroke="#2f5233" stroke-width="3.2" stroke-linecap="round" fill="none"></path>
-  <!-- masse de cheveux, derriere la tete -->
-  <ellipse cx="22" cy="12.4" rx="6.6" ry="6.3" fill="#c4551a"></ellipse>
-  <path d="M16.4,13 q-3.4,4.6 -2,9.4 q0.8,2.6 2.6,3.6 q-1.9,-4.8 0.3,-7 q-1.6,-2.6 -0.9,-6 z" fill="#c4551a"></path>
-  <path d="M15.2,18.5 q-2.4,3.4 -1,6.6 q0.9,-2.6 2.1,-3.4 z" fill="#a8410f"></path>
-  <!-- visage, pose par-dessus : les cheveux ne le recouvrent pas -->
-  <circle cx="23.2" cy="13.6" r="5.2" fill="#e9c39c"></circle>
-  <!-- frange -->
-  <path d="M18.4,10.8 q3.6,-3.4 8.6,-1.4 q-3.8,-0.2 -6.6,2.8 z" fill="#a8410f"></path>
+  <g class="buste">
+    <!-- sac a dos, colle au dos -->
+    <rect x="12" y="20" width="9.5" height="13.5" rx="4" fill="#e2b53b"></rect>
+    <rect x="13.5" y="24" width="6.5" height="1.8" rx="0.9" fill="#b8860b"></rect>
+    <!-- corps -->
+    <path d="M21.5,36 L22,20" stroke="#2f5233" stroke-width="7" stroke-linecap="round" fill="none"></path>
+    <!-- bras vers le baton -->
+    <path class="bras" d="M22.5,24 L28.4,29" stroke="#2f5233" stroke-width="3.2" stroke-linecap="round" fill="none"></path>
+    <!-- masse de cheveux, derriere la tete -->
+    <ellipse cx="22" cy="12.4" rx="6.6" ry="6.3" fill="#c4551a"></ellipse>
+    <path class="meche" d="M16.4,13 q-3.4,4.6 -2,9.4 q0.8,2.6 2.6,3.6 q-1.9,-4.8 0.3,-7 q-1.6,-2.6 -0.9,-6 z" fill="#c4551a"></path>
+    <path class="meche" d="M15.2,18.5 q-2.4,3.4 -1,6.6 q0.9,-2.6 2.1,-3.4 z" fill="#a8410f"></path>
+    <!-- visage, pose par-dessus : les cheveux ne le recouvrent pas -->
+    <circle cx="23.2" cy="13.6" r="5.2" fill="#e9c39c"></circle>
+    <!-- frange -->
+    <path d="M18.4,10.8 q3.6,-3.4 8.6,-1.4 q-3.8,-0.2 -6.6,2.8 z" fill="#a8410f"></path>
+  </g>
 </svg>`;
 
 // La tente du bivouac, qui se déplie à côté d'elle.
@@ -63,6 +65,35 @@ const BIVOUAC = `
   <path d="M17,3 L17,21" stroke="#8f3209" stroke-width="1.2"></path>
   <path d="M12,21 L17,9 L22,21 Z" fill="#5c2a12"></path>
   <line x1="0" y1="21" x2="34" y2="21" stroke="#e2b53b" stroke-width="1.6" stroke-linecap="round"></line>
+</svg>`;
+
+// Fin du parcours : elle dort dans son duvet.
+const DODO = `
+<svg viewBox="0 0 140 56" aria-hidden="true">
+  <!-- tapis de sol -->
+  <rect x="6" y="41" width="128" height="5" rx="2.5" fill="#6b563a"></rect>
+  <g class="souffle">
+    <!-- duvet -->
+    <rect x="40" y="26" width="86" height="16" rx="8" fill="#c1440e"></rect>
+    <path d="M46,26 q6,-5 14,0" fill="none" stroke="#8f3209" stroke-width="1.4"></path>
+    <rect x="112" y="28" width="12" height="12" rx="6" fill="#a83a0c"></rect>
+    <!-- oreiller roule -->
+    <rect x="16" y="31" width="24" height="11" rx="5.5" fill="#f4ecd8"></rect>
+    <!-- cheveux etales -->
+    <ellipse cx="30" cy="29" rx="12" ry="8.5" fill="#c4551a"></ellipse>
+    <path d="M20,26 q-6,3 -7,8 q4,-4 8,-4 z" fill="#c4551a"></path>
+    <!-- tete -->
+    <circle cx="34" cy="30" r="7" fill="#e9c39c"></circle>
+    <!-- oeil ferme et sourire -->
+    <path d="M34,28.5 q2.4,2 4.6,0" fill="none" stroke="#2b2018" stroke-width="1.2" stroke-linecap="round"></path>
+    <path d="M35,34 q2,1.6 3.8,0" fill="none" stroke="#2b2018" stroke-width="1" stroke-linecap="round"></path>
+  </g>
+  <!-- sac a dos pose a cote -->
+  <rect x="122" y="30" width="12" height="11" rx="4" fill="#e2b53b"></rect>
+  <!-- ronflements -->
+  <text class="zzz zzz1" x="46" y="20" font-family="Georgia, serif" font-size="11" fill="#f4ecd8">z</text>
+  <text class="zzz zzz2" x="55" y="14" font-family="Georgia, serif" font-size="9" fill="#f4ecd8">z</text>
+  <text class="zzz zzz3" x="63" y="9" font-family="Georgia, serif" font-size="7" fill="#f4ecd8">z</text>
 </svg>`;
 
 const photoFrame = (key, label) => `
@@ -103,11 +134,18 @@ export const PAGE_30_HTML = `<!doctype html>
     --navy: #1b2a41;
   }
   * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    height: 100%;
+  /* Le défilement appartient au document : sinon window.scrollY reste à 0
+     et rien de ce qui suit le scroll ne fonctionne. */
+  html {
     scroll-snap-type: y proximity;
-    overflow-y: scroll;
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* anciens Edge */
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  body {
+    margin: 0;
+    padding-left: 58px; /* colonne du sentier */
     font-family: Georgia, "Times New Roman", serif;
     color: var(--cream);
     background: var(--navy);
@@ -363,10 +401,7 @@ export const PAGE_30_HTML = `<!doctype html>
 
   .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
 
-  /* --- Sentier vertical et randonneuse --- */
-  /* Colonne réservée au sentier, à gauche, sur toute la hauteur. */
-  body { padding-left: 58px; }
-
+  /* --- Bande du sentier, à gauche --- */
   .sentier {
     position: fixed;
     left: 0;
@@ -375,7 +410,7 @@ export const PAGE_30_HTML = `<!doctype html>
     width: 58px;
     background: var(--navy);
     border-right: 1px solid rgba(244,236,216,0.12);
-    z-index: 6;
+    z-index: 4;
     pointer-events: none;
   }
   .piste {
@@ -385,40 +420,105 @@ export const PAGE_30_HTML = `<!doctype html>
     bottom: 0;
     border-left: 2px dashed rgba(244,236,216,0.28);
   }
+
+  /* --- Randonneuse, en surimpression au-dessus de la bande --- */
   .marcheuse {
-    position: absolute;
-    left: 7px;
-    width: 44px;
-    margin-top: -31px; /* centre la silhouette sur sa position */
-    transition: top 0.12s linear;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 52px;
+    z-index: 5;
+    pointer-events: none;
+    will-change: transform;
+    opacity: 0; /* cachée tant que le défilement n'a pas commencé */
+    transition: transform 0.15s ease-out, opacity 0.25s ease;
+    filter: drop-shadow(0 3px 7px rgba(0,0,0,0.5));
   }
   .marcheuse svg { width: 100%; height: auto; display: block; }
+  /* Le buste tangue légèrement : c'est ce qui donne la démarche. */
+  .buste { animation: tangage 0.62s ease-in-out infinite alternate; }
+  @keyframes tangage {
+    from { transform: translateY(0.6px) rotate(-1.4deg); }
+    to { transform: translateY(-0.6px) rotate(1.4deg); }
+  }
 
-  /* Balancement des jambes, uniquement pendant le défilement. */
-  .jambe { transform-box: fill-box; transform-origin: 50% 0%; }
-  .marcheuse.marche .jambe-avant { animation: pas 0.5s ease-in-out infinite alternate; }
-  .marcheuse.marche .jambe-arriere { animation: pas 0.5s ease-in-out infinite alternate-reverse; }
+  .jambe, .bras, .meche { transform-box: fill-box; }
+  .jambe { transform-origin: 50% 0%; }
+  .bras { transform-origin: 10% 10%; }
+  .meche { transform-origin: 60% 0%; }
+
+  .jambe-avant { animation: pas 0.62s ease-in-out infinite alternate; }
+  .jambe-arriere { animation: pas 0.62s ease-in-out infinite alternate-reverse; }
+  .bras { animation: balancier 0.62s ease-in-out infinite alternate-reverse; }
+  .meche { animation: meche 1.5s ease-in-out infinite alternate; }
   @keyframes pas {
-    from { transform: rotate(-16deg); }
-    to { transform: rotate(16deg); }
+    from { transform: rotate(-19deg); }
+    to { transform: rotate(19deg); }
+  }
+  @keyframes balancier {
+    from { transform: rotate(-10deg); }
+    to { transform: rotate(12deg); }
+  }
+  @keyframes meche {
+    from { transform: rotate(-5deg); }
+    to { transform: rotate(6deg); }
+  }
+  /* À l'arrêt au bivouac, elle cesse de marcher. */
+  .marcheuse.campe .jambe-avant,
+  .marcheuse.campe .jambe-arriere,
+  .marcheuse.campe .bras,
+  .marcheuse.campe .buste { animation: none; }
+
+  /* Fin de parcours : le couchage, au milieu bas de la page. */
+  .dodo {
+    position: fixed;
+    left: calc(50% + 29px);   /* centré sur le contenu, hors colonne */
+    bottom: 7%;
+    width: 160px;
+    margin-left: -80px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+  }
+  .dodo.dort { opacity: 1; transform: translateY(0); }
+  .dodo svg { width: 100%; height: auto; display: block; }
+  .souffle {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: souffle 3.4s ease-in-out infinite alternate;
+  }
+  @keyframes souffle {
+    from { transform: scaleY(0.985); }
+    to { transform: scaleY(1.025); }
+  }
+  .zzz { opacity: 0; animation: monte 3.6s ease-in-out infinite; }
+  .zzz2 { animation-delay: 1.2s; }
+  .zzz3 { animation-delay: 2.4s; }
+  @keyframes monte {
+    0% { opacity: 0; transform: translate(0, 4px); }
+    30% { opacity: 0.9; }
+    100% { opacity: 0; transform: translate(5px, -12px); }
   }
 
   .camp {
-    position: absolute;
-    left: 26px;
-    width: 30px;
-    margin-top: -14px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 34px;
+    z-index: 5;
+    pointer-events: none;
     opacity: 0;
-    transform: translateX(-14px) scale(0.7);
-    transform-origin: left bottom;
-    transition: opacity 0.45s ease, transform 0.45s ease;
+    transition: opacity 0.4s ease;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
   }
   .camp svg { width: 100%; height: auto; display: block; }
-  .camp.plante { opacity: 1; transform: translateX(0) scale(1); }
+  .camp.plante { opacity: 1; }
 
   @media (prefers-reduced-motion: reduce) {
-    .marcheuse.marche .jambe-avant,
-    .marcheuse.marche .jambe-arriere { animation: none; }
+    .jambe-avant, .jambe-arriere, .bras, .meche, .buste { animation: none; }
   }
 
   .son {
@@ -439,6 +539,29 @@ export const PAGE_30_HTML = `<!doctype html>
     backdrop-filter: blur(5px);
   }
   .son.coupe { opacity: 0.45; }
+  .son-astuce {
+    position: fixed;
+    top: 22px;
+    right: 66px;
+    z-index: 10;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--cream);
+    background: rgba(27,42,65,0.75);
+    padding: 5px 9px;
+    border-radius: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .son-astuce.visible { opacity: 0.9; }
+
+  /* Tant que la musique n'a pas pu démarrer, le bouton se signale. */
+  .son.attente { animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(226,181,59,0.5); }
+    50% { box-shadow: 0 0 0 9px rgba(226,181,59,0); }
+  }
 
   .video {
     width: 100%;
@@ -453,14 +576,12 @@ export const PAGE_30_HTML = `<!doctype html>
 <body>
 
   <button class="son" id="btnSon" type="button" aria-label="Couper ou relancer la musique">&#9835;</button>
+  <div class="son-astuce" id="astuceSon">Appuie pour la musique</div>
 
-  <div class="sentier" id="sentier" aria-hidden="true">
-    <div class="piste"></div>
-    <div class="camp" data-camp="1">${BIVOUAC}</div>
-    <div class="camp" data-camp="2">${BIVOUAC}</div>
-    <div class="camp" data-camp="3">${BIVOUAC}</div>
-    <div class="marcheuse" id="marcheuse">${RANDONNEUSE}</div>
-  </div>
+  <div class="sentier" aria-hidden="true"><div class="piste"></div></div>
+  <div class="camp" id="camp" aria-hidden="true">${BIVOUAC}</div>
+  <div class="dodo" id="dodo" aria-hidden="true">${DODO}</div>
+  <div class="marcheuse" id="marcheuse" aria-hidden="true">${RANDONNEUSE}</div>
 
   <section class="panel p1">
     <div class="stars" aria-hidden="true">
@@ -473,7 +594,7 @@ export const PAGE_30_HTML = `<!doctype html>
     </div>
     <div class="eyebrow reveal r1">Joyeux anniversaire</div>
     <h1 class="name reveal r2">Charlotte</h1>
-    <div class="big-thirty reveal r3" aria-label="30 ans">30<span class="ans">ans</span></div>
+    <div class="big-thirty reveal r3" id="grosTrente" aria-label="30 ans">30<span class="ans">ans</span></div>
     <p class="reveal r4">Ça se fête en altitude.</p>
     <p class="reveal r5" style="opacity:0.7">Continue de descendre.</p>
     ${mountainDivider("var(--forest)")}
@@ -596,6 +717,8 @@ export const PAGE_30_HTML = `<!doctype html>
 
   var ctx = null, fin = null, enCours = false, oscs = [];
   var bouton = document.getElementById("btnSon");
+  var astuce = document.getElementById("astuceSon");
+  bouton.classList.add("attente");
 
   // Un seul contexte pour toute la page : sur iOS, en recreer un hors d'un
   // geste utilisateur est refuse.
@@ -606,6 +729,18 @@ export const PAGE_30_HTML = `<!doctype html>
       ctx = new AC();
     }
     return ctx;
+  }
+
+  // iOS n'ouvre vraiment la sortie audio que si un son, meme muet, part
+  // pendant le geste utilisateur lui-meme.
+  function debloquer(c) {
+    try {
+      var tampon = c.createBuffer(1, 1, 22050);
+      var source = c.createBufferSource();
+      source.buffer = tampon;
+      source.connect(c.destination);
+      if (source.start) source.start(0); else source.noteOn(0);
+    } catch (err) {}
   }
 
   function jouer() {
@@ -640,6 +775,8 @@ export const PAGE_30_HTML = `<!doctype html>
       t += PAUSE;
     }
     bouton.classList.remove("coupe");
+    bouton.classList.remove("attente");
+    if (astuce) astuce.classList.remove("visible");
     // A la fin, le bouton redevient un "rejouer" (sans fermer le contexte).
     fin = setTimeout(function () {
       enCours = false;
@@ -661,19 +798,31 @@ export const PAGE_30_HTML = `<!doctype html>
     if (lance) return;
     var c = contexte();
     if (!c) return;
-    lance = true;
+    debloquer(c);
     // Le contexte nait suspendu : il faut le reveiller dans le geste meme.
-    if (c.state === "suspended" && c.resume) {
-      c.resume().then(jouer).catch(function () { lance = false; });
+    if (c.state !== "running" && c.resume) {
+      c.resume().then(function () {
+        // Si le reveil echoue, on laisse le prochain geste retenter.
+        if (c.state === "running") { lance = true; jouer(); }
+      }).catch(function () {});
     } else {
+      lance = true;
       jouer();
     }
   }
-  // touchend / click / keydown sont les seuls gestes que Safari iOS accepte
-  // comme activation valide pour l'audio.
-  ["touchend", "click", "keydown", "pointerup", "scroll"].forEach(function (ev) {
+  // Chrome comme Safari n'acceptent que des gestes "discrets" (appui, clic,
+  // touche) comme activation valide : un simple defilement ne suffit pas.
+  ["touchend", "click", "keydown", "pointerup", "pointerdown", "scroll"].forEach(function (ev) {
     window.addEventListener(ev, demarrer, { passive: true });
+    document.addEventListener(ev, demarrer, { passive: true });
   });
+
+  // Si le defilement a commence sans que le son ait pu demarrer, on le dit.
+  window.addEventListener("scroll", function () {
+    setTimeout(function () {
+      if (!enCours && astuce) astuce.classList.add("visible");
+    }, 1200);
+  }, { passive: true, once: true });
 
   bouton.addEventListener("click", function (e) {
     e.stopPropagation();
@@ -693,53 +842,106 @@ export const PAGE_30_HTML = `<!doctype html>
 // La randonneuse descend le sentier au rythme du défilement, et plante
 // sa tente quand elle arrive au niveau d'une étape.
 (function () {
-  var sentier = document.getElementById("sentier");
   var marcheuse = document.getElementById("marcheuse");
-  var camps = [].slice.call(document.querySelectorAll(".camp"));
-  if (!sentier || !marcheuse) return;
+  var camp = document.getElementById("camp");
+  if (!marcheuse || !camp) return;
 
-  var hauteurRail = 0, positions = [];
+  var LACETS = 2.5;    // nombre de virages du sentier sur toute la page
+  var SORTIE = 0.07;   // fraction de scroll pendant laquelle elle sort du "30"
+  var APPROCHE = 0.88; // à partir d'ici, elle converge vers le bas de page
+  var COUCHEE = 0.985; // au-delà, elle est dans son duvet
+  var etapes = [];
+  var depart = null;   // position du "30", son point d'apparition
+  var dodo = document.getElementById("dodo");
 
-  // Position de chaque étape, en fraction du défilement total.
+  function defilement() {
+    var doc = document.documentElement;
+    var total = doc.scrollHeight - window.innerHeight;
+    var y = window.scrollY || doc.scrollTop || 0;
+    return total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
+  }
+
   function mesurer() {
-    hauteurRail = sentier.clientHeight;
+    // Point de départ : le "30" doré, mesuré page en haut.
+    var trente = document.getElementById("grosTrente");
+    if (trente) {
+      var r = trente.getBoundingClientRect();
+      depart = {
+        x: r.left + r.width / 2 - 26 + window.scrollX,
+        y: r.top + r.height * 0.55 + window.scrollY
+      };
+    }
     var total = document.documentElement.scrollHeight - window.innerHeight;
-    positions = [].slice.call(document.querySelectorAll(".route-step")).map(function (el) {
-      var centre = el.offsetTop + el.offsetHeight / 2 - window.innerHeight / 2;
+    etapes = [].slice.call(document.querySelectorAll(".route-step")).map(function (el) {
+      var r = el.getBoundingClientRect();
+      var centre = r.top + window.scrollY + r.height / 2 - window.innerHeight / 2;
       return total > 0 ? Math.min(1, Math.max(0, centre / total)) : 0;
-    });
-    camps.forEach(function (c, i) {
-      if (positions[i] === undefined) return;
-      // La tente est plantée un peu au-dessus du pied de la marcheuse.
-      c.style.top = (positions[i] * (hauteurRail - 70) + 46) + "px";
     });
     placer();
   }
 
   function placer() {
-    var total = document.documentElement.scrollHeight - window.innerHeight;
-    var f = total > 0 ? window.scrollY / total : 0;
-    f = Math.min(1, Math.max(0, f));
-    marcheuse.style.top = (f * (hauteurRail - 70) + 35) + "px";
+    var f = defilement();
+    var largeur = window.innerWidth;
+    var hauteur = window.innerHeight;
+    var taille = marcheuse.offsetWidth || 52;
 
-    // Elle bivouaque quand elle est à hauteur d'une étape.
-    camps.forEach(function (c, i) {
-      var p = positions[i];
-      c.classList.toggle("plante", p !== undefined && Math.abs(f - p) < 0.05);
-    });
+    // Lacets autour de la bande du sentier : la descente est régulière,
+    // la dérive horizontale suit une sinusoïde. Elle déborde un peu sur la
+    // page, sans jamais aller au-delà du tiers gauche.
+    var gauche = 3;
+    var droite = Math.min(112, largeur * 0.34) - taille;
+    var amplitude = Math.max(8, (droite - gauche) / 2);
+    var x = gauche + amplitude + Math.sin(f * Math.PI * 2 * LACETS) * amplitude;
+    var yy = 0.1 * hauteur + f * (hauteur * 0.72);
+    var sens = Math.cos(f * Math.PI * 2 * LACETS) >= 0 ? 1 : -1;
+
+    // Bivouac : au niveau d'une étape, elle s'arrête et rejoint le sentier
+    // pour se tenir à côté de sa tente, qui reste dans la colonne.
+    var proche = etapes.some(function (p) { return Math.abs(f - p) < 0.035; });
+    if (proche) {
+      x = 56;
+      sens = -1; // tournée vers la tente
+      camp.style.transform = "translate(12px," + (yy + 24) + "px)";
+    }
+
+    // Apparition : invisible en haut de page, elle émerge du "30" dès que
+    // le défilement commence, puis rejoint le sentier.
+    var echelle = 1;
+    var opacite = 1;
+    if (f < SORTIE && depart) {
+      var t = f / SORTIE;              // 0 = dans le "30", 1 = sur le sentier
+      var doux = t * t * (3 - 2 * t);  // adoucit le trajet
+      x = depart.x + (x - depart.x) * doux;
+      yy = depart.y + (yy - depart.y) * doux;
+      echelle = 0.25 + 0.75 * doux;
+      opacite = Math.min(1, t * 2.2);
+    }
+
+    // Fin de parcours : elle quitte le sentier, rejoint le milieu bas de
+    // page, puis cède la place au couchage.
+    var dort = f >= COUCHEE;
+    if (f > APPROCHE && depart) {
+      var ta = Math.min(1, (f - APPROCHE) / (COUCHEE - APPROCHE));
+      var lisse = ta * ta * (3 - 2 * ta);
+      var cible = largeur / 2 + 29 - taille / 2;
+      x = x + (cible - x) * lisse;
+      yy = yy + (hauteur * 0.8 - yy) * lisse;
+      sens = 1;
+      opacite = Math.min(opacite, 1 - lisse); // elle s'efface en se couchant
+      proche = false;
+    }
+    if (dodo) dodo.classList.toggle("dort", dort);
+    if (dort) { camp.classList.remove("plante"); }
+
+    marcheuse.style.opacity = opacite;
+    marcheuse.style.transform =
+      "translate(" + x + "px," + yy + "px) scale(" + echelle + ") scaleX(" + sens + ")";
+    marcheuse.classList.toggle("campe", proche);
+    camp.classList.toggle("plante", proche);
   }
 
-  var minuteur = null;
-  function auScroll() {
-    placer();
-    marcheuse.classList.add("marche");
-    clearTimeout(minuteur);
-    minuteur = setTimeout(function () {
-      marcheuse.classList.remove("marche");
-    }, 180);
-  }
-
-  window.addEventListener("scroll", auScroll, { passive: true });
+  window.addEventListener("scroll", placer, { passive: true });
   window.addEventListener("resize", mesurer);
   window.addEventListener("load", mesurer);
   mesurer();
