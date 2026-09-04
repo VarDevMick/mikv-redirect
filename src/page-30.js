@@ -323,6 +323,25 @@ export const PAGE_30_HTML = `<!doctype html>
 
   .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
 
+  .son {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(244,236,216,0.4);
+    background: rgba(27,42,65,0.5);
+    color: var(--cream);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+  .son.coupe { opacity: 0.45; }
+
   .video {
     width: 100%;
     max-width: 340px;
@@ -334,6 +353,8 @@ export const PAGE_30_HTML = `<!doctype html>
 </style>
 </head>
 <body>
+
+  <button class="son" id="btnSon" type="button" aria-label="Couper ou relancer la musique">&#9835;</button>
 
   <section class="panel p1">
     <div class="stars" aria-hidden="true">
@@ -454,6 +475,82 @@ export const PAGE_30_HTML = `<!doctype html>
   </section>` : ""}
 
 <script>
+// "Joyeux anniversaire" synthetise a la volee (melodie du domaine public).
+// Les navigateurs interdisent le son sans geste utilisateur : on demarre
+// donc au premier toucher ou defilement.
+(function () {
+  var SOL = 392.00, LA = 440.00, SI = 493.88, DO = 523.25,
+      RE = 587.33, MI = 659.25, FA = 698.46, SOL5 = 783.99;
+  var MELODIE = [
+    [SOL, 0.75], [SOL, 0.25], [LA, 1], [SOL, 1], [DO, 1], [SI, 1.75],
+    [SOL, 0.75], [SOL, 0.25], [LA, 1], [SOL, 1], [RE, 1], [DO, 1.75],
+    [SOL, 0.75], [SOL, 0.25], [SOL5, 1], [MI, 1], [DO, 1], [SI, 1], [LA, 1.75],
+    [FA, 0.75], [FA, 0.25], [MI, 1], [DO, 1], [RE, 1], [DO, 2]
+  ];
+
+  var ctx = null, fin = null;
+  var bouton = document.getElementById("btnSon");
+
+  function jouer() {
+    arreter();
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    ctx = new AC();
+    var t = ctx.currentTime + 0.2;
+    var noire = 0.46; // tempo
+
+    MELODIE.forEach(function (n) {
+      var duree = n[1] * noire;
+      // Deux oscillateurs a l'octave : le son est plus chaud qu'une onde seule.
+      [[n[0], 0.22, "triangle"], [n[0] * 2, 0.06, "sine"]].forEach(function (v) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = v[2];
+        osc.frequency.value = v[0];
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(v[1], t + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + duree * 0.92);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + duree);
+      });
+      t += duree;
+    });
+    bouton.classList.remove("coupe");
+    // Libere le contexte a la fin : le bouton redevient un "rejouer".
+    fin = setTimeout(function () { arreter(); }, (t - ctx.currentTime + 0.3) * 1000);
+  }
+
+  function arreter() {
+    if (fin) { clearTimeout(fin); fin = null; }
+    if (ctx) { ctx.close(); ctx = null; }
+  }
+
+  var lance = false;
+  function demarrer(e) {
+    // Un appui sur le bouton est gere par son propre handler.
+    if (e && e.target && e.target.closest && e.target.closest("#btnSon")) return;
+    if (lance) return;
+    lance = true;
+    jouer();
+  }
+  ["pointerdown", "touchstart", "keydown", "scroll"].forEach(function (ev) {
+    window.addEventListener(ev, demarrer, { passive: true });
+  });
+
+  bouton.addEventListener("click", function (e) {
+    e.stopPropagation();
+    if (ctx) {
+      arreter();
+      bouton.classList.add("coupe");
+    } else {
+      lance = true;
+      jouer();
+    }
+  });
+})();
+
 (function () {
   var waypoints = ${JSON.stringify(WAYPOINTS)};
   var progressPath = document.getElementById("trailProgress");
