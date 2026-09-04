@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Une surprise pour toi</title>
 <style>
+
   :root {
-    /* Dessin au trait : fonds très clairs, une encre, un accent chaud. */
-    /* Palette chaude d'affiche, gardée sur un dessin au trait. */
+    /* Palette chaude d'affiche, posée sur un dessin au trait. */
     --papier: #fdf8ec;
     --papier2: #f8f0dd;
     --papier3: #f3e8d0;
@@ -20,86 +20,16 @@
     --alpage: #d8c68a;
     --roche: #c9bda6;
     --bois: #6b4a2f;
-    --cream: #fdf8ec;
-    --paper: #f8f0dd;
-    --ink: #3a2f26;
-    --terracotta: #c1440e;
-    --forest: #2f5233;
     --mustard: #e2b53b;
-    --navy: #3a2f26;
   }
   * { box-sizing: border-box; }
-  /* Bandeau de la page de travail : rappelle qu'on n'est pas sur /30. */
-  .bandeau-dev {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 20;
-    background: #c1440e;
-    color: #fdf8ec;
-    text-align: center;
-    font-family: Georgia, serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.32em;
-    padding: 4px 0 3px;
-    pointer-events: none;
-  }
-  /* Le défilement appartient au document : sinon window.scrollY reste à 0
-     et rien de ce qui suit le scroll ne fonctionne. */
-  html {
-    scroll-snap-type: y proximity;
-    scrollbar-width: none;        /* Firefox */
-    -ms-overflow-style: none;     /* anciens Edge */
-  }
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
   body {
     margin: 0;
     font-family: Georgia, "Times New Roman", serif;
     color: var(--encre);
     background: var(--papier);
   }
-  .panel {
-    min-height: 100svh;
-    scroll-snap-align: start;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 3rem 1.5rem 4.5rem 74px; /* dégage la place du sentier */
-    position: relative;
-    overflow: hidden;
-  }
-  .divider {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 74px;
-  }
-  .d-trait {
-    fill: none;
-    stroke: var(--trait);
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-  }
-  .d-neige { stroke: var(--encre); stroke-width: 1.8; }
-  .sapins path,
-  .d-sapin path {
-    fill: var(--sapin);
-    stroke: var(--encre);
-    stroke-width: 1;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-  }
-  .p1 { background: var(--papier); }
-  .p2 { background: var(--papier2); }
-  .p3 { background: var(--papier3); }
-  .p7 { background: var(--papier2); }
 
   .eyebrow {
     text-transform: uppercase;
@@ -121,9 +51,60 @@
   }
   p { font-size: 1.02rem; line-height: 1.55; margin: 0.4rem 0; opacity: 0.9; }
 
-  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--mustard); }
 
-  /* --- Ouverture anniversaire --- */
+  /* Le défilement appartient au document : sinon window.scrollY reste à 0
+     et rien de ce qui suit le scroll ne fonctionne. */
+  html {
+    scroll-snap-type: y proximity;
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* anciens Edge */
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+  .panel {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem 4.5rem 74px; /* dégage la place du sentier */
+    position: relative;
+    overflow: hidden;
+  }
+  .p1 { background: var(--papier); }
+  .p2 { background: var(--papier2); }
+  .p3 { background: var(--papier3); }
+  .p7 { background: var(--papier2); }
+
+
+  .divider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 74px;
+  }
+  .d-trait {
+    fill: none;
+    stroke: var(--trait);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .d-neige { stroke: var(--encre); stroke-width: 1.8; }
+  .sapins path {
+    fill: var(--sapin);
+    stroke: var(--encre);
+    stroke-width: 1;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+
   .name {
     font-size: 2.6rem;
     letter-spacing: 0.02em;
@@ -148,7 +129,6 @@
     color: var(--sapin);
   }
 
-  /* Feu d'artifice de bienvenue, derrière le texte. */
   .feu {
     position: absolute;
     inset: 0;
@@ -163,7 +143,6 @@
   .p1 > .big-thirty,
   .p1 > p { position: relative; z-index: 2; }
 
-  /* Le massif, dessiné derrière le chiffre. */
   .massif {
     position: absolute;
     left: 0;
@@ -194,9 +173,11 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .soleil { animation: none; opacity: 1; transform: none; }
+    .reveal, .massif { animation: none; opacity: 1; transform: none; }
   }
 
+
+  .compass { width: 44px; height: 44px; margin-bottom: 1rem; color: var(--mustard); }
   .trek-title {
     font-size: 2.3rem;
     font-weight: 700;
@@ -205,19 +186,32 @@
   }
   .trek-sub { font-size: 1.1rem; opacity: 0.9; font-style: italic; }
 
-  /* --- Section carte interactive --- */
-  /* Les étapes ont leur propre fond : teinte plus soutenue et courbes de
-     niveau, pour qu'on les distingue au premier coup d'œil des autres blocs. */
+  .info-list { max-width: 340px; text-align: left; margin-top: 1rem; }
+  .info-list li { margin-bottom: 0.6rem; }
+  .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
+
+  .video {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 6px;
+    border: 4px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    margin-bottom: 0.6rem;
+  }
+
+
+  /* F-09 · Les étapes ont leur propre fond : teinte plus soutenue et courbes
+     de niveau, pour qu'on les distingue au premier coup d'œil. */
   .route-section {
     background-color: #efe3ca;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23c2ab7e' stroke-width='1.1' opacity='0.55'%3E%3Cpath d='M-10,24 C30,8 74,40 160,18'/%3E%3Cpath d='M-10,52 C34,34 78,68 160,44'/%3E%3Cpath d='M-10,80 C28,64 82,96 160,72'/%3E%3Cpath d='M-10,108 C36,92 76,124 160,100'/%3E%3Cpath d='M-10,136 C30,120 80,150 160,128'/%3E%3C/g%3E%3C/svg%3E");
-    color: var(--ink);
+    color: var(--encre);
   }
   .route-map-sticky {
     position: sticky;
     top: 0;
     z-index: 2;
-    background: var(--paper);
+    background: var(--papier2);
     padding: 0.8rem 1rem 0.6rem;
   }
   .route-svg { width: 100%; height: auto; display: block; }
@@ -228,24 +222,23 @@
   }
   .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
   .trail-progress {
-    stroke: var(--terracotta);
+    stroke: var(--soleil);
     stroke-width: 5;
     transition: stroke-dashoffset 0.5s ease;
   }
-  .waypoint circle { fill: var(--paper); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
-  .waypoint.active circle { fill: var(--terracotta); stroke: var(--terracotta); r: 7; }
+  .waypoint circle { fill: var(--papier2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint.active circle { fill: var(--soleil); stroke: var(--soleil); r: 7; }
   .waypoint text {
     font-family: Georgia, serif;
     font-size: 13px;
-    fill: var(--ink);
+    fill: var(--encre);
     opacity: 0.65;
     transition: opacity 0.3s ease;
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
-  .hiker-marker {
-    transition: transform 0.5s ease;
-  }
-  .hiker-marker circle { fill: var(--mustard); stroke: var(--ink); stroke-width: 1.5; }
+  .hiker-marker { transition: transform 0.5s ease; }
+  .hiker-marker circle { fill: var(--mustard); stroke: var(--encre); stroke-width: 1.5; }
+
 
   .route-step {
     min-height: 90vh;
@@ -273,7 +266,6 @@
     overflow: hidden;
     box-shadow: 0 14px 30px rgba(51,48,44,0.24);
   }
-  /* La photo occupe toute la carte, le texte se pose dessus. */
   .carte-fond {
     position: absolute;
     inset: 0;
@@ -311,7 +303,6 @@
     font-weight: 700;
     margin-bottom: 0.8rem;
   }
-
   .day-note {
     font-size: 0.9rem;
     font-style: italic;
@@ -329,28 +320,18 @@
   .stat b { display: block; font-size: 1.1rem; }
   .stat span { font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; }
 
-  .info-list { max-width: 340px; text-align: left; margin-top: 1rem; }
-  .info-list li { margin-bottom: 0.6rem; }
 
-  .signature { margin-top: 2rem; font-size: 0.95rem; opacity: 0.75; font-style: italic; }
-
-  /* --- Bande du sentier, à gauche --- */
+  /* Aucun fond : le sentier passe simplement au-dessus des sections. */
   .sentier {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    /* Aucun fond : le sentier passe simplement au-dessus des sections. */
     width: 68px;
     z-index: 4;
     pointer-events: none;
   }
-  .trace {
-    width: 68px;
-    height: 100%;
-    display: block;
-    /* Une ombre porte le tracé aussi bien sur le papier que sur le bleu nuit. */
-  }
+  .trace { width: 68px; height: 100%; display: block; }
   .trace-avenir {
     fill: none;
     stroke: var(--trait);
@@ -368,7 +349,6 @@
     vector-effect: non-scaling-stroke;
   }
 
-  /* --- Randonneuse, en surimpression au-dessus de la bande --- */
   .marcheuse {
     position: fixed;
     left: 0;
@@ -382,33 +362,17 @@
     filter: drop-shadow(0 2px 3px rgba(51,48,44,0.18));
   }
   .marcheuse svg { width: 100%; height: auto; display: block; }
-    fill: none;
-    stroke: var(--encre);
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .perso .visage,
-  .perso .oreiller { fill: var(--papier); }
-  .perso .toile { fill: var(--alpage); }
-  .perso .torse { fill: var(--sapin2); }
-  .perso .duvet { fill: var(--soleil); }
-  .perso .porte { fill: var(--sapin); }
-  .perso .sac { fill: var(--soleil); }
-  .perso .cheveux { fill: #d2691e; stroke: none; }
-  .perso .oeil { stroke-width: 1.3; }
-  /* Le buste tangue légèrement : c'est ce qui donne la démarche. */
+
+  /* La démarche : le buste tangue, les membres alternent. */
   .buste { animation: tangage 0.62s ease-in-out infinite alternate; }
   @keyframes tangage {
     from { transform: translateY(0.6px) rotate(-1.4deg); }
     to { transform: translateY(-0.6px) rotate(1.4deg); }
   }
-
   .jambe, .bras, .meche { transform-box: fill-box; }
   .jambe { transform-origin: 50% 0%; }
   .bras { transform-origin: 10% 10%; }
   .meche { transform-origin: 60% 0%; }
-
   .jambe-avant { animation: pas 0.62s ease-in-out infinite alternate; }
   .jambe-arriere { animation: pas 0.62s ease-in-out infinite alternate-reverse; }
   .bras { animation: balancier 0.62s ease-in-out infinite alternate-reverse; }
@@ -430,6 +394,20 @@
   .marcheuse.campe .jambe-arriere,
   .marcheuse.campe .bras,
   .marcheuse.campe .buste { animation: none; }
+
+  .camp {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 34px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    filter: drop-shadow(0 2px 3px rgba(51,48,44,0.16));
+  }
+  .camp svg { width: 100%; height: auto; display: block; }
+  .camp.plante { opacity: 1; }
 
   /* Fin de parcours : le couchage, au milieu bas de la page. */
   .dodo {
@@ -465,23 +443,10 @@
     100% { opacity: 0; transform: translate(5px, -12px); }
   }
 
-  .camp {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 34px;
-    z-index: 5;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    filter: drop-shadow(0 2px 3px rgba(51,48,44,0.16));
-  }
-  .camp svg { width: 100%; height: auto; display: block; }
-  .camp.plante { opacity: 1; }
-
   @media (prefers-reduced-motion: reduce) {
-    .jambe-avant, .jambe-arriere, .bras, .meche, .buste { animation: none; }
+    .jambe-avant, .jambe-arriere, .bras, .meche, .buste, .souffle, .zzz { animation: none; }
   }
+
 
   .son {
     position: fixed;
@@ -518,20 +483,29 @@
   }
   .son-astuce.visible { opacity: 0.9; }
 
-  /* Tant que la musique n'a pas pu démarrer, le bouton se signale. */
+  /* Repli visible : tant que la musique n'a pas pu démarrer, le bouton se
+     signale, puis une mention apparaît si le défilement a commencé sans son. */
   .son.attente { animation: pulse 1.8s ease-in-out infinite; }
   @keyframes pulse {
     0%, 100% { box-shadow: 0 0 0 0 rgba(226,181,59,0.5); }
     50% { box-shadow: 0 0 0 9px rgba(226,181,59,0); }
   }
 
-  .video {
-    width: 100%;
-    max-width: 340px;
-    border-radius: 6px;
-    border: 4px solid rgba(255,255,255,0.7);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-    margin-bottom: 0.6rem;
+
+  .bandeau-dev {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: var(--soleil);
+    color: var(--papier);
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    padding: 4px 0 3px;
+    pointer-events: none;
   }
 </style>
 </head>
@@ -630,7 +604,7 @@
     <p style="opacity:0.75; font-size:0.95rem;">Quand tu veux, tu choisis.</p>
     
 <svg class="divider" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
-  <!-- chaîne lointaine, bleutée par la distance -->
+  <!-- chaîne lointaine, adoucie par la distance -->
   <path d="M0,90 L0,44 L44,14 L76,34 L118,8 L158,36 L200,18 L244,42 L286,16 L330,38 L400,20 L400,90 Z" fill="#c9bda6"></path>
   <path d="M104,20 L118,8 L131,20 L123,17 L112,19 Z" fill="#fdf8ec"></path>
   <path d="M274,26 L286,16 L298,27 L290,24 L281,26 Z" fill="#fdf8ec"></path>
@@ -667,7 +641,7 @@
     <p style="opacity:0.7; font-size:0.9rem;">Fais défiler pour suivre le tracé →</p>
     
 <svg class="divider" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
-  <!-- chaîne lointaine, bleutée par la distance -->
+  <!-- chaîne lointaine, adoucie par la distance -->
   <path d="M0,90 L0,44 L44,14 L76,34 L118,8 L158,36 L200,18 L244,42 L286,16 L330,38 L400,20 L400,90 Z" fill="#c9bda6"></path>
   <path d="M104,20 L118,8 L131,20 L123,17 L112,19 Z" fill="#fdf8ec"></path>
   <path d="M274,26 L286,16 L298,27 L290,24 L281,26 Z" fill="#fdf8ec"></path>
@@ -718,56 +692,54 @@
       </svg>
     </div>
 
+
     <div class="route-step" data-idx="1">
       <div class="day-card">
-        
-  <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Vu_vers_le_Lac_Souliers_de_la_cr%C3%AAte_du_Tronchet_-_panoramio.jpg/1280px-Vu_vers_le_Lac_Souliers_de_la_cr%C3%AAte_du_Tronchet_-_panoramio.jpg" alt="Souliers → Chalp d'Arvieux" loading="lazy">
-  <div class="carte-voile"></div>
+        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Vu_vers_le_Lac_Souliers_de_la_cr%C3%AAte_du_Tronchet_-_panoramio.jpg/1280px-Vu_vers_le_Lac_Souliers_de_la_cr%C3%AAte_du_Tronchet_-_panoramio.jpg" alt="Souliers → Chalp d'Arvieux" loading="lazy">
+        <div class="carte-voile"></div>
         <div class="carte-corps">
-        <div class="day-num">Jour 1 · mise en jambes</div>
-        <div class="day-route">Souliers → Chalp d'Arvieux</div>
-        <p class="day-note">Par le col Tronchet, tranquille pour commencer.</p>
-        <div class="stats">
-          <div class="stat"><b>4h</b><span>Marche</span></div>
-          <div class="stat"><b>+510 m</b><span>D+</span></div>
-          <div class="stat"><b>-660 m</b><span>D-</span></div>
-        </div>
+          <div class="day-num">Jour 1 · mise en jambes</div>
+          <div class="day-route">Souliers → Chalp d'Arvieux</div>
+          <p class="day-note">Par le col Tronchet, tranquille pour commencer.</p>
+          <div class="stats">
+            <div class="stat"><b>4h</b><span>Marche</span></div>
+            <div class="stat"><b>+510 m</b><span>D+</span></div>
+            <div class="stat"><b>-660 m</b><span>D-</span></div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="route-step" data-idx="2">
       <div class="day-card">
-        
-  <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Arvieux_depuis_la_mont%C3%A9e_du_col_d%27Izoard.jpg/1280px-Arvieux_depuis_la_mont%C3%A9e_du_col_d%27Izoard.jpg" alt="Chalp d'Arvieux → Refuge de Furfande" loading="lazy">
-  <div class="carte-voile"></div>
+        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Arvieux_depuis_la_mont%C3%A9e_du_col_d%27Izoard.jpg/1280px-Arvieux_depuis_la_mont%C3%A9e_du_col_d%27Izoard.jpg" alt="Chalp d'Arvieux → Refuge de Furfande" loading="lazy">
+        <div class="carte-voile"></div>
         <div class="carte-corps">
-        <div class="day-num">Jour 2 · la belle montée</div>
-        <div class="day-route">Chalp d'Arvieux → Refuge de Furfande</div>
-        <p class="day-note">La seule vraie grimpette, avec un refuge perché en récompense.</p>
-        <div class="stats">
-          <div class="stat"><b>5h</b><span>Marche</span></div>
-          <div class="stat"><b>+820 m</b><span>D+</span></div>
-          <div class="stat"><b>-210 m</b><span>D-</span></div>
-        </div>
+          <div class="day-num">Jour 2 · la belle montée</div>
+          <div class="day-route">Chalp d'Arvieux → Refuge de Furfande</div>
+          <p class="day-note">La seule vraie grimpette, avec un refuge perché en récompense.</p>
+          <div class="stats">
+            <div class="stat"><b>5h</b><span>Marche</span></div>
+            <div class="stat"><b>+820 m</b><span>D+</span></div>
+            <div class="stat"><b>-210 m</b><span>D-</span></div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="route-step" data-idx="3">
       <div class="day-card">
-        
-  <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Vall%C3%A9e_de_Ceillac.jpg/1280px-Vall%C3%A9e_de_Ceillac.jpg" alt="Refuge de Furfande → Bramousse" loading="lazy">
-  <div class="carte-voile"></div>
+        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Vall%C3%A9e_de_Ceillac.jpg/1280px-Vall%C3%A9e_de_Ceillac.jpg" alt="Refuge de Furfande → Bramousse" loading="lazy">
+        <div class="carte-voile"></div>
         <div class="carte-corps">
-        <div class="day-num">Jour 3 · la grande descente</div>
-        <div class="day-route">Refuge de Furfande → Bramousse</div>
-        <p class="day-note">Par le col Lauze, puis on redescend tranquillement dans la vallée.</p>
-        <div class="stats">
-          <div class="stat"><b>4h30</b><span>Marche</span></div>
-          <div class="stat"><b>+210 m</b><span>D+</span></div>
-          <div class="stat"><b>-1000 m</b><span>D-</span></div>
-        </div>
+          <div class="day-num">Jour 3 · la grande descente</div>
+          <div class="day-route">Refuge de Furfande → Bramousse</div>
+          <p class="day-note">Par le col Lauze, puis on redescend tranquillement dans la vallée.</p>
+          <div class="stats">
+            <div class="stat"><b>4h30</b><span>Marche</span></div>
+            <div class="stat"><b>+210 m</b><span>D+</span></div>
+            <div class="stat"><b>-1000 m</b><span>D-</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -784,9 +756,268 @@
     <p class="signature">À très vite dans le Queyras.</p>
   </section>
 
-  
-
 <script>
+
+
+
+
+(function () {
+  var canvas = document.getElementById("feu");
+  if (!canvas || !canvas.getContext) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var ctx = canvas.getContext("2d");
+  var COULEURS = ["#c1440e", "#e2b53b", "#c4551a", "#2f5233", "#e9c39c"];
+  var particules = [], fusees = [], dpr = window.devicePixelRatio || 1;
+  var largeur = 0, hauteur = 0;
+
+  function dimensionner() {
+    var r = canvas.getBoundingClientRect();
+    largeur = r.width; hauteur = r.height;
+    canvas.width = largeur * dpr;
+    canvas.height = hauteur * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  dimensionner();
+  window.addEventListener("resize", dimensionner);
+
+  function lancer() {
+    fusees.push({
+      x: largeur * (0.18 + Math.random() * 0.64),
+      y: hauteur,
+      vy: -(hauteur / 78) * (0.85 + Math.random() * 0.4),
+      cible: hauteur * (0.16 + Math.random() * 0.24),
+      couleur: COULEURS[Math.floor(Math.random() * COULEURS.length)]
+    });
+  }
+
+  function exploser(x, y, couleur) {
+    var n = 34 + Math.floor(Math.random() * 16);
+    for (var i = 0; i < n; i++) {
+      var a = (Math.PI * 2 * i) / n + Math.random() * 0.2;
+      var v = 1.4 + Math.random() * 2.6;
+      particules.push({
+        x: x, y: y,
+        vx: Math.cos(a) * v,
+        vy: Math.sin(a) * v,
+        vie: 1,
+        couleur: Math.random() < 0.72 ? couleur : COULEURS[Math.floor(Math.random() * COULEURS.length)]
+      });
+    }
+  }
+
+  var debut = null, fini = false;
+  var DUREE = 7200;      // durée de la fête
+  var prochaine = 400;   // date du prochain tir
+
+  function boucle(t) {
+    if (debut === null) debut = t;
+    var age = t - debut;
+    ctx.clearRect(0, 0, largeur, hauteur);
+
+    if (age > prochaine && age < DUREE) {
+      lancer();
+      prochaine = age + 700 + Math.random() * 700;
+    }
+
+    fusees = fusees.filter(function (f) {
+      f.y += f.vy;
+      f.vy += 0.045;
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = f.couleur;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+      if (f.y <= f.cible || f.vy >= 0) { exploser(f.x, f.y, f.couleur); return false; }
+      return true;
+    });
+
+    particules = particules.filter(function (p) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.985;
+      p.vy = p.vy * 0.985 + 0.055;
+      p.vie -= 0.016;
+      if (p.vie <= 0) return false;
+      ctx.globalAlpha = Math.max(0, p.vie);
+      ctx.fillStyle = p.couleur;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.1, 0, Math.PI * 2);
+      ctx.fill();
+      return true;
+    });
+
+    ctx.globalAlpha = 1;
+    if (age > DUREE && !particules.length && !fusees.length) {
+      if (!fini) { fini = true; ctx.clearRect(0, 0, largeur, hauteur); }
+      return; // on arrête complètement l'animation
+    }
+    requestAnimationFrame(boucle);
+  }
+  requestAnimationFrame(boucle);
+})();
+
+
+
+(function () {
+  var waypoints = [{"x":10,"y":120,"label":"Souliers"},{"x":112,"y":75,"label":"Arvieux"},{"x":212,"y":92,"label":"Furfande"},{"x":300,"y":112,"label":"Bramousse"}];
+  var progressPath = document.getElementById("trailProgress");
+  var marker = document.getElementById("hikerMarker");
+  var waypointEls = document.querySelectorAll(".waypoint");
+  var total = progressPath.getTotalLength();
+  progressPath.style.strokeDasharray = total;
+
+  // Fraction du tracé parcourue à chaque point clé.
+  var fractions = [0.02, 0.36, 0.68, 1];
+
+  function setStep(idx) {
+    var w = waypoints[idx];
+    marker.setAttribute("transform", "translate(" + w.x + "," + w.y + ")");
+    progressPath.style.strokeDashoffset = total * (1 - fractions[idx]);
+    waypointEls.forEach(function (el) {
+      el.classList.toggle("active", Number(el.dataset.idx) === idx);
+    });
+  }
+
+  setStep(0);
+
+  var steps = document.querySelectorAll(".route-step");
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setStep(Number(entry.target.dataset.idx));
+      }
+    });
+  }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
+
+  steps.forEach(function (s) { observer.observe(s); });
+})();
+
+
+
+// La randonneuse descend le sentier au rythme du défilement, plante sa tente
+// aux étapes, puis rejoint le bas de page pour dormir.
+(function () {
+  var marcheuse = document.getElementById("marcheuse");
+  var camp = document.getElementById("camp");
+  if (!marcheuse || !camp) return;
+
+  var SORTIE = 0.07;   // fraction de scroll pendant laquelle elle sort du "30"
+  var APPROCHE = 0.88; // à partir d'ici, elle converge vers le bas de page
+  var COUCHEE = 0.985; // au-delà, elle est dans son duvet
+  var etapes = [];
+  var depart = null;   // position du "30", son point d'apparition
+  var dodo = document.getElementById("dodo");
+  var trace = document.getElementById("tracePasse");
+  var longueurTrace = 0;
+
+  // Convertit une fraction de parcours en position à l'écran, en suivant
+  // la courbe du sentier. Le viewBox fait 1000 de haut, étiré sur la fenêtre.
+  function pointSur(f) {
+    if (!trace || !longueurTrace) {
+      return { x: 34, y: 0.1 * window.innerHeight + f * window.innerHeight * 0.72 };
+    }
+    var p = trace.getPointAtLength(Math.max(0, Math.min(1, f)) * longueurTrace);
+    return { x: p.x, y: p.y * (window.innerHeight / 1000) };
+  }
+
+  function defilement() {
+    var doc = document.documentElement;
+    var total = doc.scrollHeight - window.innerHeight;
+    var y = window.scrollY || doc.scrollTop || 0;
+    return total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
+  }
+
+  function mesurer() {
+    if (trace) {
+      longueurTrace = trace.getTotalLength();
+      trace.style.strokeDasharray = longueurTrace;
+      trace.style.strokeDashoffset = longueurTrace;
+    }
+    // Point de départ : le "30", mesuré page en haut.
+    var trente = document.getElementById("grosTrente");
+    if (trente) {
+      var r = trente.getBoundingClientRect();
+      depart = {
+        x: r.left + r.width / 2 - 26 + window.scrollX,
+        y: r.top + r.height * 0.55 + window.scrollY
+      };
+    }
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    etapes = [].slice.call(document.querySelectorAll(".route-step")).map(function (el) {
+      var r = el.getBoundingClientRect();
+      var centre = r.top + window.scrollY + r.height / 2 - window.innerHeight / 2;
+      return total > 0 ? Math.min(1, Math.max(0, centre / total)) : 0;
+    });
+    placer();
+  }
+
+  function placer() {
+    var f = defilement();
+    var largeur = window.innerWidth;
+    var hauteur = window.innerHeight;
+    var taille = marcheuse.offsetWidth || 52;
+
+    // Elle se place exactement sur le tracé, et le chemin parcouru se dessine.
+    var pos = pointSur(f);
+    var suivant = pointSur(Math.min(1, f + 0.012));
+    var x = pos.x - taille / 2;
+    var yy = pos.y - 56;
+    var sens = suivant.x >= pos.x ? 1 : -1;
+    if (trace && longueurTrace) {
+      trace.style.strokeDashoffset = longueurTrace * (1 - f);
+    }
+
+    // Bivouac : au niveau d'une étape, elle s'arrête près de sa tente.
+    var proche = etapes.some(function (p) { return Math.abs(f - p) < 0.035; });
+    if (proche) {
+      var surSentier = Math.max(2, Math.min(34, pos.x - 17));
+      camp.style.transform = "translate(" + surSentier + "px," + (pos.y - 6) + "px)";
+      x = surSentier + 30;
+      sens = -1; // tournée vers la tente
+    }
+
+    // Apparition : invisible en haut de page, elle émerge du "30".
+    var echelle = 1;
+    var opacite = 1;
+    if (f < SORTIE && depart) {
+      var t = f / SORTIE;              // 0 = dans le "30", 1 = sur le sentier
+      var doux = t * t * (3 - 2 * t);  // adoucit le trajet
+      x = depart.x + (x - depart.x) * doux;
+      yy = depart.y + (yy - depart.y) * doux;
+      echelle = 0.25 + 0.75 * doux;
+      opacite = Math.min(1, t * 2.2);
+    }
+
+    // Fin : elle rejoint le milieu bas puis cède la place au couchage.
+    var dort = f >= COUCHEE;
+    if (f > APPROCHE && depart) {
+      var ta = Math.min(1, (f - APPROCHE) / (COUCHEE - APPROCHE));
+      var lisse = ta * ta * (3 - 2 * ta);
+      var cible = largeur / 2 + 29 - taille / 2;
+      x = x + (cible - x) * lisse;
+      yy = yy + (hauteur * 0.8 - yy) * lisse;
+      sens = 1;
+      opacite = Math.min(opacite, 1 - lisse); // elle s'efface en se couchant
+      proche = false;
+    }
+    if (dodo) dodo.classList.toggle("dort", dort);
+    if (dort) { camp.classList.remove("plante"); }
+
+    marcheuse.style.opacity = opacite;
+    marcheuse.style.transform =
+      "translate(" + x + "px," + yy + "px) scale(" + echelle + ") scaleX(" + sens + ")";
+    marcheuse.classList.toggle("campe", proche);
+    camp.classList.toggle("plante", proche);
+  }
+
+  window.addEventListener("scroll", placer, { passive: true });
+  window.addEventListener("resize", mesurer);
+  window.addEventListener("load", mesurer);
+  mesurer();
+})();
+
+
 // "Joyeux anniversaire" synthetise a la volee (melodie du domaine public).
 // Les navigateurs interdisent le son sans geste utilisateur : on demarre
 // donc au premier toucher ou defilement.
@@ -924,264 +1155,7 @@
   });
 })();
 
-// Feu d'artifice d'accueil : quelques gerbes au-dessus du "30", puis le
-// canvas s'efface. Rien ne tourne en fond une fois la fete passee.
-(function () {
-  var canvas = document.getElementById("feu");
-  if (!canvas || !canvas.getContext) return;
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  var ctx = canvas.getContext("2d");
-  var COULEURS = ["#c1440e", "#e2b53b", "#c4551a", "#2f5233", "#e9c39c"];
-  var particules = [], fusees = [], dpr = window.devicePixelRatio || 1;
-  var largeur = 0, hauteur = 0;
-
-  function dimensionner() {
-    var r = canvas.getBoundingClientRect();
-    largeur = r.width; hauteur = r.height;
-    canvas.width = largeur * dpr;
-    canvas.height = hauteur * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  dimensionner();
-  window.addEventListener("resize", dimensionner);
-
-  function lancer() {
-    fusees.push({
-      x: largeur * (0.18 + Math.random() * 0.64),
-      y: hauteur,
-      vy: -(hauteur / 78) * (0.85 + Math.random() * 0.4),
-      cible: hauteur * (0.16 + Math.random() * 0.24),
-      couleur: COULEURS[Math.floor(Math.random() * COULEURS.length)]
-    });
-  }
-
-  function exploser(x, y, couleur) {
-    var n = 34 + Math.floor(Math.random() * 16);
-    for (var i = 0; i < n; i++) {
-      var a = (Math.PI * 2 * i) / n + Math.random() * 0.2;
-      var v = 1.4 + Math.random() * 2.6;
-      particules.push({
-        x: x, y: y,
-        vx: Math.cos(a) * v,
-        vy: Math.sin(a) * v,
-        vie: 1,
-        couleur: Math.random() < 0.72 ? couleur : COULEURS[Math.floor(Math.random() * COULEURS.length)]
-      });
-    }
-  }
-
-  var debut = null, fini = false;
-  var DUREE = 7200;      // durée de la fête
-  var prochaine = 400;   // date du prochain tir
-
-  function boucle(t) {
-    if (debut === null) debut = t;
-    var age = t - debut;
-    ctx.clearRect(0, 0, largeur, hauteur);
-
-    if (age > prochaine && age < DUREE) {
-      lancer();
-      prochaine = age + 700 + Math.random() * 700;
-    }
-
-    fusees = fusees.filter(function (f) {
-      f.y += f.vy;
-      f.vy += 0.045;
-      ctx.globalAlpha = 0.9;
-      ctx.fillStyle = f.couleur;
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, 2, 0, Math.PI * 2);
-      ctx.fill();
-      if (f.y <= f.cible || f.vy >= 0) { exploser(f.x, f.y, f.couleur); return false; }
-      return true;
-    });
-
-    particules = particules.filter(function (p) {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vx *= 0.985;
-      p.vy = p.vy * 0.985 + 0.055;
-      p.vie -= 0.016;
-      if (p.vie <= 0) return false;
-      ctx.globalAlpha = Math.max(0, p.vie);
-      ctx.fillStyle = p.couleur;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 2.1, 0, Math.PI * 2);
-      ctx.fill();
-      return true;
-    });
-
-    ctx.globalAlpha = 1;
-    if (age > DUREE && !particules.length && !fusees.length) {
-      if (!fini) { fini = true; ctx.clearRect(0, 0, largeur, hauteur); }
-      return; // on arrête complètement l'animation
-    }
-    requestAnimationFrame(boucle);
-  }
-  requestAnimationFrame(boucle);
-})();
-
-// La randonneuse descend le sentier au rythme du défilement, et plante
-// sa tente quand elle arrive au niveau d'une étape.
-(function () {
-  var marcheuse = document.getElementById("marcheuse");
-  var camp = document.getElementById("camp");
-  if (!marcheuse || !camp) return;
-
-  var SORTIE = 0.07;   // fraction de scroll pendant laquelle elle sort du "30"
-  var APPROCHE = 0.88; // à partir d'ici, elle converge vers le bas de page
-  var COUCHEE = 0.985; // au-delà, elle est dans son duvet
-  var etapes = [];
-  var depart = null;   // position du "30", son point d'apparition
-  var dodo = document.getElementById("dodo");
-  var trace = document.getElementById("tracePasse");
-  var longueurTrace = 0;
-
-  // Convertit une fraction de parcours en position à l'écran, en suivant
-  // la courbe du sentier. Le viewBox fait 1000 de haut, étiré sur la fenêtre.
-  function pointSur(f) {
-    if (!trace || !longueurTrace) {
-      return { x: 34, y: 0.1 * window.innerHeight + f * window.innerHeight * 0.72 };
-    }
-    var p = trace.getPointAtLength(Math.max(0, Math.min(1, f)) * longueurTrace);
-    return { x: p.x, y: p.y * (window.innerHeight / 1000) };
-  }
-
-  function defilement() {
-    var doc = document.documentElement;
-    var total = doc.scrollHeight - window.innerHeight;
-    var y = window.scrollY || doc.scrollTop || 0;
-    return total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
-  }
-
-  function mesurer() {
-    if (trace) {
-      longueurTrace = trace.getTotalLength();
-      trace.style.strokeDasharray = longueurTrace;
-      trace.style.strokeDashoffset = longueurTrace;
-    }
-    // Point de départ : le "30" doré, mesuré page en haut.
-    var trente = document.getElementById("grosTrente");
-    if (trente) {
-      var r = trente.getBoundingClientRect();
-      depart = {
-        x: r.left + r.width / 2 - 26 + window.scrollX,
-        y: r.top + r.height * 0.55 + window.scrollY
-      };
-    }
-    var total = document.documentElement.scrollHeight - window.innerHeight;
-    etapes = [].slice.call(document.querySelectorAll(".route-step")).map(function (el) {
-      var r = el.getBoundingClientRect();
-      var centre = r.top + window.scrollY + r.height / 2 - window.innerHeight / 2;
-      return total > 0 ? Math.min(1, Math.max(0, centre / total)) : 0;
-    });
-    placer();
-  }
-
-  function placer() {
-    var f = defilement();
-    var largeur = window.innerWidth;
-    var hauteur = window.innerHeight;
-    var taille = marcheuse.offsetWidth || 52;
-
-    // Elle se place exactement sur le tracé du sentier, et le chemin
-    // parcouru se dessine derrière elle.
-    var pos = pointSur(f);
-    var suivant = pointSur(Math.min(1, f + 0.012));
-    var x = pos.x - taille / 2;
-    var yy = pos.y - 56;
-    var sens = suivant.x >= pos.x ? 1 : -1;
-    if (trace && longueurTrace) {
-      trace.style.strokeDashoffset = longueurTrace * (1 - f);
-    }
-
-    // Bivouac : au niveau d'une étape, elle s'arrête et rejoint le sentier
-    // pour se tenir à côté de sa tente, qui reste dans la colonne.
-    var proche = etapes.some(function (p) { return Math.abs(f - p) < 0.035; });
-    if (proche) {
-      // La tente se plante sur le sentier, la marcheuse se tient à côté.
-      var surSentier = Math.max(2, Math.min(34, pos.x - 17));
-      camp.style.transform = "translate(" + surSentier + "px," + (pos.y - 6) + "px)";
-      x = surSentier + 30;
-      sens = -1; // tournée vers la tente
-    }
-
-    // Apparition : invisible en haut de page, elle émerge du "30" dès que
-    // le défilement commence, puis rejoint le sentier.
-    var echelle = 1;
-    var opacite = 1;
-    if (f < SORTIE && depart) {
-      var t = f / SORTIE;              // 0 = dans le "30", 1 = sur le sentier
-      var doux = t * t * (3 - 2 * t);  // adoucit le trajet
-      x = depart.x + (x - depart.x) * doux;
-      yy = depart.y + (yy - depart.y) * doux;
-      echelle = 0.25 + 0.75 * doux;
-      opacite = Math.min(1, t * 2.2);
-    }
-
-    // Fin de parcours : elle quitte le sentier, rejoint le milieu bas de
-    // page, puis cède la place au couchage.
-    var dort = f >= COUCHEE;
-    if (f > APPROCHE && depart) {
-      var ta = Math.min(1, (f - APPROCHE) / (COUCHEE - APPROCHE));
-      var lisse = ta * ta * (3 - 2 * ta);
-      var cible = largeur / 2 + 29 - taille / 2;
-      x = x + (cible - x) * lisse;
-      yy = yy + (hauteur * 0.8 - yy) * lisse;
-      sens = 1;
-      opacite = Math.min(opacite, 1 - lisse); // elle s'efface en se couchant
-      proche = false;
-    }
-    if (dodo) dodo.classList.toggle("dort", dort);
-    if (dort) { camp.classList.remove("plante"); }
-
-    marcheuse.style.opacity = opacite;
-    marcheuse.style.transform =
-      "translate(" + x + "px," + yy + "px) scale(" + echelle + ") scaleX(" + sens + ")";
-    marcheuse.classList.toggle("campe", proche);
-    camp.classList.toggle("plante", proche);
-  }
-
-  window.addEventListener("scroll", placer, { passive: true });
-  window.addEventListener("resize", mesurer);
-  window.addEventListener("load", mesurer);
-  mesurer();
-})();
-
-(function () {
-  var waypoints = [{"x":10,"y":120,"label":"Souliers"},{"x":112,"y":75,"label":"Arvieux"},{"x":212,"y":92,"label":"Furfande"},{"x":300,"y":112,"label":"Bramousse"}];
-  var progressPath = document.getElementById("trailProgress");
-  var marker = document.getElementById("hikerMarker");
-  var waypointEls = document.querySelectorAll(".waypoint");
-  var total = progressPath.getTotalLength();
-  progressPath.style.strokeDasharray = total;
-
-  // Fraction du tracé parcourue à chaque point clé (approx, basé sur l'ordre des points).
-  var fractions = [0.02, 0.36, 0.68, 1];
-
-  function setStep(idx) {
-    var w = waypoints[idx];
-    marker.setAttribute("transform", "translate(" + w.x + "," + w.y + ")");
-    progressPath.style.strokeDashoffset = total * (1 - fractions[idx]);
-    waypointEls.forEach(function (el) {
-      el.classList.toggle("active", Number(el.dataset.idx) === idx);
-    });
-  }
-
-  setStep(0);
-
-  var steps = document.querySelectorAll(".route-step");
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        setStep(Number(entry.target.dataset.idx));
-      }
-    });
-  }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
-
-  steps.forEach(function (s) { observer.observe(s); });
-})();
 </script>
 </body>
 </html>

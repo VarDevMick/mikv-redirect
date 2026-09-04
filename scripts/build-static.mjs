@@ -2,7 +2,7 @@
 //   docs/30/index.html -> https://mikv.io/30  (gelée, visée par le QR imprimé)
 //   docs/31/index.html -> https://mikv.io/31  (page de travail)
 import { PAGE_30_HTML } from "../src/page-30.js";
-import { PAGE_31_HTML } from "../src/page-31.js";
+import { PAGE_31_HTML } from "../src/pages/page-31.js";
 import { writeFileSync, mkdirSync } from "node:fs";
 
 const DOMAINE = "mikv.io";
