@@ -214,8 +214,8 @@ en 301 vers `/30/` et sert la page — vérifié de bout en bout.
 
 ## Dette connue
 
-- `src/page-30.js` et `src/page-31.js` sont deux fichiers monolithiques de
-  ~1200 lignes, dupliqués. C'est l'objet du découpage à venir.
+- `src/page-30.js` reste monolithique (~1200 lignes) : c'est voulu, la page
+  est gelée. `/31` a été découpée en composants sous `src/components/`.
 - `src/index.js` et `wrangler.toml` sont les reliquats de la première
   tentative d'hébergement sur Cloudflare Workers, abandonnée. Non utilisés.
 - `.wrangler/` traîne dans le dépôt sans être ignoré.
