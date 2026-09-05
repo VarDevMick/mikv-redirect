@@ -12,7 +12,7 @@ export const html = `
   <button class="son" id="btnSon" type="button" aria-label="Couper ou relancer la musique">&#9835;</button>
   <div class="son-astuce" id="astuceSon">Appuie pour la musique</div>`;
 
-export const css = `
+export const css = (p) => `
   .son {
     position: fixed;
     top: 14px;
@@ -21,8 +21,8 @@ export const css = `
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 1.5px solid rgba(51,48,44,0.35);
-    background: rgba(253,251,246,0.85);
+    border: 1.5px solid ${p.boutonBord};
+    background: ${p.boutonFond};
     color: var(--encre);
     font-size: 1.1rem;
     line-height: 1;
@@ -39,7 +39,7 @@ export const css = `
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: var(--fond);
-    background: rgba(51,48,44,0.8);
+    background: ${p.astuceFond};
     padding: 5px 9px;
     border-radius: 12px;
     opacity: 0;

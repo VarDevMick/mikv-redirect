@@ -5,13 +5,15 @@
 // est celle du composant : mêmes classes `jambe`, `bras`, `buste`, `meche`,
 // donc la démarche fonctionne sans une ligne de code en plus.
 
-const MANTEAU_MERE = "#7d4a72";   // bruyère
-const MANTEAU_FILLE = "#2f4f4f";  // vert sombre
-const PEAU = "#e9c9a8";
-const CHEVEUX_MERE = "#b9b4ae";   // cheveux gris clair
-const CHEVEUX_FILLE = "#5a4632";  // châtain
-const JAMBE = "#4a4a52";
-const CHAUSSURE = "#2b2b33";
+// Sur fond de nuit, les vêtements sont éclaircis : des tons sombres se
+// perdraient dans le décor.
+const MANTEAU_MERE = "#b083c9";   // bruyère claire
+const MANTEAU_FILLE = "#5f9ea0";  // bleu-vert clair
+const PEAU = "#f0d5b8";
+const CHEVEUX_MERE = "#d8d4cd";   // cheveux gris clair
+const CHEVEUX_FILLE = "#a67c52";  // châtain éclairci
+const JAMBE = "#5a6478";
+const CHAUSSURE = "#39404f";
 
 // Elles marchent de profil, la fille devant, la mère juste derrière.
 export const MARCHEUR = `
@@ -56,8 +58,8 @@ export const ETAPE = `
 <svg viewBox="0 0 34 30" aria-hidden="true">
   <path d="M12,28 L22,28" stroke="${CHAUSSURE}" stroke-width="2.2" stroke-linecap="round"></path>
   <path d="M17,28 L17,10" stroke="${JAMBE}" stroke-width="2.4" stroke-linecap="round"></path>
-  <path d="M11,10 L23,10 L20,4 L14,4 Z" fill="${MANTEAU_MERE}"></path>
-  <rect x="14.5" y="5.5" width="5" height="3.5" fill="#c98a2e"></rect>
+  <path d="M11,10 L23,10 L20,4 L14,4 Z" fill="#39404f"></path>
+  <rect x="14.5" y="5.5" width="5" height="3.5" fill="#e8b866"></rect>
   <circle cx="17" cy="2.6" r="1.6" fill="${JAMBE}"></circle>
 </svg>`;
 
@@ -68,15 +70,15 @@ export const REPOS = `
   <g class="souffle">
     <!-- le plaid posé sur le banc -->
     <path d="M28,46 q-8,0 -8,-9 q0,-9 9,-9 l60,0 q9,0 9,9 q0,9 -9,9 z" fill="${MANTEAU_MERE}"></path>
-    <path d="M38,28 L38,46 M52,28 L52,46 M66,28 L66,46 M80,28 L80,46" stroke="#5c3553" stroke-width="1.2"></path>
-    <path d="M20,34 L98,34 M20,40 L98,40" stroke="#5c3553" stroke-width="1.2"></path>
+    <path d="M38,28 L38,46 M52,28 L52,46 M66,28 L66,46 M80,28 L80,46" stroke="#7d5a92" stroke-width="1.2"></path>
+    <path d="M20,34 L98,34 M20,40 L98,40" stroke="#7d5a92" stroke-width="1.2"></path>
     <!-- deux tasses -->
-    <path d="M104,46 q-6,0 -6,-7 l0,-5 l13,0 l0,5 q0,7 -7,7 z" fill="#f6f5f2" stroke="${JAMBE}" stroke-width="1.4"></path>
-    <path d="M111,36 q5,0 5,4 q0,4 -5,4" fill="none" stroke="${JAMBE}" stroke-width="1.4"></path>
-    <path d="M122,46 q-5,0 -5,-6 l0,-4 l11,0 l0,4 q0,6 -6,6 z" fill="#f6f5f2" stroke="${JAMBE}" stroke-width="1.4"></path>
+    <path d="M104,46 q-6,0 -6,-7 l0,-5 l13,0 l0,5 q0,7 -7,7 z" fill="#e9e7e0" stroke="${CHAUSSURE}" stroke-width="1.4"></path>
+    <path d="M111,36 q5,0 5,4 q0,4 -5,4" fill="none" stroke="${CHAUSSURE}" stroke-width="1.4"></path>
+    <path d="M122,46 q-5,0 -5,-6 l0,-4 l11,0 l0,4 q0,6 -6,6 z" fill="#e9e7e0" stroke="${CHAUSSURE}" stroke-width="1.4"></path>
   </g>
   <!-- la vapeur qui monte -->
-  <text class="zzz zzz1" x="100" y="24" font-family="Georgia, serif" font-size="11" fill="#8a8a93">~</text>
-  <text class="zzz zzz2" x="110" y="18" font-family="Georgia, serif" font-size="9" fill="#8a8a93">~</text>
-  <text class="zzz zzz3" x="119" y="13" font-family="Georgia, serif" font-size="7" fill="#8a8a93">~</text>
+  <text class="zzz zzz1" x="100" y="24" font-family="Georgia, serif" font-size="11" fill="#8b97ad">~</text>
+  <text class="zzz zzz2" x="110" y="18" font-family="Georgia, serif" font-size="9" fill="#8b97ad">~</text>
+  <text class="zzz zzz3" x="119" y="13" font-family="Georgia, serif" font-size="7" fill="#8b97ad">~</text>
 </svg>`;

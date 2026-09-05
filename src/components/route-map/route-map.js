@@ -23,12 +23,11 @@ ${fond}
 ${cartes}
   </section>`;
 
-export const css = `
+export const css = (fondEtapes) => `
   /* F-09 · Les étapes ont leur propre fond : teinte plus soutenue et courbes
      de niveau, pour qu'on les distingue au premier coup d'œil. */
   .route-section {
-    background-color: #efe3ca;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23c2ab7e' stroke-width='1.1' opacity='0.55'%3E%3Cpath d='M-10,24 C30,8 74,40 160,18'/%3E%3Cpath d='M-10,52 C34,34 78,68 160,44'/%3E%3Cpath d='M-10,80 C28,64 82,96 160,72'/%3E%3Cpath d='M-10,108 C36,92 76,124 160,100'/%3E%3Cpath d='M-10,136 C30,120 80,150 160,128'/%3E%3C/g%3E%3C/svg%3E");
+${fondEtapes}
     color: var(--encre);
   }
   .route-map-sticky {
@@ -44,13 +43,13 @@ export const css = `
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
+  .trail-bg { stroke: rgba(var(--plan-rgb), 0.45); stroke-width: 4; stroke-dasharray: 3 7; }
   .trail-progress {
     stroke: var(--accent);
     stroke-width: 5;
     transition: stroke-dashoffset 0.5s ease;
   }
-  .waypoint circle { fill: var(--fond-2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint circle { fill: var(--fond-2); stroke: rgba(var(--plan-rgb), 0.55); stroke-width: 2.5; transition: all 0.3s ease; }
   .waypoint.active circle { fill: var(--accent); stroke: var(--accent); r: 7; }
   .waypoint text {
     font-family: Georgia, serif;
@@ -61,11 +60,11 @@ export const css = `
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
   /* Fond de plan : rues, parcs et reliefs, sous le tracé. */
-  .plan-rue { fill: none; stroke: rgba(43,43,51,0.32); stroke-width: 1.6; stroke-linecap: round; }
-  .plan-rue-fine { fill: none; stroke: rgba(43,43,51,0.18); stroke-width: 1; stroke-linecap: round; }
-  .plan-parc { fill: rgba(47,79,79,0.16); stroke: rgba(47,79,79,0.3); stroke-width: 1; }
-  .plan-eau { fill: none; stroke: rgba(70,110,140,0.45); stroke-width: 2; stroke-linecap: round; }
-  .plan-relief { fill: rgba(43,43,51,0.09); stroke: rgba(43,43,51,0.22); stroke-width: 1; }
+  .plan-rue { fill: none; stroke: rgba(var(--plan-rgb), 0.32); stroke-width: 1.6; stroke-linecap: round; }
+  .plan-rue-fine { fill: none; stroke: rgba(var(--plan-rgb), 0.18); stroke-width: 1; stroke-linecap: round; }
+  .plan-parc { fill: rgba(var(--plan-rgb), 0.10); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
+  .plan-eau { fill: none; stroke: rgba(var(--eau-rgb), 0.55); stroke-width: 2; stroke-linecap: round; }
+  .plan-relief { fill: rgba(var(--plan-rgb), 0.09); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
   .plan-legende {
     font-family: Georgia, serif;
     font-size: 8px;

@@ -26,11 +26,12 @@ import * as music from "../components/music/music.js";
 const styles = [
   tokens.css(theme.palette),
   layout.css, scenery.css, hero.css, story.css,
-  routeMap.css, stepCard.css, trail.css, music.css,
+  routeMap.css(theme.palette.fondEtapes), stepCard.css, trail.css,
+  music.css(theme.palette),
 ].join("\n");
 
 const scripts = [
-  hero.js,
+  hero.js(theme.palette.feu),
   routeMap.js(REPERES, FRACTIONS),
   trail.js,
   music.js,

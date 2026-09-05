@@ -88,14 +88,14 @@ export const css = `
 
 // F-12 · Le feu d'artifice s'arrête pour de bon après la fête : pas de
 // boucle qui tournerait en fond et viderait la batterie.
-export const js = `
+export const js = (couleurs) => `
 (function () {
   var canvas = document.getElementById("feu");
   if (!canvas || !canvas.getContext) return;
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var ctx = canvas.getContext("2d");
-  var COULEURS = ["#c1440e", "#e2b53b", "#c4551a", "#2f5233", "#e9c39c"];
+  var COULEURS = ${JSON.stringify(couleurs)};
   var particules = [], fusees = [], dpr = window.devicePixelRatio || 1;
   var largeur = 0, hauteur = 0;
 

@@ -12,6 +12,8 @@ export const css = (palette) => `
     --accent-fonce: ${palette.accentFonce};
     --accent-clair: ${palette.accentClair};
     --parcouru: ${palette.parcouru};
+    --plan-rgb: ${palette.planRgb};
+    --eau-rgb: ${palette.eauRgb};
   }
   * { box-sizing: border-box; }
 

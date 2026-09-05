@@ -12,11 +12,13 @@
 const CHEMINEE =
   "M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z";
 
-const PIERRE_LOIN = "#c6c9cc";
-const PIERRE = "#8f939b";
-const PIERRE_PROCHE = "#a8acb3";
-const TOIT = "#5f636b";
-const FENETRE = "#c98a2e";
+// Valeurs de nuit : les plans s'assombrissent en s'approchant, à l'inverse
+// d'un paysage de jour. Seules les fenêtres éclairent.
+const PIERRE_LOIN = "#2a3a58";
+const PIERRE = "#1c2a44";
+const PIERRE_PROCHE = "#16233a";
+const TOIT = "#0e1729";
+const FENETRE = "#e8b866";
 
 // Séparation entre deux sections : quatre plans successifs, le plus proche
 // prenant la couleur de la section suivante pour faire la jointure.
@@ -71,7 +73,7 @@ export const chateau = `
         <rect x="140" y="96" width="5" height="7"></rect>
       </g>
       <path class="d-trait" d="M126,64 L126,42"></path>
-      <path d="M126,42 L146,48 L126,54 Z" fill="#7d4a72"></path>
+      <path d="M126,42 L146,48 L126,54 Z" fill="#b083c9"></path>
 
       <!-- la vieille ville, en contrebas vers l'est -->
       <path d="M0,240 L0,206 L26,206 L26,182 L52,182 L52,196 L78,196 L78,172 L100,172 L100,190 L126,190 L126,178 L152,178 L152,198 L178,198 L178,184 L196,184 L196,170 L206,132 L216,170 L216,192 L242,192 L242,176 L268,176 L268,200 L294,200 L294,186 L320,186 L320,202 L346,202 L346,190 L372,190 L372,204 L400,204 L400,240 Z" fill="${PIERRE_PROCHE}"></path>

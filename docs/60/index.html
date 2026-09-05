@@ -7,15 +7,17 @@
 <style>
 
   :root {
-    --fond: #f6f5f2;
-    --fond-2: #eeedea;
-    --fond-3: #e6e6e6;
-    --encre: #2b2b33;
-    --trait: #6e6e78;
-    --accent: #7d4a72;
-    --accent-fonce: #2f4f4f;
-    --accent-clair: #c98a2e;
-    --parcouru: #7d4a72;
+    --fond: #101a2e;
+    --fond-2: #16233c;
+    --fond-3: #1b2a48;
+    --encre: #e9e7e0;
+    --trait: #8b97ad;
+    --accent: #e0913f;
+    --accent-fonce: #b083c9;
+    --accent-clair: #e8b866;
+    --parcouru: #e0913f;
+    --plan-rgb: 233,231,224;
+    --eau-rgb: 126,168,206;
   }
   * { box-sizing: border-box; }
 
@@ -198,8 +200,8 @@
   /* F-09 · Les étapes ont leur propre fond : teinte plus soutenue et courbes
      de niveau, pour qu'on les distingue au premier coup d'œil. */
   .route-section {
-    background-color: #efe3ca;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23c2ab7e' stroke-width='1.1' opacity='0.55'%3E%3Cpath d='M-10,24 C30,8 74,40 160,18'/%3E%3Cpath d='M-10,52 C34,34 78,68 160,44'/%3E%3Cpath d='M-10,80 C28,64 82,96 160,72'/%3E%3Cpath d='M-10,108 C36,92 76,124 160,100'/%3E%3Cpath d='M-10,136 C30,120 80,150 160,128'/%3E%3C/g%3E%3C/svg%3E");
+    background-color: #13203a;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23e9e7e0' stroke-width='1' opacity='0.09'%3E%3Cpath d='M-10,30 L170,42'/%3E%3Cpath d='M-10,72 L170,84'/%3E%3Cpath d='M-10,114 L170,126'/%3E%3Cpath d='M28,-10 L36,170'/%3E%3Cpath d='M84,-10 L92,170'/%3E%3Cpath d='M136,-10 L144,170'/%3E%3C/g%3E%3C/svg%3E");
     color: var(--encre);
   }
   .route-map-sticky {
@@ -215,13 +217,13 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
+  .trail-bg { stroke: rgba(var(--plan-rgb), 0.45); stroke-width: 4; stroke-dasharray: 3 7; }
   .trail-progress {
     stroke: var(--accent);
     stroke-width: 5;
     transition: stroke-dashoffset 0.5s ease;
   }
-  .waypoint circle { fill: var(--fond-2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint circle { fill: var(--fond-2); stroke: rgba(var(--plan-rgb), 0.55); stroke-width: 2.5; transition: all 0.3s ease; }
   .waypoint.active circle { fill: var(--accent); stroke: var(--accent); r: 7; }
   .waypoint text {
     font-family: Georgia, serif;
@@ -232,11 +234,11 @@
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
   /* Fond de plan : rues, parcs et reliefs, sous le tracé. */
-  .plan-rue { fill: none; stroke: rgba(43,43,51,0.32); stroke-width: 1.6; stroke-linecap: round; }
-  .plan-rue-fine { fill: none; stroke: rgba(43,43,51,0.18); stroke-width: 1; stroke-linecap: round; }
-  .plan-parc { fill: rgba(47,79,79,0.16); stroke: rgba(47,79,79,0.3); stroke-width: 1; }
-  .plan-eau { fill: none; stroke: rgba(70,110,140,0.45); stroke-width: 2; stroke-linecap: round; }
-  .plan-relief { fill: rgba(43,43,51,0.09); stroke: rgba(43,43,51,0.22); stroke-width: 1; }
+  .plan-rue { fill: none; stroke: rgba(var(--plan-rgb), 0.32); stroke-width: 1.6; stroke-linecap: round; }
+  .plan-rue-fine { fill: none; stroke: rgba(var(--plan-rgb), 0.18); stroke-width: 1; stroke-linecap: round; }
+  .plan-parc { fill: rgba(var(--plan-rgb), 0.10); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
+  .plan-eau { fill: none; stroke: rgba(var(--eau-rgb), 0.55); stroke-width: 2; stroke-linecap: round; }
+  .plan-relief { fill: rgba(var(--plan-rgb), 0.09); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
   .plan-legende {
     font-family: Georgia, serif;
     font-size: 8px;
@@ -464,8 +466,8 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 1.5px solid rgba(51,48,44,0.35);
-    background: rgba(253,251,246,0.85);
+    border: 1.5px solid rgba(233,231,224,0.35);
+    background: rgba(22,35,60,0.85);
     color: var(--encre);
     font-size: 1.1rem;
     line-height: 1;
@@ -482,7 +484,7 @@
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: var(--fond);
-    background: rgba(51,48,44,0.8);
+    background: rgba(233,231,224,0.88);
     padding: 5px 9px;
     border-radius: 12px;
     opacity: 0;
@@ -514,87 +516,87 @@
   </div>
   <div class="camp" id="camp" aria-hidden="true">
 <svg viewBox="0 0 34 30" aria-hidden="true">
-  <path d="M12,28 L22,28" stroke="#2b2b33" stroke-width="2.2" stroke-linecap="round"></path>
-  <path d="M17,28 L17,10" stroke="#4a4a52" stroke-width="2.4" stroke-linecap="round"></path>
-  <path d="M11,10 L23,10 L20,4 L14,4 Z" fill="#7d4a72"></path>
-  <rect x="14.5" y="5.5" width="5" height="3.5" fill="#c98a2e"></rect>
-  <circle cx="17" cy="2.6" r="1.6" fill="#4a4a52"></circle>
+  <path d="M12,28 L22,28" stroke="#39404f" stroke-width="2.2" stroke-linecap="round"></path>
+  <path d="M17,28 L17,10" stroke="#5a6478" stroke-width="2.4" stroke-linecap="round"></path>
+  <path d="M11,10 L23,10 L20,4 L14,4 Z" fill="#39404f"></path>
+  <rect x="14.5" y="5.5" width="5" height="3.5" fill="#e8b866"></rect>
+  <circle cx="17" cy="2.6" r="1.6" fill="#5a6478"></circle>
 </svg></div>
   <div class="dodo" id="dodo" aria-hidden="true">
 <svg viewBox="0 0 140 56" aria-hidden="true">
-  <path d="M10,46 L130,46" stroke="#2b2b33" stroke-width="2.4" stroke-linecap="round"></path>
+  <path d="M10,46 L130,46" stroke="#39404f" stroke-width="2.4" stroke-linecap="round"></path>
   <g class="souffle">
     <!-- le plaid posé sur le banc -->
-    <path d="M28,46 q-8,0 -8,-9 q0,-9 9,-9 l60,0 q9,0 9,9 q0,9 -9,9 z" fill="#7d4a72"></path>
-    <path d="M38,28 L38,46 M52,28 L52,46 M66,28 L66,46 M80,28 L80,46" stroke="#5c3553" stroke-width="1.2"></path>
-    <path d="M20,34 L98,34 M20,40 L98,40" stroke="#5c3553" stroke-width="1.2"></path>
+    <path d="M28,46 q-8,0 -8,-9 q0,-9 9,-9 l60,0 q9,0 9,9 q0,9 -9,9 z" fill="#b083c9"></path>
+    <path d="M38,28 L38,46 M52,28 L52,46 M66,28 L66,46 M80,28 L80,46" stroke="#7d5a92" stroke-width="1.2"></path>
+    <path d="M20,34 L98,34 M20,40 L98,40" stroke="#7d5a92" stroke-width="1.2"></path>
     <!-- deux tasses -->
-    <path d="M104,46 q-6,0 -6,-7 l0,-5 l13,0 l0,5 q0,7 -7,7 z" fill="#f6f5f2" stroke="#4a4a52" stroke-width="1.4"></path>
-    <path d="M111,36 q5,0 5,4 q0,4 -5,4" fill="none" stroke="#4a4a52" stroke-width="1.4"></path>
-    <path d="M122,46 q-5,0 -5,-6 l0,-4 l11,0 l0,4 q0,6 -6,6 z" fill="#f6f5f2" stroke="#4a4a52" stroke-width="1.4"></path>
+    <path d="M104,46 q-6,0 -6,-7 l0,-5 l13,0 l0,5 q0,7 -7,7 z" fill="#e9e7e0" stroke="#39404f" stroke-width="1.4"></path>
+    <path d="M111,36 q5,0 5,4 q0,4 -5,4" fill="none" stroke="#39404f" stroke-width="1.4"></path>
+    <path d="M122,46 q-5,0 -5,-6 l0,-4 l11,0 l0,4 q0,6 -6,6 z" fill="#e9e7e0" stroke="#39404f" stroke-width="1.4"></path>
   </g>
   <!-- la vapeur qui monte -->
-  <text class="zzz zzz1" x="100" y="24" font-family="Georgia, serif" font-size="11" fill="#8a8a93">~</text>
-  <text class="zzz zzz2" x="110" y="18" font-family="Georgia, serif" font-size="9" fill="#8a8a93">~</text>
-  <text class="zzz zzz3" x="119" y="13" font-family="Georgia, serif" font-size="7" fill="#8a8a93">~</text>
+  <text class="zzz zzz1" x="100" y="24" font-family="Georgia, serif" font-size="11" fill="#8b97ad">~</text>
+  <text class="zzz zzz2" x="110" y="18" font-family="Georgia, serif" font-size="9" fill="#8b97ad">~</text>
+  <text class="zzz zzz3" x="119" y="13" font-family="Georgia, serif" font-size="7" fill="#8b97ad">~</text>
 </svg></div>
   <div class="marcheuse" id="marcheuse" aria-hidden="true">
 <svg viewBox="0 0 62 62" aria-hidden="true">
   <!-- la mère, légèrement en retrait -->
   <g class="jambe jambe-arriere">
-    <path d="M18,38 L14,50" stroke="#4a4a52" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
-    <path d="M14,50.5 L11,52.5" stroke="#2b2b33" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M18,38 L14,50" stroke="#5a6478" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M14,50.5 L11,52.5" stroke="#39404f" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
   </g>
   <g class="jambe jambe-avant">
-    <path d="M18,38 L22,50" stroke="#4a4a52" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
-    <path d="M22,50.5 L25,52.5" stroke="#2b2b33" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M18,38 L22,50" stroke="#5a6478" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M22,50.5 L25,52.5" stroke="#39404f" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
   </g>
   <g class="buste">
-    <path d="M18,38 L18.5,22" stroke="#7d4a72" stroke-width="8" stroke-linecap="round" fill="none"></path>
-    <path class="bras" d="M19,26 L23.5,31" stroke="#7d4a72" stroke-width="3" stroke-linecap="round" fill="none"></path>
-    <ellipse cx="18.6" cy="15" rx="5.6" ry="5.4" fill="#b9b4ae"></ellipse>
-    <path class="meche" d="M13.6,15.6 q-2.4,3.6 -1.4,7.2 q0.7,2 2,2.8 q-1.4,-3.8 0.2,-5.4 q-1.2,-2 -0.8,-4.6 z" fill="#b9b4ae"></path>
-    <circle cx="19.8" cy="16" r="4.4" fill="#e9c9a8"></circle>
+    <path d="M18,38 L18.5,22" stroke="#b083c9" stroke-width="8" stroke-linecap="round" fill="none"></path>
+    <path class="bras" d="M19,26 L23.5,31" stroke="#b083c9" stroke-width="3" stroke-linecap="round" fill="none"></path>
+    <ellipse cx="18.6" cy="15" rx="5.6" ry="5.4" fill="#d8d4cd"></ellipse>
+    <path class="meche" d="M13.6,15.6 q-2.4,3.6 -1.4,7.2 q0.7,2 2,2.8 q-1.4,-3.8 0.2,-5.4 q-1.2,-2 -0.8,-4.6 z" fill="#d8d4cd"></path>
+    <circle cx="19.8" cy="16" r="4.4" fill="#f0d5b8"></circle>
   </g>
 
   <!-- la fille, devant -->
   <g class="jambe jambe-avant">
-    <path d="M38,38 L42,50" stroke="#4a4a52" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
-    <path d="M42,50.5 L45,52.5" stroke="#2b2b33" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M38,38 L42,50" stroke="#5a6478" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M42,50.5 L45,52.5" stroke="#39404f" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
   </g>
   <g class="jambe jambe-arriere">
-    <path d="M38,38 L34,50" stroke="#4a4a52" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
-    <path d="M34,50.5 L31,52.5" stroke="#2b2b33" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M38,38 L34,50" stroke="#5a6478" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
+    <path d="M34,50.5 L31,52.5" stroke="#39404f" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
   </g>
   <g class="buste">
-    <path d="M38,38 L38.5,21" stroke="#2f4f4f" stroke-width="8" stroke-linecap="round" fill="none"></path>
-    <path class="bras" d="M39,25 L43.5,30" stroke="#2f4f4f" stroke-width="3" stroke-linecap="round" fill="none"></path>
-    <ellipse cx="38.6" cy="13.6" rx="5.8" ry="5.6" fill="#5a4632"></ellipse>
-    <path class="meche" d="M33.4,14.2 q-2.8,4 -1.6,8 q0.8,2.2 2.2,3 q-1.6,-4.2 0.2,-6 q-1.4,-2.2 -0.8,-5 z" fill="#5a4632"></path>
-    <circle cx="40" cy="14.6" r="4.6" fill="#e9c9a8"></circle>
+    <path d="M38,38 L38.5,21" stroke="#5f9ea0" stroke-width="8" stroke-linecap="round" fill="none"></path>
+    <path class="bras" d="M39,25 L43.5,30" stroke="#5f9ea0" stroke-width="3" stroke-linecap="round" fill="none"></path>
+    <ellipse cx="38.6" cy="13.6" rx="5.8" ry="5.6" fill="#a67c52"></ellipse>
+    <path class="meche" d="M33.4,14.2 q-2.8,4 -1.6,8 q0.8,2.2 2.2,3 q-1.6,-4.2 0.2,-6 q-1.4,-2.2 -0.8,-5 z" fill="#a67c52"></path>
+    <circle cx="40" cy="14.6" r="4.6" fill="#f0d5b8"></circle>
   </g>
 </svg></div>
 
   <section class="panel p1">
     <canvas class="feu" id="feu" aria-hidden="true"></canvas>
     <svg class="massif" viewBox="0 0 400 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
-      <path d="M0,240 L0,214 L14,212 C26,196 34,164 52,140 C60,128 68,120 80,116 L168,112 C202,120 244,142 288,160 C330,178 364,190 400,196 L400,240 Z" fill="#c6c9cc"></path>
+      <path d="M0,240 L0,214 L14,212 C26,196 34,164 52,140 C60,128 68,120 80,116 L168,112 C202,120 244,142 288,160 C330,178 364,190 400,196 L400,240 Z" fill="#2a3a58"></path>
       <path class="d-trait" d="M14,212 C26,196 34,164 52,140 C60,128 68,120 80,116 L168,112 C202,120 244,142 288,160 C330,178 364,190 400,196"></path>
 
       <!-- le château : corps de logis, tours crénelées, mât -->
-      <path d="M80,116 L80,84 L90,84 L90,72 L102,72 L102,84 L120,84 L120,64 L132,64 L132,84 L150,84 L150,76 L162,76 L162,112 L80,116 Z" fill="#8f939b"></path>
+      <path d="M80,116 L80,84 L90,84 L90,72 L102,72 L102,84 L120,84 L120,64 L132,64 L132,84 L150,84 L150,76 L162,76 L162,112 L80,116 Z" fill="#1c2a44"></path>
       <path class="d-trait" d="M80,116 L80,84 L90,84 L90,72 L102,72 L102,84 L120,84 L120,64 L132,64 L132,84 L150,84 L150,76 L162,76 L162,112"></path>
-      <g fill="#c98a2e">
+      <g fill="#e8b866">
         <rect x="94" y="94" width="5" height="7"></rect>
         <rect x="122" y="90" width="5" height="7"></rect>
         <rect x="140" y="96" width="5" height="7"></rect>
       </g>
       <path class="d-trait" d="M126,64 L126,42"></path>
-      <path d="M126,42 L146,48 L126,54 Z" fill="#7d4a72"></path>
+      <path d="M126,42 L146,48 L126,54 Z" fill="#b083c9"></path>
 
       <!-- la vieille ville, en contrebas vers l'est -->
-      <path d="M0,240 L0,206 L26,206 L26,182 L52,182 L52,196 L78,196 L78,172 L100,172 L100,190 L126,190 L126,178 L152,178 L152,198 L178,198 L178,184 L196,184 L196,170 L206,132 L216,170 L216,192 L242,192 L242,176 L268,176 L268,200 L294,200 L294,186 L320,186 L320,202 L346,202 L346,190 L372,190 L372,204 L400,204 L400,240 Z" fill="#a8acb3"></path>
-      <g fill="#c98a2e">
+      <path d="M0,240 L0,206 L26,206 L26,182 L52,182 L52,196 L78,196 L78,172 L100,172 L100,190 L126,190 L126,178 L152,178 L152,198 L178,198 L178,184 L196,184 L196,170 L206,132 L216,170 L216,192 L242,192 L242,176 L268,176 L268,200 L294,200 L294,186 L320,186 L320,202 L346,202 L346,190 L372,190 L372,204 L400,204 L400,240 Z" fill="#16233a"></path>
+      <g fill="#e8b866">
         <rect x="34" y="190" width="4" height="6"></rect>
         <rect x="86" y="180" width="4" height="6"></rect>
         <rect x="134" y="186" width="4" height="6"></rect>
@@ -603,7 +605,7 @@
         <rect x="354" y="198" width="4" height="6"></rect>
       </g>
 
-      <g fill="#5f636b">
+      <g fill="#0e1729">
         <path transform="translate(38,182) scale(1.3)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
         <path transform="translate(90,172) scale(1.3)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
         <path transform="translate(256,176) scale(1.3)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
@@ -624,14 +626,14 @@
     
 <svg class="divider" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
   <!-- Arthur's Seat, au loin -->
-  <path d="M0,90 L0,64 C46,62 84,52 124,42 C146,36 172,33 198,38 C230,44 262,54 302,58 C342,62 372,60 400,58 L400,90 Z" fill="#c6c9cc"></path>
+  <path d="M0,90 L0,64 C46,62 84,52 124,42 C146,36 172,33 198,38 C230,44 262,54 302,58 C342,62 372,60 400,58 L400,90 Z" fill="#2a3a58"></path>
   <path class="d-trait" d="M0,64 C46,62 84,52 124,42 C146,36 172,33 198,38 C230,44 262,54 302,58 C342,62 372,60 400,58"></path>
 
   <!-- la ligne de toits : tours du château, flèche du Scott Monument, clochers -->
-  <path d="M0,90 L0,72 L18,72 L18,62 L34,62 L34,70 L48,70 L48,50 L54,42 L60,50 L60,68 L76,68 L76,48 L92,48 L92,40 L98,40 L98,48 L112,48 L112,66 L130,66 L130,58 L146,58 L146,68 L164,68 L164,60 L178,60 L178,54 L184,26 L190,54 L190,66 L206,66 L206,56 L224,56 L224,70 L242,70 L242,58 L258,58 L258,48 L266,40 L274,48 L274,64 L292,64 L292,70 L310,70 L310,60 L328,60 L328,68 L346,68 L346,56 L364,56 L364,70 L382,70 L382,64 L400,64 L400,90 Z" fill="#8f939b"></path>
+  <path d="M0,90 L0,72 L18,72 L18,62 L34,62 L34,70 L48,70 L48,50 L54,42 L60,50 L60,68 L76,68 L76,48 L92,48 L92,40 L98,40 L98,48 L112,48 L112,66 L130,66 L130,58 L146,58 L146,68 L164,68 L164,60 L178,60 L178,54 L184,26 L190,54 L190,66 L206,66 L206,56 L224,56 L224,70 L242,70 L242,58 L258,58 L258,48 L266,40 L274,48 L274,64 L292,64 L292,70 L310,70 L310,60 L328,60 L328,68 L346,68 L346,56 L364,56 L364,70 L382,70 L382,64 L400,64 L400,90 Z" fill="#1c2a44"></path>
 
   <!-- quelques fenêtres allumées -->
-  <g fill="#c98a2e">
+  <g fill="#e8b866">
     <rect x="21" y="66" width="3" height="4"></rect>
     <rect x="80" y="54" width="3" height="4"></rect>
     <rect x="116" y="70" width="3" height="4"></rect>
@@ -645,7 +647,7 @@
   <path d="M0,90 L0,80 L26,80 L26,84 L58,84 L58,78 L96,78 L96,83 L140,83 L140,79 L186,79 L186,84 L232,84 L232,80 L280,80 L280,85 L330,85 L330,80 L370,80 L370,84 L400,84 L400,90 Z" fill="var(--fond-3)"></path>
   <path class="d-trait" d="M0,80 L26,80 L26,84 L58,84 L58,78 L96,78 L96,83 L140,83 L140,79 L186,79 L186,84 L232,84 L232,80 L280,80 L280,85 L330,85 L330,80 L370,80 L370,84 L400,84"></path>
 
-  <g fill="#5f636b">
+  <g fill="#0e1729">
     <path transform="translate(38,80)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
     <path transform="translate(76,78)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
     <path transform="translate(158,83)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
@@ -671,14 +673,14 @@
     
 <svg class="divider" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
   <!-- Arthur's Seat, au loin -->
-  <path d="M0,90 L0,64 C46,62 84,52 124,42 C146,36 172,33 198,38 C230,44 262,54 302,58 C342,62 372,60 400,58 L400,90 Z" fill="#c6c9cc"></path>
+  <path d="M0,90 L0,64 C46,62 84,52 124,42 C146,36 172,33 198,38 C230,44 262,54 302,58 C342,62 372,60 400,58 L400,90 Z" fill="#2a3a58"></path>
   <path class="d-trait" d="M0,64 C46,62 84,52 124,42 C146,36 172,33 198,38 C230,44 262,54 302,58 C342,62 372,60 400,58"></path>
 
   <!-- la ligne de toits : tours du château, flèche du Scott Monument, clochers -->
-  <path d="M0,90 L0,72 L18,72 L18,62 L34,62 L34,70 L48,70 L48,50 L54,42 L60,50 L60,68 L76,68 L76,48 L92,48 L92,40 L98,40 L98,48 L112,48 L112,66 L130,66 L130,58 L146,58 L146,68 L164,68 L164,60 L178,60 L178,54 L184,26 L190,54 L190,66 L206,66 L206,56 L224,56 L224,70 L242,70 L242,58 L258,58 L258,48 L266,40 L274,48 L274,64 L292,64 L292,70 L310,70 L310,60 L328,60 L328,68 L346,68 L346,56 L364,56 L364,70 L382,70 L382,64 L400,64 L400,90 Z" fill="#8f939b"></path>
+  <path d="M0,90 L0,72 L18,72 L18,62 L34,62 L34,70 L48,70 L48,50 L54,42 L60,50 L60,68 L76,68 L76,48 L92,48 L92,40 L98,40 L98,48 L112,48 L112,66 L130,66 L130,58 L146,58 L146,68 L164,68 L164,60 L178,60 L178,54 L184,26 L190,54 L190,66 L206,66 L206,56 L224,56 L224,70 L242,70 L242,58 L258,58 L258,48 L266,40 L274,48 L274,64 L292,64 L292,70 L310,70 L310,60 L328,60 L328,68 L346,68 L346,56 L364,56 L364,70 L382,70 L382,64 L400,64 L400,90 Z" fill="#1c2a44"></path>
 
   <!-- quelques fenêtres allumées -->
-  <g fill="#c98a2e">
+  <g fill="#e8b866">
     <rect x="21" y="66" width="3" height="4"></rect>
     <rect x="80" y="54" width="3" height="4"></rect>
     <rect x="116" y="70" width="3" height="4"></rect>
@@ -692,7 +694,7 @@
   <path d="M0,90 L0,80 L26,80 L26,84 L58,84 L58,78 L96,78 L96,83 L140,83 L140,79 L186,79 L186,84 L232,84 L232,80 L280,80 L280,85 L330,85 L330,80 L370,80 L370,84 L400,84 L400,90 Z" fill="var(--fond)"></path>
   <path class="d-trait" d="M0,80 L26,80 L26,84 L58,84 L58,78 L96,78 L96,83 L140,83 L140,79 L186,79 L186,84 L232,84 L232,80 L280,80 L280,85 L330,85 L330,80 L370,80 L370,84 L400,84"></path>
 
-  <g fill="#5f636b">
+  <g fill="#0e1729">
     <path transform="translate(38,80)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
     <path transform="translate(76,78)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
     <path transform="translate(158,83)" d="M-3,0 L-3,-7 L-1.6,-7 L-1.6,-10 L-0.4,-10 L-0.4,-7 L0.4,-7 L0.4,-10 L1.6,-10 L1.6,-7 L3,-7 L3,0 Z"></path>
@@ -842,7 +844,7 @@
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var ctx = canvas.getContext("2d");
-  var COULEURS = ["#c1440e", "#e2b53b", "#c4551a", "#2f5233", "#e9c39c"];
+  var COULEURS = ["#e0913f","#e8b866","#b083c9","#8fc4e8","#f4e6cd"];
   var particules = [], fusees = [], dpr = window.devicePixelRatio || 1;
   var largeur = 0, hauteur = 0;
 

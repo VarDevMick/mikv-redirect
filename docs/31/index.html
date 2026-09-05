@@ -16,6 +16,8 @@
     --accent-fonce: #2f5233;
     --accent-clair: #e2b53b;
     --parcouru: #3f6b40;
+    --plan-rgb: 43,32,24;
+    --eau-rgb: 70,110,140;
   }
   * { box-sizing: border-box; }
 
@@ -215,13 +217,13 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .trail-bg { stroke: rgba(43,32,24,0.45); stroke-width: 4; stroke-dasharray: 3 7; }
+  .trail-bg { stroke: rgba(var(--plan-rgb), 0.45); stroke-width: 4; stroke-dasharray: 3 7; }
   .trail-progress {
     stroke: var(--accent);
     stroke-width: 5;
     transition: stroke-dashoffset 0.5s ease;
   }
-  .waypoint circle { fill: var(--fond-2); stroke: rgba(43,32,24,0.55); stroke-width: 2.5; transition: all 0.3s ease; }
+  .waypoint circle { fill: var(--fond-2); stroke: rgba(var(--plan-rgb), 0.55); stroke-width: 2.5; transition: all 0.3s ease; }
   .waypoint.active circle { fill: var(--accent); stroke: var(--accent); r: 7; }
   .waypoint text {
     font-family: Georgia, serif;
@@ -232,11 +234,11 @@
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
   /* Fond de plan : rues, parcs et reliefs, sous le tracé. */
-  .plan-rue { fill: none; stroke: rgba(43,43,51,0.32); stroke-width: 1.6; stroke-linecap: round; }
-  .plan-rue-fine { fill: none; stroke: rgba(43,43,51,0.18); stroke-width: 1; stroke-linecap: round; }
-  .plan-parc { fill: rgba(47,79,79,0.16); stroke: rgba(47,79,79,0.3); stroke-width: 1; }
-  .plan-eau { fill: none; stroke: rgba(70,110,140,0.45); stroke-width: 2; stroke-linecap: round; }
-  .plan-relief { fill: rgba(43,43,51,0.09); stroke: rgba(43,43,51,0.22); stroke-width: 1; }
+  .plan-rue { fill: none; stroke: rgba(var(--plan-rgb), 0.32); stroke-width: 1.6; stroke-linecap: round; }
+  .plan-rue-fine { fill: none; stroke: rgba(var(--plan-rgb), 0.18); stroke-width: 1; stroke-linecap: round; }
+  .plan-parc { fill: rgba(var(--plan-rgb), 0.10); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
+  .plan-eau { fill: none; stroke: rgba(var(--eau-rgb), 0.55); stroke-width: 2; stroke-linecap: round; }
+  .plan-relief { fill: rgba(var(--plan-rgb), 0.09); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
   .plan-legende {
     font-family: Georgia, serif;
     font-size: 8px;
@@ -773,7 +775,7 @@
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var ctx = canvas.getContext("2d");
-  var COULEURS = ["#c1440e", "#e2b53b", "#c4551a", "#2f5233", "#e9c39c"];
+  var COULEURS = ["#c1440e","#e2b53b","#c4551a","#2f5233","#e9c39c"];
   var particules = [], fusees = [], dpr = window.devicePixelRatio || 1;
   var largeur = 0, hauteur = 0;
 
