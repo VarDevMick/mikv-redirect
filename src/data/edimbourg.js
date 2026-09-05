@@ -1,10 +1,18 @@
 // Contenu du projet Édimbourg : étapes, plan de ville et textes.
 //
 // Carol fête ses 60 ans. Sa fille Chloé lui offre trois jours à Édimbourg.
+// Ils partent à trois : Hector est du voyage, en poussette.
 // Le voyage est réservé, mais les dates sont une surprise : la page déroule
 // le programme d'abord, et ne les révèle qu'à la fin.
 //
 // Chloé tutoie sa mère.
+//
+// ⚠️ La poussette commande le programme. La vieille ville est l'un des
+// environnements urbains les plus difficiles du Royaume-Uni pour une
+// poussette : Royal Mile pavé sur toute sa longueur, ruelles en escalier.
+// La New Town géorgienne, elle, est plate et lisse. Le château dispose
+// d'une navette gratuite jusqu'à Crown Square. Un porte-bébé règle le
+// reste. Ne pas ajouter Arthur's Seat ni les closes sans y repenser.
 //
 // Photos : Wikimedia Commons, licences libres, crédit conservé.
 // Sources du programme : blogs de voyage — horaires et tarifs restent à
@@ -20,12 +28,14 @@ export const ETAPES = [
   {
     id: "vieille-ville",
     jour: "Jour 1 · la vieille ville",
-    trajet: "Du Royal Mile au Grassmarket",
-    note: "On descend la grande rue pavée, on tourne dans Victoria Street et ses façades de toutes les couleurs, et on finit au chaud devant les vitrines du Musée national.",
+    trajet: "Royal Mile, Victoria Street, Grassmarket",
+    note: "On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.",
+    astuce: "Le Royal Mile est pavé : ça secoue. Le musée est le refuge idéal.",
     chiffres: [
       { valeur: "Royal Mile", libelle: "Matin" },
-      { valeur: "Victoria St", libelle: "Après-midi" },
-      { valeur: "Grassmarket", libelle: "Soir" },
+      { valeur: "Grassmarket", libelle: "Midi" },
+      { valeur: "Musée national", libelle: "Après-midi" },
+      { valeur: "Victoria St", libelle: "Fin de jour" },
     ],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg",
     credit: "Victoria Street · Daniel Kraft, CC BY-SA 3.0",
@@ -33,10 +43,12 @@ export const ETAPES = [
   {
     id: "chateau",
     jour: "Jour 2 · le château et la ville géorgienne",
-    trajet: "Du rocher à Calton Hill",
-    note: "Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town. Puis Calton Hill au moment où la ville s'allume.",
+    trajet: "Le rocher, la New Town, Calton Hill",
+    note: "Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.",
+    astuce: "Une navette gratuite monte au château. La New Town est plate et lisse.",
     chiffres: [
       { valeur: "Le château", libelle: "Matin" },
+      { valeur: "Princes St", libelle: "Midi" },
       { valeur: "New Town", libelle: "Après-midi" },
       { valeur: "Calton Hill", libelle: "Coucher" },
     ],
@@ -46,38 +58,51 @@ export const ETAPES = [
   {
     id: "dean-village",
     jour: "Jour 3 · les villages dans la ville",
-    trajet: "Dean Village et Stockbridge",
-    note: "L'ancien hameau des meuniers, ses maisons de grès rouge au bord de l'eau. On remonte ensuite vers Stockbridge, ses boutiques et ses cafés, sans se presser.",
+    trajet: "Dean Village, l'eau, Stockbridge",
+    note: "L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.",
+    astuce: "La journée la plus facile du séjour : tout est plat et roulant.",
     chiffres: [
       { valeur: "Dean Village", libelle: "Matin" },
+      { valeur: "Water of Leith", libelle: "Midi" },
       { valeur: "Stockbridge", libelle: "Après-midi" },
-      { valeur: "Holyrood", libelle: "Si le temps" },
+      { valeur: "Retour", libelle: "Fin de jour" },
     ],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg",
     credit: "Well Court, Dean Village · M J Richardson, CC BY-SA 2.0",
   },
 ];
 
-// Parcours suivi sur le plan : il remonte la crête du Royal Mile d'est en
-// ouest, de Holyrood au château, puis bascule au nord-ouest vers Dean
-// Village. Un seul sens de lecture, pas d'aller-retour.
-//
-// Calton Hill et Arthur's Seat restent des repères du plan sans être des
-// étapes : les y faire passer obligeait le tracé à traverser deux fois.
-export const TRACE_PLAN =
-  "M258,110 C224,106 198,102 150,98 " +
-  "C120,96 92,92 66,88 " +
-  "C58,78 46,60 34,46 C30,41 27,37 24,34";
-
-export const REPERES = [
-  { x: 258, y: 110, label: "Holyrood" },
-  { x: 150, y: 98, label: "Royal Mile" },
-  { x: 66, y: 88, label: "Château" },
-  { x: 24, y: 34, label: "Dean Village" },
+// Un parcours par journée : en ville, les jours sont des boucles
+// distinctes, pas un chemin continu. Seul le jour de l'étape en cours
+// s'allume sur le plan.
+export const PARCOURS = [
+  {
+    jour: 1,
+    d: "M212,104 C186,101 166,99 150,98 C130,96 112,99 100,105 C112,113 128,118 140,119",
+    reperes: [
+      { x: 212, y: 104, label: "Royal Mile" },
+      { x: 100, y: 105, label: "Grassmarket" },
+      { x: 140, y: 119, label: "Musée", dessous: true },
+    ],
+  },
+  {
+    jour: 2,
+    d: "M62,88 C72,76 96,66 130,61 C172,55 226,55 258,57 C268,58 274,58 278,58",
+    reperes: [
+      { x: 62, y: 88, label: "Château" },
+      { x: 130, y: 61, label: "Princes St" },
+      { x: 278, y: 58, label: "Calton Hill" },
+    ],
+  },
+  {
+    jour: 3,
+    d: "M24,36 C32,30 42,26 56,24 C76,21 96,27 112,34",
+    reperes: [
+      { x: 24, y: 36, label: "Dean Village", dessous: true },
+      { x: 56, y: 24, label: "Stockbridge" },
+    ],
+  },
 ];
-
-// Fraction du tracé atteinte à chaque repère, mesurée sur la courbe.
-export const FRACTIONS = [0.02, 0.42, 0.72, 1];
 
 // Textes de l'ouverture.
 export const OUVERTURE = {
@@ -91,8 +116,8 @@ export const OUVERTURE = {
 // Textes du récit. La révélation des dates est gardée pour la fin.
 export const TEXTES = {
   invitation: {
-    titre: "On part toutes les deux.",
-    sous: "Trois jours rien qu'à nous, loin d'ici.",
+    titre: "On part tous les trois.",
+    sous: "Toi, moi et Hector, trois jours loin d'ici.",
     note: "Et c'est déjà réservé.",
   },
   destination: {
@@ -106,8 +131,9 @@ export const TEXTES = {
     titre: "Ce qui t'attend",
     points: [
       "Vols et hôtel déjà réservés : tu n'as rien à prévoir.",
-      "Tout se fait à pied, avec des pauses et des cafés.",
-      "Des chaussures confortables, la ville est en pente.",
+      "Tout se fait à pied, à hauteur de poussette et de pauses café.",
+      "Des chaussures confortables : la vieille ville est pavée et en pente.",
+      "Le porte-bébé pour les ruelles où la poussette ne passe pas.",
       "Une petite laine : là-bas, le vent vient de la mer.",
       `Et c'est ${DATES}.`,
     ],

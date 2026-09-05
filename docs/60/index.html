@@ -246,6 +246,32 @@
     opacity: 0.42;
   }
 
+  /* Parcours par journée : les jours à venir restent en retrait. */
+  .jour { transition: opacity 0.45s ease; opacity: 0.28; }
+  .jour.actif { opacity: 1; }
+  .jour-trace {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3.4;
+    stroke-linecap: round;
+    stroke-dasharray: 4 6;
+    transition: stroke-width 0.4s ease;
+  }
+  .jour.actif .jour-trace { stroke-width: 4.6; stroke-dasharray: none; }
+  .jour-point circle {
+    fill: var(--fond-2);
+    stroke: var(--accent);
+    stroke-width: 2.4;
+  }
+  .jour.actif .jour-point circle { fill: var(--accent); }
+  .jour-point text {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    fill: var(--encre);
+    opacity: 0.8;
+  }
+  .jour.actif .jour-point text { font-weight: 700; opacity: 1; }
+
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 
@@ -318,6 +344,14 @@
     font-style: italic;
     opacity: 0.92;
     margin: 0 0 0.6rem;
+  }
+  .day-astuce {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    margin: 0 0 0.4rem;
+    padding-left: 0.7rem;
+    border-left: 2px solid var(--accent);
+    text-align: left;
   }
   .stats {
     display: flex;
@@ -541,7 +575,7 @@
   <text class="zzz zzz3" x="119" y="13" font-family="Georgia, serif" font-size="7" fill="#8b97ad">~</text>
 </svg></div>
   <div class="marcheuse" id="marcheuse" aria-hidden="true">
-<svg viewBox="0 0 62 62" aria-hidden="true">
+<svg viewBox="0 0 82 62" aria-hidden="true">
   <!-- la mère, légèrement en retrait -->
   <g class="jambe jambe-arriere">
     <path d="M18,38 L14,50" stroke="#5a6478" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
@@ -574,6 +608,18 @@
     <ellipse cx="38.6" cy="13.6" rx="5.8" ry="5.6" fill="#a67c52"></ellipse>
     <path class="meche" d="M33.4,14.2 q-2.8,4 -1.6,8 q0.8,2.2 2.2,3 q-1.6,-4.2 0.2,-6 q-1.4,-2.2 -0.8,-5 z" fill="#a67c52"></path>
     <circle cx="40" cy="14.6" r="4.6" fill="#f0d5b8"></circle>
+  </g>
+
+  <!-- Hector, poussé devant -->
+  <g>
+    <path d="M45,27 L58,33" stroke="#39404f" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+    <path d="M58,33 L64,47" stroke="#39404f" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+    <path d="M58,33 L74,38" stroke="#39404f" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+    <path d="M60,38 q7,-9 15,-1 l-2,3 l-13,1 z" fill="#e0913f"></path>
+    <circle cx="63" cy="30.6" r="3.1" fill="#f0d5b8"></circle>
+    <path d="M60.2,29.4 q2.6,-3.4 5.8,-1.2 q-2.8,0.2 -4.6,2 z" fill="#a67c52"></path>
+    <circle cx="63.5" cy="51" r="3.6" fill="none" stroke="#39404f" stroke-width="2"></circle>
+    <circle cx="75" cy="49" r="3" fill="none" stroke="#39404f" stroke-width="2"></circle>
   </g>
 </svg></div>
 
@@ -620,8 +666,8 @@
   </section>
 
   <section class="panel p2">
-    <h1>On part toutes les deux.</h1>
-    <p>Trois jours rien qu'à nous, loin d'ici.</p>
+    <h1>On part tous les trois.</h1>
+    <p>Toi, moi et Hector, trois jours loin d'ici.</p>
     <p style="opacity:0.75; font-size:0.95rem;">Et c'est déjà réservé.</p>
     
 <svg class="divider" viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true">
@@ -746,27 +792,50 @@
           <text class="plan-legende" x="136" y="72" text-anchor="middle">Princes St Gardens</text>
           <text class="plan-legende" x="128" y="40" text-anchor="middle">New Town</text>
         </g>
-        <path class="trail-bg" d="M258,110 C224,106 198,102 150,98 C120,96 92,92 66,88 C58,78 46,60 34,46 C30,41 27,37 24,34"></path>
-        <path class="trail-progress" id="trailProgress" d="M258,110 C224,106 198,102 150,98 C120,96 92,92 66,88 C58,78 46,60 34,46 C30,41 27,37 24,34"></path>
-        
-        <g class="waypoint" data-idx="0" transform="translate(258,110)">
-          <circle r="5"></circle>
-          <text x="0" y="-12" text-anchor="middle">Holyrood</text>
+
+        <g class="jour" data-jour="1">
+          <path class="jour-trace" d="M212,104 C186,101 166,99 150,98 C130,96 112,99 100,105 C112,113 128,118 140,119"></path>
+
+          <g class="jour-point" transform="translate(212,104)">
+            <circle r="4.5"></circle>
+            <text x="0" y="-11" text-anchor="middle">Royal Mile</text>
+          </g>
+          <g class="jour-point" transform="translate(100,105)">
+            <circle r="4.5"></circle>
+            <text x="0" y="-11" text-anchor="middle">Grassmarket</text>
+          </g>
+          <g class="jour-point" transform="translate(140,119)">
+            <circle r="4.5"></circle>
+            <text x="0" y="18" text-anchor="middle">Musée</text>
+          </g>
         </g>
-        <g class="waypoint" data-idx="1" transform="translate(150,98)">
-          <circle r="5"></circle>
-          <text x="0" y="20" text-anchor="middle">Royal Mile</text>
+        <g class="jour" data-jour="2">
+          <path class="jour-trace" d="M62,88 C72,76 96,66 130,61 C172,55 226,55 258,57 C268,58 274,58 278,58"></path>
+
+          <g class="jour-point" transform="translate(62,88)">
+            <circle r="4.5"></circle>
+            <text x="0" y="-11" text-anchor="middle">Château</text>
+          </g>
+          <g class="jour-point" transform="translate(130,61)">
+            <circle r="4.5"></circle>
+            <text x="0" y="-11" text-anchor="middle">Princes St</text>
+          </g>
+          <g class="jour-point" transform="translate(278,58)">
+            <circle r="4.5"></circle>
+            <text x="0" y="-11" text-anchor="middle">Calton Hill</text>
+          </g>
         </g>
-        <g class="waypoint" data-idx="2" transform="translate(66,88)">
-          <circle r="5"></circle>
-          <text x="0" y="-12" text-anchor="middle">Château</text>
-        </g>
-        <g class="waypoint" data-idx="3" transform="translate(24,34)">
-          <circle r="5"></circle>
-          <text x="0" y="20" text-anchor="middle">Dean Village</text>
-        </g>
-        <g class="hiker-marker" id="hikerMarker" transform="translate(258,110)">
-          <circle r="6"></circle>
+        <g class="jour" data-jour="3">
+          <path class="jour-trace" d="M24,36 C32,30 42,26 56,24 C76,21 96,27 112,34"></path>
+
+          <g class="jour-point" transform="translate(24,36)">
+            <circle r="4.5"></circle>
+            <text x="0" y="18" text-anchor="middle">Dean Village</text>
+          </g>
+          <g class="jour-point" transform="translate(56,24)">
+            <circle r="4.5"></circle>
+            <text x="0" y="-11" text-anchor="middle">Stockbridge</text>
+          </g>
         </g>
       </svg>
     </div>
@@ -774,16 +843,18 @@
 
     <div class="route-step" data-idx="1">
       <div class="day-card">
-        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg" alt="Du Royal Mile au Grassmarket" loading="lazy">
+        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg" alt="Royal Mile, Victoria Street, Grassmarket" loading="lazy">
         <div class="carte-voile"></div>
         <div class="carte-corps">
           <div class="day-num">Jour 1 · la vieille ville</div>
-          <div class="day-route">Du Royal Mile au Grassmarket</div>
-          <p class="day-note">On descend la grande rue pavée, on tourne dans Victoria Street et ses façades de toutes les couleurs, et on finit au chaud devant les vitrines du Musée national.</p>
+          <div class="day-route">Royal Mile, Victoria Street, Grassmarket</div>
+          <p class="day-note">On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.</p>
+          <p class="day-astuce">Le Royal Mile est pavé : ça secoue. Le musée est le refuge idéal.</p>
           <div class="stats">
             <div class="stat"><b>Royal Mile</b><span>Matin</span></div>
-            <div class="stat"><b>Victoria St</b><span>Après-midi</span></div>
-            <div class="stat"><b>Grassmarket</b><span>Soir</span></div>
+            <div class="stat"><b>Grassmarket</b><span>Midi</span></div>
+            <div class="stat"><b>Musée national</b><span>Après-midi</span></div>
+            <div class="stat"><b>Victoria St</b><span>Fin de jour</span></div>
           </div>
         </div>
       </div>
@@ -791,14 +862,16 @@
 
     <div class="route-step" data-idx="2">
       <div class="day-card">
-        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg" alt="Du rocher à Calton Hill" loading="lazy">
+        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg" alt="Le rocher, la New Town, Calton Hill" loading="lazy">
         <div class="carte-voile"></div>
         <div class="carte-corps">
           <div class="day-num">Jour 2 · le château et la ville géorgienne</div>
-          <div class="day-route">Du rocher à Calton Hill</div>
-          <p class="day-note">Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town. Puis Calton Hill au moment où la ville s'allume.</p>
+          <div class="day-route">Le rocher, la New Town, Calton Hill</div>
+          <p class="day-note">Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.</p>
+          <p class="day-astuce">Une navette gratuite monte au château. La New Town est plate et lisse.</p>
           <div class="stats">
             <div class="stat"><b>Le château</b><span>Matin</span></div>
+            <div class="stat"><b>Princes St</b><span>Midi</span></div>
             <div class="stat"><b>New Town</b><span>Après-midi</span></div>
             <div class="stat"><b>Calton Hill</b><span>Coucher</span></div>
           </div>
@@ -808,16 +881,18 @@
 
     <div class="route-step" data-idx="3">
       <div class="day-card">
-        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg" alt="Dean Village et Stockbridge" loading="lazy">
+        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg" alt="Dean Village, l'eau, Stockbridge" loading="lazy">
         <div class="carte-voile"></div>
         <div class="carte-corps">
           <div class="day-num">Jour 3 · les villages dans la ville</div>
-          <div class="day-route">Dean Village et Stockbridge</div>
-          <p class="day-note">L'ancien hameau des meuniers, ses maisons de grès rouge au bord de l'eau. On remonte ensuite vers Stockbridge, ses boutiques et ses cafés, sans se presser.</p>
+          <div class="day-route">Dean Village, l'eau, Stockbridge</div>
+          <p class="day-note">L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.</p>
+          <p class="day-astuce">La journée la plus facile du séjour : tout est plat et roulant.</p>
           <div class="stats">
             <div class="stat"><b>Dean Village</b><span>Matin</span></div>
+            <div class="stat"><b>Water of Leith</b><span>Midi</span></div>
             <div class="stat"><b>Stockbridge</b><span>Après-midi</span></div>
-            <div class="stat"><b>Holyrood</b><span>Si le temps</span></div>
+            <div class="stat"><b>Retour</b><span>Fin de jour</span></div>
           </div>
         </div>
       </div>
@@ -828,8 +903,9 @@
     <h2>Ce qui t'attend</h2>
     <ul class="info-list">
       <li>Vols et hôtel déjà réservés : tu n'as rien à prévoir.</li>
-      <li>Tout se fait à pied, avec des pauses et des cafés.</li>
-      <li>Des chaussures confortables, la ville est en pente.</li>
+      <li>Tout se fait à pied, à hauteur de poussette et de pauses café.</li>
+      <li>Des chaussures confortables : la vieille ville est pavée et en pente.</li>
+      <li>Le porte-bébé pour les ruelles où la poussette ne passe pas.</li>
       <li>Une petite laine : là-bas, le vent vient de la mer.</li>
       <li>Et c'est du 30 novembre au 2 décembre.</li>
     </ul>
@@ -936,37 +1012,23 @@
 
 
 (function () {
-  var waypoints = [{"x":258,"y":110,"label":"Holyrood"},{"x":150,"y":98,"label":"Royal Mile"},{"x":66,"y":88,"label":"Château"},{"x":24,"y":34,"label":"Dean Village"}];
-  var progressPath = document.getElementById("trailProgress");
-  var marker = document.getElementById("hikerMarker");
-  var waypointEls = document.querySelectorAll(".waypoint");
-  var total = progressPath.getTotalLength();
-  progressPath.style.strokeDasharray = total;
+  var jours = document.querySelectorAll(".jour");
+  var etapes = document.querySelectorAll(".route-step");
+  if (!jours.length || !etapes.length) return;
 
-  // Fraction du tracé parcourue à chaque point clé.
-  var fractions = [0.02,0.42,0.72,1];
-
-  function setStep(idx) {
-    var w = waypoints[idx];
-    marker.setAttribute("transform", "translate(" + w.x + "," + w.y + ")");
-    progressPath.style.strokeDashoffset = total * (1 - fractions[idx]);
-    waypointEls.forEach(function (el) {
-      el.classList.toggle("active", Number(el.dataset.idx) === idx);
+  function activer(n) {
+    jours.forEach(function (g) {
+      g.classList.toggle("actif", Number(g.dataset.jour) === n);
     });
   }
+  activer(1);
 
-  setStep(0);
-
-  var steps = document.querySelectorAll(".route-step");
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        setStep(Number(entry.target.dataset.idx));
-      }
+  var observer = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (e) {
+      if (e.isIntersecting) activer(Number(e.target.dataset.idx));
     });
   }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
-
-  steps.forEach(function (s) { observer.observe(s); });
+  etapes.forEach(function (e) { observer.observe(e); });
 })();
 
 

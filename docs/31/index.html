@@ -246,6 +246,32 @@
     opacity: 0.42;
   }
 
+  /* Parcours par journée : les jours à venir restent en retrait. */
+  .jour { transition: opacity 0.45s ease; opacity: 0.28; }
+  .jour.actif { opacity: 1; }
+  .jour-trace {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3.4;
+    stroke-linecap: round;
+    stroke-dasharray: 4 6;
+    transition: stroke-width 0.4s ease;
+  }
+  .jour.actif .jour-trace { stroke-width: 4.6; stroke-dasharray: none; }
+  .jour-point circle {
+    fill: var(--fond-2);
+    stroke: var(--accent);
+    stroke-width: 2.4;
+  }
+  .jour.actif .jour-point circle { fill: var(--accent); }
+  .jour-point text {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    fill: var(--encre);
+    opacity: 0.8;
+  }
+  .jour.actif .jour-point text { font-weight: 700; opacity: 1; }
+
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 
@@ -318,6 +344,14 @@
     font-style: italic;
     opacity: 0.92;
     margin: 0 0 0.6rem;
+  }
+  .day-astuce {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    margin: 0 0 0.4rem;
+    padding-left: 0.7rem;
+    border-left: 2px solid var(--accent);
+    text-align: left;
   }
   .stats {
     display: flex;
@@ -712,6 +746,7 @@
           <div class="day-num">Jour 1 · mise en jambes</div>
           <div class="day-route">Souliers → Chalp d'Arvieux</div>
           <p class="day-note">Par le col Tronchet, tranquille pour commencer.</p>
+
           <div class="stats">
             <div class="stat"><b>4h</b><span>Marche</span></div>
             <div class="stat"><b>+510 m</b><span>D+</span></div>
@@ -729,6 +764,7 @@
           <div class="day-num">Jour 2 · la belle montée</div>
           <div class="day-route">Chalp d'Arvieux → Refuge de Furfande</div>
           <p class="day-note">La seule vraie grimpette, avec un refuge perché en récompense.</p>
+
           <div class="stats">
             <div class="stat"><b>5h</b><span>Marche</span></div>
             <div class="stat"><b>+820 m</b><span>D+</span></div>
@@ -746,6 +782,7 @@
           <div class="day-num">Jour 3 · la grande descente</div>
           <div class="day-route">Refuge de Furfande → Bramousse</div>
           <p class="day-note">Par le col Lauze, puis on redescend tranquillement dans la vallée.</p>
+
           <div class="stats">
             <div class="stat"><b>4h30</b><span>Marche</span></div>
             <div class="stat"><b>+210 m</b><span>D+</span></div>

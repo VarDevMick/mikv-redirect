@@ -15,9 +15,14 @@ const CHEVEUX_FILLE = "#a67c52";  // châtain éclairci
 const JAMBE = "#5a6478";
 const CHAUSSURE = "#39404f";
 
-// Elles marchent de profil, la fille devant, la mère juste derrière.
+const POUSSETTE = "#39404f";
+const CAPOTE = "#e0913f";
+
+// Ils marchent de profil : la mère derrière, la fille devant, poussant
+// Hector. La poussette reste hors des groupes animés — elle roule, elle
+// ne tangue pas.
 export const MARCHEUR = `
-<svg viewBox="0 0 62 62" aria-hidden="true">
+<svg viewBox="0 0 82 62" aria-hidden="true">
   <!-- la mère, légèrement en retrait -->
   <g class="jambe jambe-arriere">
     <path d="M18,38 L14,50" stroke="${JAMBE}" stroke-width="3.6" stroke-linecap="round" fill="none"></path>
@@ -50,6 +55,18 @@ export const MARCHEUR = `
     <ellipse cx="38.6" cy="13.6" rx="5.8" ry="5.6" fill="${CHEVEUX_FILLE}"></ellipse>
     <path class="meche" d="M33.4,14.2 q-2.8,4 -1.6,8 q0.8,2.2 2.2,3 q-1.6,-4.2 0.2,-6 q-1.4,-2.2 -0.8,-5 z" fill="${CHEVEUX_FILLE}"></path>
     <circle cx="40" cy="14.6" r="4.6" fill="${PEAU}"></circle>
+  </g>
+
+  <!-- Hector, poussé devant -->
+  <g>
+    <path d="M45,27 L58,33" stroke="${POUSSETTE}" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+    <path d="M58,33 L64,47" stroke="${POUSSETTE}" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+    <path d="M58,33 L74,38" stroke="${POUSSETTE}" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+    <path d="M60,38 q7,-9 15,-1 l-2,3 l-13,1 z" fill="${CAPOTE}"></path>
+    <circle cx="63" cy="30.6" r="3.1" fill="${PEAU}"></circle>
+    <path d="M60.2,29.4 q2.6,-3.4 5.8,-1.2 q-2.8,0.2 -4.6,2 z" fill="${CHEVEUX_FILLE}"></path>
+    <circle cx="63.5" cy="51" r="3.6" fill="none" stroke="${POUSSETTE}" stroke-width="2"></circle>
+    <circle cx="75" cy="49" r="3" fill="none" stroke="${POUSSETTE}" stroke-width="2"></circle>
   </g>
 </svg>`;
 

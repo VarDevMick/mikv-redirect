@@ -13,6 +13,7 @@ export const carte = (etape, index) => `
           <div class="day-num">${etape.jour}</div>
           <div class="day-route">${etape.trajet}</div>
           <p class="day-note">${etape.note}</p>
+${etape.astuce ? `          <p class="day-astuce">${etape.astuce}</p>` : ""}
           <div class="stats">
 ${etape.chiffres.map((c) => `            <div class="stat"><b>${c.valeur}</b><span>${c.libelle}</span></div>`).join("\n")}
           </div>
@@ -91,6 +92,14 @@ export const css = `
     font-style: italic;
     opacity: 0.92;
     margin: 0 0 0.6rem;
+  }
+  .day-astuce {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    margin: 0 0 0.4rem;
+    padding-left: 0.7rem;
+    border-left: 2px solid var(--accent);
+    text-align: left;
   }
   .stats {
     display: flex;
