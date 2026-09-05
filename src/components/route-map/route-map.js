@@ -26,7 +26,17 @@ ${cartes}
 // Variante par journée : chaque jour a son propre parcours sur le plan,
 // et seul celui de l'étape en cours s'allume. Convient à une ville, où
 // les journées sont des boucles distinctes plutôt qu'un chemin continu.
-export const htmlJours = (jours, cartes, fond = "", vue = "-30 -5 370 178") => `
+//
+// `marcheur` (facultatif) est le SVG d'un personnage du thème : s'il est
+// fourni, il est incorporé au plan et suit le tracé du jour actif au fil
+// du défilement, plutôt que d'exister sur un tracé séparé indépendant de
+// la géographie réelle — voir specs/trail.md pour la raison de ce choix.
+export const htmlJours = (jours, cartes, fond = "", vue = "-30 -5 370 178", marcheur = "") => {
+  const depart = jours[0].reperes[0];
+  // Le contenu du marcheur est ré-échelonné : dessiné pour une colonne de
+  // 52 px, il doit tenir dans un plan large de moins de 400 unités.
+  const contenuMarcheur = marcheur.trim().replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
+  return `
   <section class="route-section">
     <div class="route-map-sticky">
       <div class="jour-titres">
@@ -44,11 +54,16 @@ ${j.reperes.map((p, n) => `
             <text class="jour-label" y="${p.dessous ? 22 : -13}" text-anchor="middle">${p.label}</text>
           </g>`).join("")}
         </g>`).join("")}
+${contenuMarcheur ? `
+        <g class="marcheuse-plan" id="marcheusePlan" transform="translate(${depart.x},${depart.y}) scale(0.3)">
+          <g transform="translate(-41,-40)">${contenuMarcheur}</g>
+        </g>` : ""}
       </svg>
     </div>
 
 ${cartes}
   </section>`;
+};
 
 export const jsJours = `
 (function () {
@@ -57,7 +72,11 @@ export const jsJours = `
   if (!jours.length || !etapes.length) return;
 
   var titres = document.querySelectorAll(".jour-titre");
+  var marcheusePlan = document.getElementById("marcheusePlan");
+  var jourActif = 1;
+
   function activer(n) {
+    jourActif = n;
     jours.forEach(function (g) {
       g.classList.toggle("actif", Number(g.dataset.jour) === n);
     });
@@ -67,12 +86,36 @@ export const jsJours = `
   }
   activer(1);
 
+  // Fait avancer le marcheur le long du tracé du jour actif, à la fraction
+  // de défilement de son étape — plutôt qu'un chemin séparé sans rapport
+  // avec la géographie affichée.
+  function positionner() {
+    if (!marcheusePlan) return;
+    var path = document.querySelector('.jour[data-jour="' + jourActif + '"] .jour-trace');
+    var etape = document.querySelector('.route-step[data-idx="' + jourActif + '"]');
+    if (!path || !etape) return;
+    var r = etape.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var f = (vh - r.top) / (vh + r.height);
+    f = Math.max(0, Math.min(1, f));
+    var len = path.getTotalLength();
+    var p = path.getPointAtLength(f * len);
+    var suivant = path.getPointAtLength(Math.min(len, (f + 0.02) * len));
+    var sens = suivant.x >= p.x ? 1 : -1;
+    marcheusePlan.setAttribute("transform",
+      "translate(" + p.x + "," + p.y + ") scale(" + (0.3 * sens) + ",0.3)");
+  }
+
   var observer = new IntersectionObserver(function (entrees) {
     entrees.forEach(function (e) {
       if (e.isIntersecting) activer(Number(e.target.dataset.idx));
     });
+    positionner();
   }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
   etapes.forEach(function (e) { observer.observe(e); });
+
+  window.addEventListener("scroll", positionner, { passive: true });
+  positionner();
 })();
 `;
 
@@ -180,6 +223,12 @@ ${fondEtapes}
 
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
+
+  /* Le duo, incorporé au plan : il suit le tracé du jour actif. */
+  .marcheuse-plan {
+    transition: transform 0.5s ease-out;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+  }
 `;
 
 export const js = (reperes, fractions = [0.02, 0.36, 0.68, 1]) => `

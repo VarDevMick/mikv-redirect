@@ -19,21 +19,22 @@ import * as hero from "../components/hero/hero.js";
 import * as story from "../components/story/story.js";
 import * as routeMap from "../components/route-map/route-map.js";
 import * as stepCard from "../components/step-card/step-card.js";
-import * as trail from "../components/trail/trail.js";
 import * as music from "../components/music/music.js";
 
 // L'ordre définit la cascade CSS et l'ordre d'exécution des scripts.
 const styles = [
   tokens.css(theme.palette),
   layout.css, scenery.css, hero.css, story.css,
-  routeMap.css(theme.palette.fondEtapes), stepCard.css, stepCard.cssCompact, trail.css,
+  routeMap.css(theme.palette.fondEtapes), stepCard.css, stepCard.cssCompact,
   music.css(theme.palette),
+  // Le duo marche désormais sur les tracés du plan (voir route-map) : plus
+  // de colonne fixe à gauche, la marge qu'elle réservait est rendue.
+  `.panel, .route-step, .route-step.compact { padding-left: 1.5rem; }`,
 ].join("\n");
 
 const scripts = [
   hero.js(theme.palette.feu),
   routeMap.jsJours,
-  trail.js,
   music.js,
 ].join("\n");
 
@@ -72,10 +73,9 @@ ${cssBandeau}
 <body>
 ${bandeauDev}
 ${music.html}
-${trail.html(theme.figures)}
 ${hero.html(theme.decorOuverture, OUVERTURE)}
 ${story.invitation(theme.separation, TEXTES)}
-${routeMap.htmlJours(PARCOURS, stepCard.htmlCompact(ETAPES), theme.fondPlan, theme.vuePlan)}
+${routeMap.htmlJours(PARCOURS, stepCard.htmlCompact(ETAPES), theme.fondPlan, theme.vuePlan, theme.figures.marcheur)}
 ${story.conclusion(TEXTES, VIDEO)}
 <script>
 ${scripts}

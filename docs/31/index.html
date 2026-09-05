@@ -302,6 +302,12 @@
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 
+  /* Le duo, incorporé au plan : il suit le tracé du jour actif. */
+  .marcheuse-plan {
+    transition: transform 0.5s ease-out;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+  }
+
 
   .route-step {
     min-height: 90vh;
