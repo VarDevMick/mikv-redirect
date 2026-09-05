@@ -26,13 +26,13 @@ ${cartes}
 // Variante par journée : chaque jour a son propre parcours sur le plan,
 // et seul celui de l'étape en cours s'allume. Convient à une ville, où
 // les journées sont des boucles distinctes plutôt qu'un chemin continu.
-export const htmlJours = (jours, cartes, fond = "") => `
+export const htmlJours = (jours, cartes, fond = "", vue = "-30 -5 370 178") => `
   <section class="route-section">
     <div class="route-map-sticky">
       <div class="jour-titres">
 ${jours.map((j, i) => `        <div class="jour-titre" data-jour="${i + 1}">${j.titre}</div>`).join("\n")}
       </div>
-      <svg class="route-svg" viewBox="-30 -5 370 178" id="routeSvg">
+      <svg class="route-svg" viewBox="${vue}" id="routeSvg">
 ${fond}
 ${jours.map((j, i) => `
         <g class="jour" data-jour="${i + 1}">

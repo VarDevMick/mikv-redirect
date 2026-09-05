@@ -52,7 +52,7 @@ ${music.html}
 ${trail.html(theme.figures)}
 ${hero.html(theme.decorOuverture, OUVERTURE)}
 ${story.invitation(theme.separation, TEXTES)}
-${routeMap.htmlJours(PARCOURS, stepCard.html(ETAPES), theme.fondPlan)}
+${routeMap.htmlJours(PARCOURS, stepCard.html(ETAPES), theme.fondPlan, theme.vuePlan)}
 ${story.conclusion(TEXTES, VIDEO)}
 <script>
 ${scripts}

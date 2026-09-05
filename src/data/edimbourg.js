@@ -79,30 +79,30 @@ export const PARCOURS = [
   {
     jour: 1,
     titre: "Jour 1 · la vieille ville",
-    d: "M212,104 C186,101 166,99 150,98 C130,96 112,99 100,105 C112,113 128,118 140,119",
+    d: "M216,188 C182,185 148,181 120,180 C130,192 142,200 150,206",
     reperes: [
-      { x: 212, y: 104, label: "Royal Mile" },
-      { x: 100, y: 105, label: "Grassmarket" },
-      { x: 140, y: 119, label: "Musée", dessous: true },
+      { x: 216, y: 188, label: "Royal Mile" },
+      { x: 120, y: 180, label: "Grassmarket" },
+      { x: 150, y: 206, label: "Musée", dessous: true },
     ],
   },
   {
     jour: 2,
     titre: "Jour 2 · le château et la New Town",
-    d: "M62,88 C72,76 96,66 130,61 C172,55 226,55 258,57 C268,58 274,58 278,58",
+    d: "M64,168 C74,146 100,120 150,104 C200,88 258,96 288,114 C292,117 294,120 296,122",
     reperes: [
-      { x: 62, y: 88, label: "Château" },
-      { x: 130, y: 61, label: "Princes St" },
-      { x: 278, y: 58, label: "Calton Hill" },
+      { x: 64, y: 168, label: "Château", dessous: true },
+      { x: 150, y: 104, label: "Princes St" },
+      { x: 296, y: 122, label: "Calton Hill" },
     ],
   },
   {
     jour: 3,
     titre: "Jour 3 · Dean Village et Stockbridge",
-    d: "M24,36 C32,30 42,26 56,24 C76,21 96,27 112,34",
+    d: "M26,46 C40,36 58,30 78,28",
     reperes: [
-      { x: 24, y: 36, label: "Dean Village", dessous: true },
-      { x: 56, y: 24, label: "Stockbridge" },
+      { x: 26, y: 46, label: "Dean Village", dessous: true },
+      { x: 78, y: 28, label: "Stockbridge" },
     ],
   },
 ];
