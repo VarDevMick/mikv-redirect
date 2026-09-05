@@ -1,9 +1,12 @@
 // F-17 · Plan interactif des étapes, collé en haut de la section.
-// `trace` et `reperes` decrivent le plan ; `cartes` est le HTML des etapes.
-export const html = (trace, reperes, cartes) => `
+// `trace` et `reperes` decrivent le parcours ; `fond` est un fond de plan
+// facultatif fourni par le theme, dessine sous le trace ; `cartes` est le
+// HTML des etapes.
+export const html = (trace, reperes, cartes, fond = "") => `
   <section class="route-section">
     <div class="route-map-sticky">
       <svg class="route-svg" viewBox="-30 -5 370 175" id="routeSvg">
+${fond}
         <path class="trail-bg" d="${trace}"></path>
         <path class="trail-progress" id="trailProgress" d="${trace}"></path>
         ${reperes.map((r, i) => `
@@ -57,11 +60,24 @@ export const css = `
     transition: opacity 0.3s ease;
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
+  /* Fond de plan : rues, parcs et reliefs, sous le tracé. */
+  .plan-rue { fill: none; stroke: rgba(43,43,51,0.32); stroke-width: 1.6; stroke-linecap: round; }
+  .plan-rue-fine { fill: none; stroke: rgba(43,43,51,0.18); stroke-width: 1; stroke-linecap: round; }
+  .plan-parc { fill: rgba(47,79,79,0.16); stroke: rgba(47,79,79,0.3); stroke-width: 1; }
+  .plan-eau { fill: none; stroke: rgba(70,110,140,0.45); stroke-width: 2; stroke-linecap: round; }
+  .plan-relief { fill: rgba(43,43,51,0.09); stroke: rgba(43,43,51,0.22); stroke-width: 1; }
+  .plan-legende {
+    font-family: Georgia, serif;
+    font-size: 8px;
+    fill: var(--encre);
+    opacity: 0.42;
+  }
+
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 `;
 
-export const js = (reperes) => `
+export const js = (reperes, fractions = [0.02, 0.36, 0.68, 1]) => `
 (function () {
   var waypoints = ${JSON.stringify(reperes)};
   var progressPath = document.getElementById("trailProgress");
@@ -71,7 +87,7 @@ export const js = (reperes) => `
   progressPath.style.strokeDasharray = total;
 
   // Fraction du tracé parcourue à chaque point clé.
-  var fractions = [0.02, 0.36, 0.68, 1];
+  var fractions = ${JSON.stringify(fractions)};
 
   function setStep(idx) {
     var w = waypoints[idx];

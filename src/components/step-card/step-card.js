@@ -14,9 +14,7 @@ export const carte = (etape, index) => `
           <div class="day-route">${etape.trajet}</div>
           <p class="day-note">${etape.note}</p>
           <div class="stats">
-            <div class="stat"><b>${etape.marche}</b><span>Marche</span></div>
-            <div class="stat"><b>${etape.montee}</b><span>D+</span></div>
-            <div class="stat"><b>${etape.descente}</b><span>D-</span></div>
+${etape.chiffres.map((c) => `            <div class="stat"><b>${c.valeur}</b><span>${c.libelle}</span></div>`).join("\n")}
           </div>
         </div>
       </div>

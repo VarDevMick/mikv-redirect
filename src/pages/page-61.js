@@ -10,7 +10,7 @@
 // /60 sera la page offerte à Carol, gelée à l'impression de la plaque.
 
 import { theme } from "../themes/edimbourg/index.js";
-import { ETAPES, TRACE_PLAN, REPERES, OUVERTURE, TEXTES, VIDEO } from "../data/edimbourg.js";
+import { ETAPES, TRACE_PLAN, REPERES, FRACTIONS, OUVERTURE, TEXTES, VIDEO } from "../data/edimbourg.js";
 
 import * as tokens from "../styles/tokens.js";
 import * as layout from "../styles/layout.js";
@@ -31,7 +31,7 @@ const styles = [
 
 const scripts = [
   hero.js,
-  routeMap.js(REPERES),
+  routeMap.js(REPERES, FRACTIONS),
   trail.js,
   music.js,
 ].join("\n");
@@ -74,7 +74,7 @@ ${music.html}
 ${trail.html(theme.figures)}
 ${hero.html(theme.decorOuverture, OUVERTURE)}
 ${story.invitation(theme.separation, TEXTES)}
-${routeMap.html(TRACE_PLAN, REPERES, stepCard.html(ETAPES))}
+${routeMap.html(TRACE_PLAN, REPERES, stepCard.html(ETAPES), theme.fondPlan)}
 ${story.conclusion(TEXTES, VIDEO)}
 <script>
 ${scripts}

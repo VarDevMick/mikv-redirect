@@ -8,59 +8,76 @@
 //
 // Photos : Wikimedia Commons, licences libres, crédit conservé.
 // Sources du programme : blogs de voyage — horaires et tarifs restent à
-// vérifier avant le départ.
+// vérifier avant le départ. Le billet du château se réserve à l'avance ;
+// le marché de Stockbridge n'a lieu que le dimanche.
 
 // ⚠️ Date d'exemple, en attente des vraies. Un seul endroit à changer.
 export const DATES = "du 30 novembre au 2 décembre";
 
+// Les journées sont découpées en trois moments plutôt qu'en kilomètres :
+// on ne mesure pas une ville comme on mesure une randonnée.
 export const ETAPES = [
   {
     id: "vieille-ville",
     jour: "Jour 1 · la vieille ville",
-    trajet: "Royal Mile & Victoria Street",
-    note: "Les façades colorées, les ruelles en escalier, et le Musée national pour finir au chaud.",
-    marche: "Royal Mile",
-    montee: "Victoria St",
-    descente: "Musée",
+    trajet: "Du Royal Mile au Grassmarket",
+    note: "On descend la grande rue pavée, on tourne dans Victoria Street et ses façades de toutes les couleurs, et on finit au chaud devant les vitrines du Musée national.",
+    chiffres: [
+      { valeur: "Royal Mile", libelle: "Matin" },
+      { valeur: "Victoria St", libelle: "Après-midi" },
+      { valeur: "Grassmarket", libelle: "Soir" },
+    ],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg",
     credit: "Victoria Street · Daniel Kraft, CC BY-SA 3.0",
   },
   {
     id: "chateau",
     jour: "Jour 2 · le château et la ville géorgienne",
-    trajet: "Edinburgh Castle & Calton Hill",
-    note: "Le château le matin, puis les rues géorgiennes, et Calton Hill quand le jour tombe.",
-    marche: "Château",
-    montee: "New Town",
-    descente: "Calton Hill",
+    trajet: "Du rocher à Calton Hill",
+    note: "Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town. Puis Calton Hill au moment où la ville s'allume.",
+    chiffres: [
+      { valeur: "Le château", libelle: "Matin" },
+      { valeur: "New Town", libelle: "Après-midi" },
+      { valeur: "Calton Hill", libelle: "Coucher" },
+    ],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg",
     credit: "Le château depuis l'esplanade · Daniel Kraft, CC BY-SA 3.0",
   },
   {
     id: "dean-village",
     jour: "Jour 3 · les villages dans la ville",
-    trajet: "Dean Village & Stockbridge",
-    note: "L'ancien hameau des meuniers le long de l'eau, puis les boutiques de Stockbridge.",
-    marche: "Dean Village",
-    montee: "Stockbridge",
-    descente: "Holyrood",
+    trajet: "Dean Village et Stockbridge",
+    note: "L'ancien hameau des meuniers, ses maisons de grès rouge au bord de l'eau. On remonte ensuite vers Stockbridge, ses boutiques et ses cafés, sans se presser.",
+    chiffres: [
+      { valeur: "Dean Village", libelle: "Matin" },
+      { valeur: "Stockbridge", libelle: "Après-midi" },
+      { valeur: "Holyrood", libelle: "Si le temps" },
+    ],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg",
     credit: "Well Court, Dean Village · M J Richardson, CC BY-SA 2.0",
   },
 ];
 
-// Plan de ville stylisé : la crête du Royal Mile, d'ouest en est, et les
-// quartiers de part et d'autre. Évocateur, pas cartographique.
+// Parcours suivi sur le plan : il remonte la crête du Royal Mile d'est en
+// ouest, de Holyrood au château, puis bascule au nord-ouest vers Dean
+// Village. Un seul sens de lecture, pas d'aller-retour.
+//
+// Calton Hill et Arthur's Seat restent des repères du plan sans être des
+// étapes : les y faire passer obligeait le tracé à traverser deux fois.
 export const TRACE_PLAN =
-  "M14,96 C40,84 62,74 92,72 C124,70 150,80 178,86 " +
-  "C206,92 232,88 258,76 C280,66 296,58 306,44";
+  "M258,110 C224,106 198,102 150,98 " +
+  "C120,96 92,92 66,88 " +
+  "C58,78 46,60 34,46 C30,41 27,37 24,34";
 
 export const REPERES = [
-  { x: 14, y: 96, label: "Dean Village" },
-  { x: 92, y: 72, label: "Château" },
-  { x: 178, y: 86, label: "Royal Mile" },
-  { x: 306, y: 44, label: "Calton Hill" },
+  { x: 258, y: 110, label: "Holyrood" },
+  { x: 150, y: 98, label: "Royal Mile" },
+  { x: 66, y: 88, label: "Château" },
+  { x: 24, y: 34, label: "Dean Village" },
 ];
+
+// Fraction du tracé atteinte à chaque repère, mesurée sur la courbe.
+export const FRACTIONS = [0.02, 0.42, 0.72, 1];
 
 // Textes de l'ouverture.
 export const OUVERTURE = {
@@ -82,15 +99,16 @@ export const TEXTES = {
     titre: "Édimbourg",
     sous: "Écosse",
     format: "3 jours · 2 nuits",
-    note: "Une ville qui se fait à pied, entre pierre, collines et cafés.",
+    note: "Une ville de pierre posée sur des collines, qui se parcourt entièrement à pied.",
     invite: "Fais défiler pour suivre le parcours →",
   },
   conclusion: {
     titre: "Ce qui t'attend",
     points: [
-      "Vols et hôtel déjà réservés, tu n'as rien à prévoir.",
+      "Vols et hôtel déjà réservés : tu n'as rien à prévoir.",
       "Tout se fait à pied, avec des pauses et des cafés.",
       "Des chaussures confortables, la ville est en pente.",
+      "Une petite laine : là-bas, le vent vient de la mer.",
       `Et c'est ${DATES}.`,
     ],
     signature: "Joyeux anniversaire maman. — Chloé",

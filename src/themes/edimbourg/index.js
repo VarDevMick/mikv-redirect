@@ -3,10 +3,12 @@
 import { palette } from "./palette.js";
 import { separation, chateau } from "./paysage.js";
 import { MARCHEUR, ETAPE, REPOS } from "./figures.js";
+import { plan } from "./plan.js";
 
 export const theme = {
   palette,
   separation,          // (couleurFondSuivant) => svg
   decorOuverture: chateau,
+  fondPlan: plan,      // fond de carte, dessiné sous le parcours
   figures: { marcheur: MARCHEUR, etape: ETAPE, repos: REPOS },
 };
