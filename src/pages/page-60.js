@@ -1,5 +1,10 @@
 // Page offerte à Carol, servie sur /60 — thème Édimbourg.
 //
+// GELÉE au sens du projet : elle importe une copie figée du thème et du
+// contenu (edimbourg-60), indépendante de src/data/edimbourg.js et
+// src/themes/edimbourg/ que /61 continue de faire évoluer. Un changement
+// sur ces derniers ne touche donc plus /60.
+//
 // Ce fichier n'assemble que des composants génériques, un thème et des
 // données. Aucun style ni balisage propre, hormis le bandeau DEV.
 //
@@ -9,8 +14,8 @@
 //
 // /60 sera la page offerte à Carol, gelée à l'impression de la plaque.
 
-import { theme } from "../themes/edimbourg/index.js";
-import { ETAPES, PARCOURS, OUVERTURE, TEXTES, VIDEO } from "../data/edimbourg.js";
+import { theme } from "../themes/edimbourg-60/index.js";
+import { ETAPES, PARCOURS, OUVERTURE, TEXTES, VIDEO } from "../data/edimbourg-60.js";
 
 import * as tokens from "../styles/tokens.js";
 import * as layout from "../styles/layout.js";
