@@ -23,6 +23,61 @@ ${etape.chiffres.map((c) => `            <div class="stat"><b>${c.valeur}</b><sp
 
 export const html = (etapes) => etapes.map(carte).join("\n");
 
+// Variante compacte : la photo redevient une image de taille modeste en
+// tête de carte, le texte se lit sur un fond plein en dessous. Pensée pour
+// s'afficher juste sous un plan sticky, sans le grand saut de défilement
+// qu'impose une carte plein écran — plan et descriptif restent proches à
+// l'écran. Réutilise .day-num/.day-route/.day-note/.day-astuce/.stats,
+// génériques et déjà lisibles sur fond plein (seule .carte-corps les
+// repeint en blanc pour la variante photo).
+const carteCompacte = (etape, index) => `
+    <div class="route-step compact" data-idx="${index + 1}">
+      <div class="jour-carte">
+        <img class="jour-photo" src="${etape.photo}" alt="${etape.trajet}" loading="lazy">
+        <div class="jour-corps">
+          <div class="day-num">${etape.jour}</div>
+          <div class="day-route">${etape.trajet}</div>
+          <p class="day-note">${etape.note}</p>
+${etape.astuce ? `          <p class="day-astuce">${etape.astuce}</p>` : ""}
+          <div class="stats">
+${etape.chiffres.map((c) => `            <div class="stat"><b>${c.valeur}</b><span>${c.libelle}</span></div>`).join("\n")}
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+export const htmlCompact = (etapes) => etapes.map(carteCompacte).join("\n");
+
+export const cssCompact = `
+  /* Carte raccourcie : le plan sticky et le descriptif restent visibles
+     ensemble, sans le long défilement qu'imposait la carte plein écran. */
+  .route-step.compact {
+    min-height: 58vh;
+    padding: 1.6rem 1.5rem 2.2rem 74px;
+  }
+  .jour-carte {
+    background: var(--fond-2);
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+  }
+  .jour-photo {
+    width: 100%;
+    height: 34vh;
+    max-height: 220px;
+    object-fit: cover;
+    object-position: center 45%;
+    display: block;
+  }
+  .jour-corps {
+    padding: 1rem 1.2rem 1.3rem;
+    text-align: left;
+  }
+  .jour-corps .stats { justify-content: flex-start; }
+`;
+
 export const css = `
   .route-step {
     min-height: 90vh;

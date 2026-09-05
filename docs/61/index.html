@@ -392,6 +392,35 @@
   .stat span { font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; }
 
 
+  /* Carte raccourcie : le plan sticky et le descriptif restent visibles
+     ensemble, sans le long défilement qu'imposait la carte plein écran. */
+  .route-step.compact {
+    min-height: 58vh;
+    padding: 1.6rem 1.5rem 2.2rem 74px;
+  }
+  .jour-carte {
+    background: var(--fond-2);
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+  }
+  .jour-photo {
+    width: 100%;
+    height: 34vh;
+    max-height: 220px;
+    object-fit: cover;
+    object-position: center 45%;
+    display: block;
+  }
+  .jour-corps {
+    padding: 1rem 1.2rem 1.3rem;
+    text-align: left;
+  }
+  .jour-corps .stats { justify-content: flex-start; }
+
+
   /* Aucun fond : le sentier passe simplement au-dessus des sections. */
   .sentier {
     position: fixed;
@@ -899,11 +928,10 @@
     </div>
 
 
-    <div class="route-step" data-idx="1">
-      <div class="day-card">
-        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg" alt="Royal Mile, Victoria Street, Grassmarket" loading="lazy">
-        <div class="carte-voile"></div>
-        <div class="carte-corps">
+    <div class="route-step compact" data-idx="1">
+      <div class="jour-carte">
+        <img class="jour-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg" alt="Royal Mile, Victoria Street, Grassmarket" loading="lazy">
+        <div class="jour-corps">
           <div class="day-num">Jour 1 · la vieille ville</div>
           <div class="day-route">Royal Mile, Victoria Street, Grassmarket</div>
           <p class="day-note">On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.</p>
@@ -918,11 +946,10 @@
       </div>
     </div>
 
-    <div class="route-step" data-idx="2">
-      <div class="day-card">
-        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg" alt="Le rocher, la New Town, Calton Hill" loading="lazy">
-        <div class="carte-voile"></div>
-        <div class="carte-corps">
+    <div class="route-step compact" data-idx="2">
+      <div class="jour-carte">
+        <img class="jour-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg" alt="Le rocher, la New Town, Calton Hill" loading="lazy">
+        <div class="jour-corps">
           <div class="day-num">Jour 2 · le château et la ville géorgienne</div>
           <div class="day-route">Le rocher, la New Town, Calton Hill</div>
           <p class="day-note">Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.</p>
@@ -937,11 +964,10 @@
       </div>
     </div>
 
-    <div class="route-step" data-idx="3">
-      <div class="day-card">
-        <img class="carte-fond" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg" alt="Dean Village, l'eau, Stockbridge" loading="lazy">
-        <div class="carte-voile"></div>
-        <div class="carte-corps">
+    <div class="route-step compact" data-idx="3">
+      <div class="jour-carte">
+        <img class="jour-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg" alt="Dean Village, l'eau, Stockbridge" loading="lazy">
+        <div class="jour-corps">
           <div class="day-num">Jour 3 · les villages dans la ville</div>
           <div class="day-route">Dean Village, l'eau, Stockbridge</div>
           <p class="day-note">L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.</p>
