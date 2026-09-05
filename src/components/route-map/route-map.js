@@ -29,15 +29,19 @@ ${cartes}
 export const htmlJours = (jours, cartes, fond = "") => `
   <section class="route-section">
     <div class="route-map-sticky">
-      <svg class="route-svg" viewBox="-30 -5 370 175" id="routeSvg">
+      <div class="jour-titres">
+${jours.map((j, i) => `        <div class="jour-titre" data-jour="${i + 1}">${j.titre}</div>`).join("\n")}
+      </div>
+      <svg class="route-svg" viewBox="-30 -5 370 178" id="routeSvg">
 ${fond}
 ${jours.map((j, i) => `
         <g class="jour" data-jour="${i + 1}">
           <path class="jour-trace" d="${j.d}"></path>
-${j.reperes.map((p) => `
+${j.reperes.map((p, n) => `
           <g class="jour-point" transform="translate(${p.x},${p.y})">
-            <circle r="4.5"></circle>
-            <text x="0" y="${p.dessous ? 18 : -11}" text-anchor="middle">${p.label}</text>
+            <circle r="8"></circle>
+            <text class="jour-num" y="3.4" text-anchor="middle">${n + 1}</text>
+            <text class="jour-label" y="${p.dessous ? 22 : -13}" text-anchor="middle">${p.label}</text>
           </g>`).join("")}
         </g>`).join("")}
       </svg>
@@ -52,9 +56,13 @@ export const jsJours = `
   var etapes = document.querySelectorAll(".route-step");
   if (!jours.length || !etapes.length) return;
 
+  var titres = document.querySelectorAll(".jour-titre");
   function activer(n) {
     jours.forEach(function (g) {
       g.classList.toggle("actif", Number(g.dataset.jour) === n);
+    });
+    titres.forEach(function (t) {
+      t.classList.toggle("actif", Number(t.dataset.jour) === n);
     });
   }
   activer(1);
@@ -105,43 +113,70 @@ ${fondEtapes}
   }
   .waypoint.active text { opacity: 1; font-weight: 700; }
   /* Fond de plan : rues, parcs et reliefs, sous le tracé. */
-  .plan-rue { fill: none; stroke: rgba(var(--plan-rgb), 0.32); stroke-width: 1.6; stroke-linecap: round; }
-  .plan-rue-fine { fill: none; stroke: rgba(var(--plan-rgb), 0.18); stroke-width: 1; stroke-linecap: round; }
-  .plan-parc { fill: rgba(var(--plan-rgb), 0.10); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
+  .plan-rue { fill: none; stroke: rgba(var(--plan-rgb), 0.5); stroke-width: 1.6; stroke-linecap: round; }
+  .plan-rue-fine { fill: none; stroke: rgba(var(--plan-rgb), 0.3); stroke-width: 1; stroke-linecap: round; }
+  .plan-parc { fill: rgba(var(--plan-rgb), 0.14); stroke: rgba(var(--plan-rgb), 0.3); stroke-width: 1; }
   .plan-eau { fill: none; stroke: rgba(var(--eau-rgb), 0.55); stroke-width: 2; stroke-linecap: round; }
-  .plan-relief { fill: rgba(var(--plan-rgb), 0.09); stroke: rgba(var(--plan-rgb), 0.22); stroke-width: 1; }
+  .plan-relief { fill: rgba(var(--plan-rgb), 0.13); stroke: rgba(var(--plan-rgb), 0.3); stroke-width: 1; }
   .plan-legende {
     font-family: Georgia, serif;
-    font-size: 8px;
+    font-size: 9.5px;
     fill: var(--encre);
-    opacity: 0.42;
+    opacity: 0.55;
   }
 
-  /* Parcours par journée : les jours à venir restent en retrait. */
-  .jour { transition: opacity 0.45s ease; opacity: 0.28; }
+  /* Le titre de la journée en cours, au-dessus du plan. */
+  .jour-titres { position: relative; height: 1.5rem; margin-bottom: 0.2rem; }
+  .jour-titre {
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .jour-titre.actif { opacity: 1; }
+
+  /* Parcours par journée : seul le jour en cours est lisible, les autres
+     restent en trace légère pour situer le reste du séjour. */
+  .jour { transition: opacity 0.45s ease; opacity: 0.14; }
   .jour.actif { opacity: 1; }
   .jour-trace {
     fill: none;
     stroke: var(--accent);
-    stroke-width: 3.4;
+    stroke-width: 3;
     stroke-linecap: round;
-    stroke-dasharray: 4 6;
+    stroke-dasharray: 3 7;
     transition: stroke-width 0.4s ease;
   }
-  .jour.actif .jour-trace { stroke-width: 4.6; stroke-dasharray: none; }
+  .jour.actif .jour-trace { stroke-width: 6; stroke-dasharray: none; }
   .jour-point circle {
     fill: var(--fond-2);
     stroke: var(--accent);
     stroke-width: 2.4;
   }
-  .jour.actif .jour-point circle { fill: var(--accent); }
-  .jour-point text {
+  .jour.actif .jour-point circle { fill: var(--accent); stroke: var(--fond); }
+  .jour-num {
     font-family: Georgia, serif;
-    font-size: 11px;
-    fill: var(--encre);
-    opacity: 0.8;
+    font-size: 10px;
+    font-weight: 700;
+    fill: var(--accent);
+    opacity: 0;
   }
-  .jour.actif .jour-point text { font-weight: 700; opacity: 1; }
+  .jour.actif .jour-num { fill: var(--fond); opacity: 1; }
+  /* Seule la journée en cours nomme ses arrêts : afficher les trois
+     séries de libellés rendait le plan illisible. */
+  .jour-label {
+    font-family: Georgia, serif;
+    font-size: 12.5px;
+    fill: var(--encre);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .jour.actif .jour-label { font-weight: 700; opacity: 1; }
 
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }

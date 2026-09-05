@@ -40,7 +40,6 @@ export const plan = `
           <!-- Arthur's Seat et les Salisbury Crags -->
           <path class="plan-relief" d="M256,132 C264,116 284,110 300,116 C316,122 322,138 314,150 C300,158 268,156 256,146 Z"></path>
 
-          <text class="plan-legende" x="278" y="80" text-anchor="middle">Calton Hill</text>
           <text class="plan-legende" x="288" y="166" text-anchor="middle">Arthur's Seat</text>
           <text class="plan-legende" x="136" y="72" text-anchor="middle">Princes St Gardens</text>
           <text class="plan-legende" x="128" y="40" text-anchor="middle">New Town</text>

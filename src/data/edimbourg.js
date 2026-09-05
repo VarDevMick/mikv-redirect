@@ -78,6 +78,7 @@ export const ETAPES = [
 export const PARCOURS = [
   {
     jour: 1,
+    titre: "Jour 1 · la vieille ville",
     d: "M212,104 C186,101 166,99 150,98 C130,96 112,99 100,105 C112,113 128,118 140,119",
     reperes: [
       { x: 212, y: 104, label: "Royal Mile" },
@@ -87,6 +88,7 @@ export const PARCOURS = [
   },
   {
     jour: 2,
+    titre: "Jour 2 · le château et la New Town",
     d: "M62,88 C72,76 96,66 130,61 C172,55 226,55 258,57 C268,58 274,58 278,58",
     reperes: [
       { x: 62, y: 88, label: "Château" },
@@ -96,6 +98,7 @@ export const PARCOURS = [
   },
   {
     jour: 3,
+    titre: "Jour 3 · Dean Village et Stockbridge",
     d: "M24,36 C32,30 42,26 56,24 C76,21 96,27 112,34",
     reperes: [
       { x: 24, y: 36, label: "Dean Village", dessous: true },
