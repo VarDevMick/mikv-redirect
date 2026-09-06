@@ -115,15 +115,19 @@ ${contenuMarcheur ? `
       <!-- Bloc normal en flux, tiré sur la carte par une marge négative :
            pas de position absolute ni de grille, donc pas d'ambiguïté de
            largeur pour le texte qu'il contient. -->
+      <!-- Petite carte d'information flottante, posée dans un coin du plan
+           (décalée), plutôt qu'un bandeau pleine largeur : le plan reste
+           visible autour. Fond opaque => l'astuce reste lisible. -->
       <div class="plan-info" id="planInfo">
         <img class="plan-info-photo" id="planInfoPhoto" src="" alt="">
         <!-- Le trajet et les horaires sont déjà lisibles sur le plan
-             (titre de journée, pastilles numérotées) : le bandeau ne
-             répète pas cette information, il n'ajoute que l'astuce. -->
+             (titre de journée, pastilles numérotées) : la carte ne
+             répète pas cette information, elle n'ajoute que l'astuce. -->
         <p class="day-astuce" id="planInfoAstuce"></p>
-        <!-- Attribution ODbL des données OpenStreetMap, toujours visible. -->
-        <span class="plan-osm">© OpenStreetMap</span>
       </div>
+      <!-- Attribution ODbL des données OpenStreetMap, toujours visible,
+           ancrée au coin du plan. -->
+      <span class="plan-osm">© OpenStreetMap</span>
     </div>
 
 ${etapes.map((e, i) => `    <div class="route-step" data-idx="${i + 1}">
@@ -405,28 +409,35 @@ ${fondEtapes}
      SVG le recadre alors sans le déformer ; sur grand écran il reste
      largement dominant. */
   .route-section.plein .route-svg { max-height: 42vh; }
+  /* Carte d'information flottante, ancrée dans le coin bas-gauche du plan
+     collant (position:sticky = ancêtre positionné) et décalée du bord. */
   .plan-info {
-    position: relative;
-    z-index: 1;
-    margin-top: -78px;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 4;
+    max-width: 250px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    padding: 1.1rem 0.9rem 0.9rem;
-    background: linear-gradient(180deg,
-      rgba(0,0,0,0) 0%,
-      var(--fond-2) 46%);
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    background: var(--fond);
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.45);
   }
-  /* Attribution OSM : coin bas-droit du bandeau, toujours visible. */
+  /* Attribution OSM : coin bas-droit du plan, toujours visible. */
   .plan-osm {
     position: absolute;
     right: 8px;
-    bottom: 3px;
+    bottom: 6px;
+    z-index: 4;
     font-size: 0.5rem;
     letter-spacing: 0.02em;
-    opacity: 0.55;
+    opacity: 0.7;
     pointer-events: none;
+    paint-order: stroke;
+    text-shadow: 0 0 3px var(--fond), 0 0 3px var(--fond);
   }
   .plan-info-photo {
     width: 44px;
