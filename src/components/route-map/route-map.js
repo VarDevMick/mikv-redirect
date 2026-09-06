@@ -83,7 +83,7 @@ export const htmlPlein = (jours, etapes, image = "", imageWidth = 0, imageHeight
   const depart = jours[0].reperes[0];
   const contenuMarcheur = marcheur.trim().replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
   return `
-  <section class="route-section">
+  <section class="route-section plein">
     <div class="route-map-sticky plein">
       <div class="jour-titres">
 ${jours.map((j, i) => `        <div class="jour-titre" data-jour="${i + 1}">${j.titre}</div>`).join("\n")}
@@ -124,7 +124,16 @@ ${contenuMarcheur ? `
       </div>
     </div>
 
-${etapes.map((e, i) => `    <div class="route-step" data-idx="${i + 1}"></div>`).join("\n")}
+${etapes.map((e, i) => `    <div class="route-step" data-idx="${i + 1}">
+      <div class="jour-detail">
+        <div class="day-route">${e.trajet}</div>
+        <p class="day-note">${e.note}</p>
+        <div class="stats">
+${e.chiffres.map((c) => `          <div class="stat"><b>${c.valeur}</b><span>${c.libelle}</span></div>`).join("\n")}
+        </div>
+${e.credit ? `        <p class="jour-detail-credit">Photo — ${e.credit}</p>` : ""}
+      </div>
+    </div>`).join("\n")}
   </section>`;
 };
 
@@ -436,8 +445,42 @@ ${fondEtapes}
     border-left: 2px solid var(--accent);
   }
 
-  /* Les .route-step ne portent plus de carte visible : elles ne servent
-     qu'à déclencher le changement de journée pendant le défilement. */
+  /* Variante « plan dominant » seulement (.route-section.plein) : chaque
+     .route-step porte le descriptif de sa journée, sous le plan collé. Il
+     défile sur un fond plein (donc lisible, contrairement à un texte posé
+     sur l'image) et sert en même temps de déclencheur pour le changement
+     de journée. Calé en bas de la zone pour apparaître sous le plan, pas
+     derrière lui. La variante /60 (htmlJours, sans .plein) garde ci-après
+     sa règle .route-section .route-step d'origine, intacte. */
+  .route-section.plein .route-step {
+    min-height: 82vh;
+    padding: 0 0.9rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-sizing: border-box;
+  }
+  .route-section.plein .jour-detail {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    background: var(--fond);
+    border-radius: 12px;
+    padding: 1.15rem 1.3rem 1.3rem;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.32);
+    text-align: center;
+  }
+  .route-section.plein .jour-detail .day-note { margin-top: 0; }
+  .route-section.plein .jour-detail-credit {
+    margin: 0.9rem 0 0;
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+    opacity: 0.55;
+  }
+
+  /* Variante /60 (htmlJours) : les .route-step ne portent qu'une carte
+     compacte, le déclenchement du changement de journée se fait au
+     défilement. Règle d'origine, inchangée. */
   .route-section .route-step {
     min-height: 62vh;
     padding: 0;

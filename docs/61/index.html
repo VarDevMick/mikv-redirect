@@ -390,8 +390,42 @@
     border-left: 2px solid var(--accent);
   }
 
-  /* Les .route-step ne portent plus de carte visible : elles ne servent
-     qu'à déclencher le changement de journée pendant le défilement. */
+  /* Variante « plan dominant » seulement (.route-section.plein) : chaque
+     .route-step porte le descriptif de sa journée, sous le plan collé. Il
+     défile sur un fond plein (donc lisible, contrairement à un texte posé
+     sur l'image) et sert en même temps de déclencheur pour le changement
+     de journée. Calé en bas de la zone pour apparaître sous le plan, pas
+     derrière lui. La variante /60 (htmlJours, sans .plein) garde ci-après
+     sa règle .route-section .route-step d'origine, intacte. */
+  .route-section.plein .route-step {
+    min-height: 82vh;
+    padding: 0 0.9rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-sizing: border-box;
+  }
+  .route-section.plein .jour-detail {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    background: var(--fond);
+    border-radius: 12px;
+    padding: 1.15rem 1.3rem 1.3rem;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.32);
+    text-align: center;
+  }
+  .route-section.plein .jour-detail .day-note { margin-top: 0; }
+  .route-section.plein .jour-detail-credit {
+    margin: 0.9rem 0 0;
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+    opacity: 0.55;
+  }
+
+  /* Variante /60 (htmlJours) : les .route-step ne portent qu'une carte
+     compacte, le déclenchement du changement de journée se fait au
+     défilement. Règle d'origine, inchangée. */
   .route-section .route-step {
     min-height: 62vh;
     padding: 0;
@@ -689,7 +723,7 @@
 </svg>
   </section>
 
-  <section class="route-section">
+  <section class="route-section plein">
     <div class="route-map-sticky plein">
       <div class="jour-titres">
         <div class="jour-titre" data-jour="1">Jour 1 · la vieille ville</div>
@@ -823,9 +857,45 @@
       </div>
     </div>
 
-    <div class="route-step" data-idx="1"></div>
-    <div class="route-step" data-idx="2"></div>
-    <div class="route-step" data-idx="3"></div>
+    <div class="route-step" data-idx="1">
+      <div class="jour-detail">
+        <div class="day-route">Royal Mile, Victoria Street, Grassmarket</div>
+        <p class="day-note">On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.</p>
+        <div class="stats">
+          <div class="stat"><b>Royal Mile</b><span>Matin</span></div>
+          <div class="stat"><b>Grassmarket</b><span>Midi</span></div>
+          <div class="stat"><b>Musée national</b><span>Après-midi</span></div>
+          <div class="stat"><b>Victoria St</b><span>Fin de jour</span></div>
+        </div>
+        <p class="jour-detail-credit">Photo — Victoria Street · Daniel Kraft, CC BY-SA 3.0</p>
+      </div>
+    </div>
+    <div class="route-step" data-idx="2">
+      <div class="jour-detail">
+        <div class="day-route">Le rocher, la New Town, Calton Hill</div>
+        <p class="day-note">Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.</p>
+        <div class="stats">
+          <div class="stat"><b>Le château</b><span>Matin</span></div>
+          <div class="stat"><b>Princes St</b><span>Midi</span></div>
+          <div class="stat"><b>New Town</b><span>Après-midi</span></div>
+          <div class="stat"><b>Calton Hill</b><span>Coucher</span></div>
+        </div>
+        <p class="jour-detail-credit">Photo — Le château depuis l'esplanade · Daniel Kraft, CC BY-SA 3.0</p>
+      </div>
+    </div>
+    <div class="route-step" data-idx="3">
+      <div class="jour-detail">
+        <div class="day-route">Dean Village, l'eau, Stockbridge</div>
+        <p class="day-note">L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.</p>
+        <div class="stats">
+          <div class="stat"><b>Dean Village</b><span>Matin</span></div>
+          <div class="stat"><b>Water of Leith</b><span>Midi</span></div>
+          <div class="stat"><b>Stockbridge</b><span>Après-midi</span></div>
+          <div class="stat"><b>Retour</b><span>Fin de jour</span></div>
+        </div>
+        <p class="jour-detail-credit">Photo — Well Court, Dean Village · M J Richardson, CC BY-SA 2.0</p>
+      </div>
+    </div>
   </section>
 
   <section class="panel p7 no-arrow">
