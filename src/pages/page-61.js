@@ -10,7 +10,7 @@
 // /60 sera la page offerte à Carol, gelée à l'impression de la plaque.
 
 import { theme } from "../themes/edimbourg/index.js";
-import { ETAPES, PARCOURS, OUVERTURE, TEXTES, VIDEO } from "../data/edimbourg.js";
+import { ETAPES, PARCOURS, OUVERTURE, TEXTES, VIDEO, PLAN_LARGEUR, PLAN_HAUTEUR } from "../data/edimbourg.js";
 
 import * as tokens from "../styles/tokens.js";
 import * as layout from "../styles/layout.js";
@@ -25,16 +25,19 @@ import * as music from "../components/music/music.js";
 const styles = [
   tokens.css(theme.palette),
   layout.css, scenery.css, hero.css, story.css,
-  routeMap.css(theme.palette.fondEtapes), stepCard.css, stepCard.cssCompact,
+  // stepCard.css fournit .day-route/.day-astuce/.stats/.stat, réutilisés
+  // par le bandeau d'info incorporé au plan (routeMap.htmlPlein) — la
+  // carte elle-même (stepCard.html/htmlCompact) n'est plus utilisée ici.
+  routeMap.css(theme.palette.fondEtapes), stepCard.css,
   music.css(theme.palette),
   // Le duo marche désormais sur les tracés du plan (voir route-map) : plus
   // de colonne fixe à gauche, la marge qu'elle réservait est rendue.
-  `.panel, .route-step, .route-step.compact { padding-left: 1.5rem; }`,
+  `.panel, .route-step { padding-left: 1.5rem; }`,
 ].join("\n");
 
 const scripts = [
   hero.js(theme.palette.feu),
-  routeMap.jsJours,
+  routeMap.jsPlein(ETAPES),
   music.js,
 ].join("\n");
 
@@ -57,7 +60,11 @@ const cssBandeau = `
     letter-spacing: 0.32em;
     padding: 4px 0 3px;
     pointer-events: none;
-  }`;
+  }
+  /* Le bandeau DEV est fixe en haut : sans ce décalage, le plan collant
+     (lui aussi ancré à top:0) passe dessous et son titre de journée
+     disparaît derrière. N'existe pas sur /60, qui n'a pas de bandeau. */
+  .route-map-sticky { top: 21px; }`;
 
 export const PAGE_61_HTML = `<!doctype html>
 <html lang="fr">
@@ -75,7 +82,7 @@ ${bandeauDev}
 ${music.html}
 ${hero.html(theme.decorOuverture, OUVERTURE)}
 ${story.invitation(theme.separation, TEXTES)}
-${routeMap.htmlJours(PARCOURS, stepCard.htmlCompact(ETAPES), theme.fondPlan, theme.vuePlan, theme.figures.marcheur)}
+${routeMap.htmlPlein(PARCOURS, ETAPES, "plan-fond.png", PLAN_LARGEUR, PLAN_HAUTEUR, theme.figures.marcheur)}
 ${story.conclusion(TEXTES, VIDEO)}
 <script>
 ${scripts}

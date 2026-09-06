@@ -75,37 +75,53 @@ export const ETAPES = [
 // Un parcours par journée : en ville, les jours sont des boucles
 // distinctes, pas un chemin continu. Seul le jour de l'étape en cours
 // s'allume sur le plan.
+//
+// Coordonnées : vraies positions GPS (géocodées via Nominatim/OSM),
+// projetées en pixels dans le plan de fond (src/assets/edimbourg/,
+// image source 1055×1180 générée par scripts/fetch-map-edimbourg.py),
+// puis ramenées à l'échelle du viewBox ci-dessous (× 0.36 — l'image
+// affichée reste pleine résolution, seule l'unité SVG change, pour que
+// rayons/épaisseurs/tailles de texte gardent des valeurs comparables
+// aux autres plans du site). Les tracés relient les repères en ligne
+// droite — pas de courbe dessinée à la main — pour que les distances et
+// directions restent justes.
 export const PARCOURS = [
   {
     jour: 1,
     titre: "Jour 1 · la vieille ville",
-    d: "M 216,304.62 C 182,300.69 148,295.45 120,294.14 C 130,309.86 142,320.34 150,328.2",
+    d: "M 280.08,257.76 L 234.72,288 L 292.68,294.12",
     reperes: [
-      { x: 216, y: 305, label: "Royal Mile" },
-      { x: 120, y: 294, label: "Grassmarket" },
-      { x: 150, y: 328, label: "Musée", dessous: true },
+      { x: 280.08, y: 257.76, label: "Royal Mile" },
+      { x: 234.72, y: 288, label: "Grassmarket" },
+      { x: 292.68, y: 294.12, label: "Musée", dessous: true },
     ],
   },
   {
     jour: 2,
     titre: "Jour 2 · le château et la New Town",
-    d: "M 64,278.42 C 74,249.6 100,215.54 150,194.58 C 200,173.62 258,184.1 288,207.68 C 292,211.61 294,215.54 296,218.16",
+    d: "M 199.8,269.64 L 180.72,234.72 L 347.4,171.36",
     reperes: [
-      { x: 64, y: 278, label: "Château", dessous: true },
-      { x: 150, y: 195, label: "Princes St" },
-      { x: 296, y: 218, label: "Calton Hill" },
+      { x: 199.8, y: 269.64, label: "Château", dessous: true },
+      { x: 180.72, y: 234.72, label: "Princes St" },
+      { x: 347.4, y: 171.36, label: "Calton Hill" },
     ],
   },
   {
     jour: 3,
     titre: "Jour 3 · Dean Village et Stockbridge",
-    d: "M 26,118.6 C 40,105.5 58,97.64 78,95.02",
+    d: "M 50.4,216.36 L 124.92,130.68",
     reperes: [
-      { x: 26, y: 119, label: "Dean Village", dessous: true },
-      { x: 78, y: 95, label: "Stockbridge" },
+      { x: 50.4, y: 216.36, label: "Dean Village", dessous: true },
+      { x: 124.92, y: 130.68, label: "Stockbridge" },
     ],
   },
 ];
+
+// Dimensions logiques du viewBox (voir commentaire ci-dessus) : l'image
+// source (src/assets/edimbourg/plan-fond.png) fait 1135×1180 px, servie
+// pleine résolution dans ce viewBox plus petit.
+export const PLAN_LARGEUR = 408.6;
+export const PLAN_HAUTEUR = 424.8;
 
 // Textes de l'ouverture.
 export const OUVERTURE = {

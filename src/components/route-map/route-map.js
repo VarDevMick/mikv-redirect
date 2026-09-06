@@ -65,6 +65,130 @@ ${cartes}
   </section>`;
 };
 
+// Variante « plan dominant » : la carte occupe l'essentiel de l'écran, les
+// informations de la journée s'incorporent directement dedans — un bandeau
+// en bas du plan, mis à jour par script, plutôt qu'une carte séparée plus
+// bas qu'il fallait faire défiler pour l'atteindre.
+//
+// `etapes` porte les données (trajet, astuce, chiffres, photo) : contrairement
+// à `htmlJours`, cette variante ne prend plus de HTML de carte pré-rendu en
+// paramètre, elle génère elle-même le bandeau et le peuple en JS.
+//
+// Fond de plan : une image raster (vraies tuiles OpenStreetMap, voir
+// scripts/fetch-map-edimbourg.py), pas un décor dessiné à la main — les
+// distances et proportions entre repères sont donc réelles. Le viewBox
+// du SVG est calé en pixels sur cette image (imageWidth×imageHeight),
+// et les tracés/repères sont directement dans ce même repère de pixels.
+export const htmlPlein = (jours, etapes, image = "", imageWidth = 0, imageHeight = 0, marcheur = "") => {
+  const depart = jours[0].reperes[0];
+  const contenuMarcheur = marcheur.trim().replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
+  return `
+  <section class="route-section">
+    <div class="route-map-sticky plein">
+      <div class="jour-titres">
+${jours.map((j, i) => `        <div class="jour-titre" data-jour="${i + 1}">${j.titre}</div>`).join("\n")}
+      </div>
+      <svg class="route-svg" viewBox="0 0 ${imageWidth} ${imageHeight}" id="routeSvg">
+        <image href="${image}" x="0" y="0" width="${imageWidth}" height="${imageHeight}" preserveAspectRatio="xMidYMid slice"></image>
+        <!-- Licence ODbL des données OpenStreetMap : attribution requise
+             sur la carte elle-même, pas seulement dans le code. Décalée
+             du bas (pas juste -5) : le bandeau d'info se pose par-dessus
+             le bas de la carte (voir .plan-info, margin-top négatif) et
+             la cacherait complètement collée au bord. -->
+        <text class="plan-credit" x="${imageWidth - 4}" y="${imageHeight - 95}" text-anchor="end">© OpenStreetMap contributors</text>
+${jours.map((j, i) => `
+        <g class="jour" data-jour="${i + 1}">
+          <path class="jour-trace-halo" d="${j.d}"></path>
+          <path class="jour-trace" d="${j.d}"></path>
+${j.reperes.map((p, n) => `
+          <g class="jour-point" transform="translate(${p.x},${p.y})">
+            <circle r="8"></circle>
+            <text class="jour-num" y="3.4" text-anchor="middle">${n + 1}</text>
+            <text class="jour-label" y="${p.dessous ? 22 : -13}" text-anchor="middle">${p.label}</text>
+          </g>`).join("")}
+        </g>`).join("")}
+${contenuMarcheur ? `
+        <g class="marcheuse-plan" id="marcheusePlan" transform="translate(${depart.x},${depart.y}) scale(0.46)">
+          <g transform="translate(-41,-40)">${contenuMarcheur}</g>
+        </g>` : ""}
+      </svg>
+      <!-- Bloc normal en flux, tiré sur la carte par une marge négative :
+           pas de position absolute ni de grille, donc pas d'ambiguïté de
+           largeur pour le texte qu'il contient. -->
+      <div class="plan-info" id="planInfo">
+        <img class="plan-info-photo" id="planInfoPhoto" src="" alt="">
+        <!-- Le trajet et les horaires sont déjà lisibles sur le plan
+             (titre de journée, pastilles numérotées) : le bandeau ne
+             répète pas cette information, il n'ajoute que l'astuce. -->
+        <p class="day-astuce" id="planInfoAstuce"></p>
+      </div>
+    </div>
+
+${etapes.map((e, i) => `    <div class="route-step" data-idx="${i + 1}"></div>`).join("\n")}
+  </section>`;
+};
+
+export const jsPlein = (etapesData) => `
+(function () {
+  var jours = document.querySelectorAll(".jour");
+  var etapes = document.querySelectorAll(".route-step");
+  if (!jours.length || !etapes.length) return;
+
+  var titres = document.querySelectorAll(".jour-titre");
+  var marcheusePlan = document.getElementById("marcheusePlan");
+  var infoPhoto = document.getElementById("planInfoPhoto");
+  var infoAstuce = document.getElementById("planInfoAstuce");
+  var donnees = ${JSON.stringify(etapesData)};
+  var jourActif = 1;
+
+  function activer(n) {
+    jourActif = n;
+    jours.forEach(function (g) {
+      g.classList.toggle("actif", Number(g.dataset.jour) === n);
+    });
+    titres.forEach(function (t) {
+      t.classList.toggle("actif", Number(t.dataset.jour) === n);
+    });
+    var e = donnees[n - 1];
+    if (!e || !infoAstuce) return;
+    infoPhoto.src = e.photo;
+    infoPhoto.alt = e.trajet;
+    infoAstuce.textContent = e.astuce || "";
+  }
+  activer(1);
+
+  // Fait avancer le marcheur le long du tracé du jour actif, à la fraction
+  // de défilement de sa zone.
+  function positionner() {
+    if (!marcheusePlan) return;
+    var path = document.querySelector('.jour[data-jour="' + jourActif + '"] .jour-trace');
+    var etape = document.querySelector('.route-step[data-idx="' + jourActif + '"]');
+    if (!path || !etape) return;
+    var r = etape.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var f = (vh - r.top) / (vh + r.height);
+    f = Math.max(0, Math.min(1, f));
+    var len = path.getTotalLength();
+    var p = path.getPointAtLength(f * len);
+    var suivant = path.getPointAtLength(Math.min(len, (f + 0.02) * len));
+    var sens = suivant.x >= p.x ? 1 : -1;
+    marcheusePlan.setAttribute("transform",
+      "translate(" + p.x + "," + p.y + ") scale(" + (0.46 * sens) + ",0.46)");
+  }
+
+  var observer = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (e) {
+      if (e.isIntersecting) activer(Number(e.target.dataset.idx));
+    });
+    positionner();
+  }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
+  etapes.forEach(function (e) { observer.observe(e); });
+
+  window.addEventListener("scroll", positionner, { passive: true });
+  positionner();
+})();
+`;
+
 export const jsJours = `
 (function () {
   var jours = document.querySelectorAll(".jour");
@@ -172,7 +296,12 @@ ${fondEtapes}
   .jour-titres { position: relative; height: 1.5rem; margin-bottom: 0.2rem; }
   .jour-titre {
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    /* Le bouton son est fixe en haut à droite : on lui laisse sa place,
+       sinon les titres les plus longs passent dessous. */
+    right: 3.2rem;
     text-align: center;
     font-size: 0.82rem;
     letter-spacing: 0.08em;
@@ -187,6 +316,18 @@ ${fondEtapes}
      restent en trace légère pour situer le reste du séjour. */
   .jour { transition: opacity 0.45s ease; opacity: 0.14; }
   .jour.actif { opacity: 1; }
+  /* Sur un fond de plan réel (tuiles OSM), le tracé a besoin d'un liseré
+     sombre pour rester lisible quel que soit ce qu'il traverse (rue
+     claire, parc vert, bâti). Le halo suit le même « d » que le tracé. */
+  .jour-trace-halo {
+    fill: none;
+    stroke: var(--fond);
+    stroke-width: 7;
+    stroke-linecap: round;
+    opacity: 0.85;
+    transition: stroke-width 0.4s ease;
+  }
+  .jour.actif .jour-trace-halo { stroke-width: 10; }
   .jour-trace {
     fill: none;
     stroke: var(--accent);
@@ -218,8 +359,25 @@ ${fondEtapes}
     fill: var(--encre);
     opacity: 0;
     transition: opacity 0.4s ease;
+    /* Liseré clair derrière le texte : lisible sur les tuiles OSM,
+       quelle que soit la couleur du sol à cet endroit. */
+    paint-order: stroke;
+    stroke: var(--fond-2);
+    stroke-width: 3px;
+    stroke-linejoin: round;
   }
   .jour.actif .jour-label { font-weight: 700; opacity: 1; }
+
+  .plan-credit {
+    font-family: Georgia, serif;
+    font-size: 7px;
+    fill: var(--encre);
+    opacity: 0.75;
+    paint-order: stroke;
+    stroke: var(--fond-2);
+    stroke-width: 2.5px;
+    stroke-linejoin: round;
+  }
 
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
@@ -228,6 +386,62 @@ ${fondEtapes}
   .marcheuse-plan {
     transition: transform 0.5s ease-out;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+  }
+
+  /* Variante « plan dominant » : le bandeau d'info se pose directement sur
+     le plan plutôt que d'exister comme carte séparée à faire défiler. */
+  .route-map-sticky.plein { padding: 0; }
+  .route-map-sticky.plein .jour-titres {
+    margin: 0;
+    padding: 0.7rem 1rem 0.3rem;
+  }
+  /* Bandeau en flux normal, tiré sur le bas de la carte par une marge
+     négative : pas de position absolute ni de grille superposant deux
+     éléments, donc pas d'ambiguïté de largeur pour le texte qu'il contient. */
+  .route-svg { width: 100%; height: auto; display: block; }
+  .plan-info {
+    position: relative;
+    z-index: 1;
+    margin-top: -78px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.1rem 0.9rem 0.7rem;
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0) 0%,
+      var(--fond-2) 46%);
+  }
+  .plan-info-photo {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  }
+  /* Le trajet et les horaires sont déjà lisibles sur le plan (titre de
+     journée, pastilles numérotées) : une seule ligne suffit ici. */
+  .plan-info .day-astuce {
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    font-size: 0.76rem;
+    line-height: 1.35;
+    text-align: left;
+    opacity: 0.9;
+    margin: 0;
+    padding-left: 0.55rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* Les .route-step ne portent plus de carte visible : elles ne servent
+     qu'à déclencher le changement de journée pendant le défilement. */
+  .route-section .route-step {
+    min-height: 62vh;
+    padding: 0;
+    display: block;
   }
 `;
 

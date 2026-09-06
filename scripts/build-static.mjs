@@ -5,7 +5,7 @@ import { PAGE_30_HTML } from "../src/page-30.js";
 import { PAGE_31_HTML } from "../src/pages/page-31.js";
 import { PAGE_60_HTML } from "../src/pages/page-60.js";
 import { PAGE_61_HTML } from "../src/pages/page-61.js";
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 
 const DOMAINE = "mikv.io";
 
@@ -20,6 +20,9 @@ writeFileSync("docs/60/index.html", PAGE_60_HTML);
 
 mkdirSync("docs/61", { recursive: true });
 writeFileSync("docs/61/index.html", PAGE_61_HTML);
+// Fond de plan d'Édimbourg (vraies tuiles OpenStreetMap) : image fixe,
+// régénérée par scripts/fetch-map-edimbourg.py, pas par ce script.
+copyFileSync("src/assets/edimbourg/plan-fond.png", "docs/61/plan-fond.png");
 
 // Indique à GitHub Pages le domaine personnalisé à servir.
 writeFileSync("docs/CNAME", `${DOMAINE}\n`);
