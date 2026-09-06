@@ -322,17 +322,6 @@
   }
   .jour.actif .jour-label { font-weight: 700; opacity: 1; }
 
-  .plan-credit {
-    font-family: Georgia, serif;
-    font-size: 7px;
-    fill: var(--encre);
-    opacity: 0.75;
-    paint-order: stroke;
-    stroke: var(--fond-2);
-    stroke-width: 2.5px;
-    stroke-linejoin: round;
-  }
-
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 
@@ -353,6 +342,12 @@
      négative : pas de position absolute ni de grille superposant deux
      éléments, donc pas d'ambiguïté de largeur pour le texte qu'il contient. */
   .route-svg { width: 100%; height: auto; display: block; }
+  /* Plafonne le plan pour laisser la place au descriptif dessous sur les
+     écrans courts (mesuré : sans ça le plan mangeait 67% d'un écran de
+     660px et la carte de journée passait derrière lui). Le slice sur le
+     SVG le recadre alors sans le déformer ; sur grand écran il reste
+     largement dominant. */
+  .route-section.plein .route-svg { max-height: 42vh; }
   .plan-info {
     position: relative;
     z-index: 1;
@@ -361,10 +356,20 @@
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    padding: 1.1rem 0.9rem 0.7rem;
+    padding: 1.1rem 0.9rem 0.9rem;
     background: linear-gradient(180deg,
       rgba(0,0,0,0) 0%,
       var(--fond-2) 46%);
+  }
+  /* Attribution OSM : coin bas-droit du bandeau, toujours visible. */
+  .plan-osm {
+    position: absolute;
+    right: 8px;
+    bottom: 3px;
+    font-size: 0.5rem;
+    letter-spacing: 0.02em;
+    opacity: 0.55;
+    pointer-events: none;
   }
   .plan-info-photo {
     width: 44px;
@@ -398,8 +403,8 @@
      derrière lui. La variante /60 (htmlJours, sans .plein) garde ci-après
      sa règle .route-section .route-step d'origine, intacte. */
   .route-section.plein .route-step {
-    min-height: 82vh;
-    padding: 0 0.9rem 1.6rem;
+    min-height: 72vh;
+    padding: 0 0.9rem 1.4rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

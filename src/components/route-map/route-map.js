@@ -88,14 +88,14 @@ export const htmlPlein = (jours, etapes, image = "", imageWidth = 0, imageHeight
       <div class="jour-titres">
 ${jours.map((j, i) => `        <div class="jour-titre" data-jour="${i + 1}">${j.titre}</div>`).join("\n")}
       </div>
-      <svg class="route-svg" viewBox="0 0 ${imageWidth} ${imageHeight}" id="routeSvg">
+      <!-- slice : le plan est plafonné en hauteur par CSS (max-height) pour
+           laisser la place au descriptif sous lui sur les écrans courts ;
+           slice le recadre alors sans le déformer, en gardant les repères
+           (centrés) visibles. L'attribution OSM n'est plus ici mais dans le
+           bandeau (.plan-osm) : posée sur la carte, elle finissait cachée
+           par le bandeau d'info quel que soit le recadrage. -->
+      <svg class="route-svg" viewBox="0 0 ${imageWidth} ${imageHeight}" preserveAspectRatio="xMidYMid slice" id="routeSvg">
         <image href="${image}" x="0" y="0" width="${imageWidth}" height="${imageHeight}" preserveAspectRatio="xMidYMid slice"></image>
-        <!-- Licence ODbL des données OpenStreetMap : attribution requise
-             sur la carte elle-même, pas seulement dans le code. Décalée
-             du bas (pas juste -5) : le bandeau d'info se pose par-dessus
-             le bas de la carte (voir .plan-info, margin-top négatif) et
-             la cacherait complètement collée au bord. -->
-        <text class="plan-credit" x="${imageWidth - 4}" y="${imageHeight - 95}" text-anchor="end">© OpenStreetMap contributors</text>
 ${jours.map((j, i) => `
         <g class="jour" data-jour="${i + 1}">
           <path class="jour-trace-halo" d="${j.d}"></path>
@@ -121,6 +121,8 @@ ${contenuMarcheur ? `
              (titre de journée, pastilles numérotées) : le bandeau ne
              répète pas cette information, il n'ajoute que l'astuce. -->
         <p class="day-astuce" id="planInfoAstuce"></p>
+        <!-- Attribution ODbL des données OpenStreetMap, toujours visible. -->
+        <span class="plan-osm">© OpenStreetMap</span>
       </div>
     </div>
 
@@ -377,17 +379,6 @@ ${fondEtapes}
   }
   .jour.actif .jour-label { font-weight: 700; opacity: 1; }
 
-  .plan-credit {
-    font-family: Georgia, serif;
-    font-size: 7px;
-    fill: var(--encre);
-    opacity: 0.75;
-    paint-order: stroke;
-    stroke: var(--fond-2);
-    stroke-width: 2.5px;
-    stroke-linejoin: round;
-  }
-
   .hiker-marker { transition: transform 0.5s ease; }
   .hiker-marker circle { fill: var(--accent-clair); stroke: var(--encre); stroke-width: 1.5; }
 
@@ -408,6 +399,12 @@ ${fondEtapes}
      négative : pas de position absolute ni de grille superposant deux
      éléments, donc pas d'ambiguïté de largeur pour le texte qu'il contient. */
   .route-svg { width: 100%; height: auto; display: block; }
+  /* Plafonne le plan pour laisser la place au descriptif dessous sur les
+     écrans courts (mesuré : sans ça le plan mangeait 67% d'un écran de
+     660px et la carte de journée passait derrière lui). Le slice sur le
+     SVG le recadre alors sans le déformer ; sur grand écran il reste
+     largement dominant. */
+  .route-section.plein .route-svg { max-height: 42vh; }
   .plan-info {
     position: relative;
     z-index: 1;
@@ -416,10 +413,20 @@ ${fondEtapes}
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    padding: 1.1rem 0.9rem 0.7rem;
+    padding: 1.1rem 0.9rem 0.9rem;
     background: linear-gradient(180deg,
       rgba(0,0,0,0) 0%,
       var(--fond-2) 46%);
+  }
+  /* Attribution OSM : coin bas-droit du bandeau, toujours visible. */
+  .plan-osm {
+    position: absolute;
+    right: 8px;
+    bottom: 3px;
+    font-size: 0.5rem;
+    letter-spacing: 0.02em;
+    opacity: 0.55;
+    pointer-events: none;
   }
   .plan-info-photo {
     width: 44px;
@@ -453,8 +460,8 @@ ${fondEtapes}
      derrière lui. La variante /60 (htmlJours, sans .plein) garde ci-après
      sa règle .route-section .route-step d'origine, intacte. */
   .route-section.plein .route-step {
-    min-height: 82vh;
-    padding: 0 0.9rem 1.6rem;
+    min-height: 72vh;
+    padding: 0 0.9rem 1.4rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
