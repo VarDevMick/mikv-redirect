@@ -534,35 +534,6 @@
   .stat span { font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; }
 
 
-  /* Carte raccourcie : le plan sticky et le descriptif restent visibles
-     ensemble, sans le long défilement qu'imposait la carte plein écran. */
-  .route-step.compact {
-    min-height: 58vh;
-    padding: 1.6rem 1.5rem 2.2rem 74px;
-  }
-  .jour-carte {
-    background: var(--fond-2);
-    border-radius: 6px;
-    overflow: hidden;
-    max-width: 360px;
-    width: 100%;
-    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
-  }
-  .jour-photo {
-    width: 100%;
-    height: 34vh;
-    max-height: 220px;
-    object-fit: cover;
-    object-position: center 45%;
-    display: block;
-  }
-  .jour-corps {
-    padding: 1rem 1.2rem 1.3rem;
-    text-align: left;
-  }
-  .jour-corps .stats { justify-content: flex-start; }
-
-
   .son {
     position: fixed;
     top: 14px;
@@ -606,7 +577,7 @@
     50% { box-shadow: 0 0 0 9px rgba(226,181,59,0); }
   }
 
-.panel, .route-step, .route-step.compact { padding-left: 1.5rem; }
+.panel, .route-step { padding-left: 1.5rem; }
 </style>
 </head>
 <body>
@@ -742,107 +713,79 @@
 </svg>
   </section>
 
-  <section class="route-section">
-    <div class="route-map-sticky">
+  <section class="route-section plein">
+    <div class="route-map-sticky plein">
       <div class="jour-titres">
         <div class="jour-titre" data-jour="1">Jour 1 · la vieille ville</div>
         <div class="jour-titre" data-jour="2">Jour 2 · le château et la New Town</div>
         <div class="jour-titre" data-jour="3">Jour 3 · Dean Village et Stockbridge</div>
       </div>
-      <svg class="route-svg" viewBox="-15 65 360 335" id="routeSvg">
-
-        <g aria-hidden="true">
-          <!-- le Water of Leith, au nord-ouest -->
-          <path class="plan-eau" d="M -14,142.18 C 6,123.84 24,108.12 44,97.64 C 58,91.09 70,88.47 84,88.47"></path>
-
-          <!-- la grille géorgienne : Queen, George, Princes Street -->
-          <path class="plan-rue-fine" d="M 60,126.46 L 250,139.56"></path>
-          <path class="plan-rue" d="M 58,157.9 L 252,171"></path>
-          <path class="plan-rue" d="M 56,189.34 L 256,202.44"></path>
-          <path class="plan-rue-fine" d="M 92,121.22 L 96,197.2"></path>
-          <path class="plan-rue-fine" d="M 136,126.46 L 140,202.44"></path>
-          <path class="plan-rue-fine" d="M 182,131.7 L 186,207.68"></path>
-          <path class="plan-rue-fine" d="M 226,136.94 L 230,212.92"></path>
-
-          <!-- les jardins de Princes Street, dans l'ancien vallon -->
-          <path class="plan-parc" d="M 72,223.4 C 110,210.3 170,207.68 224,215.54 C 244,219.47 250,227.33 246,236.5 C 200,249.6 130,252.22 84,241.74 C 72,237.81 68,229.95 72,223.4 Z"></path>
-
-          <!-- la crête : le Royal Mile, du château à Holyrood -->
-          <path class="plan-rue" d="M 64,278.42 C 110,286.28 168,296.76 216,304.62 C 244,309.86 262,312.48 280,315.1"></path>
-          <path class="plan-rue-fine" d="M 110,287.59 L 106,317.72"></path>
-          <path class="plan-rue-fine" d="M 168,298.07 L 166,330.82"></path>
-          <path class="plan-rue-fine" d="M 216,305.93 L 218,336.06"></path>
-
-          <!-- le rocher du château, à l'ouest de la crête -->
-          <path class="plan-relief" d="M 48,265.32 L 76,260.08 L 80,281.04 L 52,287.59 Z"></path>
-
-          <!-- Calton Hill et son monument inachevé -->
-          <circle class="plan-relief" cx="296" cy="218.16" r="19"></circle>
-          <path class="plan-rue-fine" d="M 288,211.61 L 304,211.61 M 290,211.61 L 290,224.71 M 296,211.61 L 296,224.71 M 302,211.61 L 302,224.71"></path>
-
-          <!-- Arthur's Seat et les Salisbury Crags -->
-          <path class="plan-relief" d="M 266,336.06 C 276,312.48 300,304.62 318,312.48 C 336,321.65 342,343.92 332,359.64 C 316,370.12 280,367.5 266,354.4 Z"></path>
-
-          <text class="plan-legende" x="308" y="296.76" text-anchor="middle">Arthur's Seat</text>
-          <text class="plan-legende" x="158" y="233.88" text-anchor="middle">Princes St Gardens</text>
-          <text class="plan-legende" x="155" y="150.04" text-anchor="middle">New Town</text>
-          <text class="plan-legende" x="256" y="341.3" text-anchor="middle">Holyrood</text>
-        </g>
+      <!-- slice : le plan est plafonné en hauteur par CSS (max-height) pour
+           laisser la place au descriptif sous lui sur les écrans courts ;
+           slice le recadre alors sans le déformer, en gardant les repères
+           (centrés) visibles. L'attribution OSM n'est plus ici mais dans le
+           bandeau (.plan-osm) : posée sur la carte, elle finissait cachée
+           par le bandeau d'info quel que soit le recadrage. -->
+      <svg class="route-svg" viewBox="0 0 408.6 424.8" preserveAspectRatio="xMidYMid slice" id="routeSvg">
+        <image href="plan-fond.png" x="0" y="0" width="408.6" height="424.8" preserveAspectRatio="xMidYMid slice"></image>
 
         <g class="jour" data-jour="1">
-          <path class="jour-trace" d="M 216,304.62 C 182,300.69 148,295.45 120,294.14 C 130,309.86 142,320.34 150,328.2"></path>
+          <path class="jour-trace-halo" d="M 280.08,257.76 L 234.72,288 L 292.68,294.12"></path>
+          <path class="jour-trace" d="M 280.08,257.76 L 234.72,288 L 292.68,294.12"></path>
 
-          <g class="jour-point" transform="translate(216,305)">
+          <g class="jour-point" transform="translate(280.08,257.76)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">1</text>
             <text class="jour-label" y="-13" text-anchor="middle">Royal Mile</text>
           </g>
-          <g class="jour-point" transform="translate(120,294)">
+          <g class="jour-point" transform="translate(234.72,288)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">2</text>
             <text class="jour-label" y="-13" text-anchor="middle">Grassmarket</text>
           </g>
-          <g class="jour-point" transform="translate(150,328)">
+          <g class="jour-point" transform="translate(292.68,294.12)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">3</text>
             <text class="jour-label" y="22" text-anchor="middle">Musée</text>
           </g>
         </g>
         <g class="jour" data-jour="2">
-          <path class="jour-trace" d="M 64,278.42 C 74,249.6 100,215.54 150,194.58 C 200,173.62 258,184.1 288,207.68 C 292,211.61 294,215.54 296,218.16"></path>
+          <path class="jour-trace-halo" d="M 199.8,269.64 L 180.72,234.72 L 347.4,171.36"></path>
+          <path class="jour-trace" d="M 199.8,269.64 L 180.72,234.72 L 347.4,171.36"></path>
 
-          <g class="jour-point" transform="translate(64,278)">
+          <g class="jour-point" transform="translate(199.8,269.64)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">1</text>
             <text class="jour-label" y="22" text-anchor="middle">Château</text>
           </g>
-          <g class="jour-point" transform="translate(150,195)">
+          <g class="jour-point" transform="translate(180.72,234.72)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">2</text>
             <text class="jour-label" y="-13" text-anchor="middle">Princes St</text>
           </g>
-          <g class="jour-point" transform="translate(296,218)">
+          <g class="jour-point" transform="translate(347.4,171.36)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">3</text>
             <text class="jour-label" y="-13" text-anchor="middle">Calton Hill</text>
           </g>
         </g>
         <g class="jour" data-jour="3">
-          <path class="jour-trace" d="M 26,118.6 C 40,105.5 58,97.64 78,95.02"></path>
+          <path class="jour-trace-halo" d="M 50.4,216.36 L 124.92,130.68"></path>
+          <path class="jour-trace" d="M 50.4,216.36 L 124.92,130.68"></path>
 
-          <g class="jour-point" transform="translate(26,119)">
+          <g class="jour-point" transform="translate(50.4,216.36)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">1</text>
             <text class="jour-label" y="22" text-anchor="middle">Dean Village</text>
           </g>
-          <g class="jour-point" transform="translate(78,95)">
+          <g class="jour-point" transform="translate(124.92,130.68)">
             <circle r="8"></circle>
             <text class="jour-num" y="3.4" text-anchor="middle">2</text>
             <text class="jour-label" y="-13" text-anchor="middle">Stockbridge</text>
           </g>
         </g>
 
-        <g class="marcheuse-plan" id="marcheusePlan" transform="translate(216,305) scale(0.3)">
+        <g class="marcheuse-plan" id="marcheusePlan" transform="translate(280.08,257.76) scale(0.46)">
           <g transform="translate(-41,-40)">
   <!-- la mère, légèrement en retrait -->
   <g class="jambe jambe-arriere">
@@ -892,60 +835,61 @@
 </g>
         </g>
       </svg>
+      <!-- Bloc normal en flux, tiré sur la carte par une marge négative :
+           pas de position absolute ni de grille, donc pas d'ambiguïté de
+           largeur pour le texte qu'il contient. -->
+      <!-- Petite carte d'information flottante, posée dans un coin du plan
+           (décalée), plutôt qu'un bandeau pleine largeur : le plan reste
+           visible autour. Fond opaque => l'astuce reste lisible. -->
+      <div class="plan-info" id="planInfo">
+        <img class="plan-info-photo" id="planInfoPhoto" src="" alt="">
+        <!-- Le trajet et les horaires sont déjà lisibles sur le plan
+             (titre de journée, pastilles numérotées) : la carte ne
+             répète pas cette information, elle n'ajoute que l'astuce. -->
+        <p class="day-astuce" id="planInfoAstuce"></p>
+      </div>
+      <!-- Attribution ODbL des données OpenStreetMap, toujours visible,
+           ancrée au coin du plan. -->
+      <span class="plan-osm">© OpenStreetMap</span>
     </div>
 
-
-    <div class="route-step compact" data-idx="1">
-      <div class="jour-carte">
-        <img class="jour-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg" alt="Royal Mile, Victoria Street, Grassmarket" loading="lazy">
-        <div class="jour-corps">
-          <div class="day-num">Jour 1 · la vieille ville</div>
-          <div class="day-route">Royal Mile, Victoria Street, Grassmarket</div>
-          <p class="day-note">On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.</p>
-          <p class="day-astuce">Le Royal Mile est pavé : ça secoue. Le musée est le refuge idéal.</p>
-          <div class="stats">
-            <div class="stat"><b>Royal Mile</b><span>Matin</span></div>
-            <div class="stat"><b>Grassmarket</b><span>Midi</span></div>
-            <div class="stat"><b>Musée national</b><span>Après-midi</span></div>
-            <div class="stat"><b>Victoria St</b><span>Fin de jour</span></div>
-          </div>
+    <div class="route-step" data-idx="1">
+      <div class="jour-detail">
+        <div class="day-route">Royal Mile, Victoria Street, Grassmarket</div>
+        <p class="day-note">On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.</p>
+        <div class="stats">
+          <div class="stat"><b>Royal Mile</b><span>Matin</span></div>
+          <div class="stat"><b>Grassmarket</b><span>Midi</span></div>
+          <div class="stat"><b>Musée national</b><span>Après-midi</span></div>
+          <div class="stat"><b>Victoria St</b><span>Fin de jour</span></div>
         </div>
+        <p class="jour-detail-credit">Photo — Victoria Street · Daniel Kraft, CC BY-SA 3.0</p>
       </div>
     </div>
-
-    <div class="route-step compact" data-idx="2">
-      <div class="jour-carte">
-        <img class="jour-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg" alt="Le rocher, la New Town, Calton Hill" loading="lazy">
-        <div class="jour-corps">
-          <div class="day-num">Jour 2 · le château et la ville géorgienne</div>
-          <div class="day-route">Le rocher, la New Town, Calton Hill</div>
-          <p class="day-note">Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.</p>
-          <p class="day-astuce">Une navette gratuite monte au château. La New Town est plate et lisse.</p>
-          <div class="stats">
-            <div class="stat"><b>Le château</b><span>Matin</span></div>
-            <div class="stat"><b>Princes St</b><span>Midi</span></div>
-            <div class="stat"><b>New Town</b><span>Après-midi</span></div>
-            <div class="stat"><b>Calton Hill</b><span>Coucher</span></div>
-          </div>
+    <div class="route-step" data-idx="2">
+      <div class="jour-detail">
+        <div class="day-route">Le rocher, la New Town, Calton Hill</div>
+        <p class="day-note">Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.</p>
+        <div class="stats">
+          <div class="stat"><b>Le château</b><span>Matin</span></div>
+          <div class="stat"><b>Princes St</b><span>Midi</span></div>
+          <div class="stat"><b>New Town</b><span>Après-midi</span></div>
+          <div class="stat"><b>Calton Hill</b><span>Coucher</span></div>
         </div>
+        <p class="jour-detail-credit">Photo — Le château depuis l'esplanade · Daniel Kraft, CC BY-SA 3.0</p>
       </div>
     </div>
-
-    <div class="route-step compact" data-idx="3">
-      <div class="jour-carte">
-        <img class="jour-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg" alt="Dean Village, l'eau, Stockbridge" loading="lazy">
-        <div class="jour-corps">
-          <div class="day-num">Jour 3 · les villages dans la ville</div>
-          <div class="day-route">Dean Village, l'eau, Stockbridge</div>
-          <p class="day-note">L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.</p>
-          <p class="day-astuce">La journée la plus facile du séjour : tout est plat et roulant.</p>
-          <div class="stats">
-            <div class="stat"><b>Dean Village</b><span>Matin</span></div>
-            <div class="stat"><b>Water of Leith</b><span>Midi</span></div>
-            <div class="stat"><b>Stockbridge</b><span>Après-midi</span></div>
-            <div class="stat"><b>Retour</b><span>Fin de jour</span></div>
-          </div>
+    <div class="route-step" data-idx="3">
+      <div class="jour-detail">
+        <div class="day-route">Dean Village, l'eau, Stockbridge</div>
+        <p class="day-note">L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.</p>
+        <div class="stats">
+          <div class="stat"><b>Dean Village</b><span>Matin</span></div>
+          <div class="stat"><b>Water of Leith</b><span>Midi</span></div>
+          <div class="stat"><b>Stockbridge</b><span>Après-midi</span></div>
+          <div class="stat"><b>Retour</b><span>Fin de jour</span></div>
         </div>
+        <p class="jour-detail-credit">Photo — Well Court, Dean Village · M J Richardson, CC BY-SA 2.0</p>
       </div>
     </div>
   </section>
@@ -1069,6 +1013,9 @@
 
   var titres = document.querySelectorAll(".jour-titre");
   var marcheusePlan = document.getElementById("marcheusePlan");
+  var infoPhoto = document.getElementById("planInfoPhoto");
+  var infoAstuce = document.getElementById("planInfoAstuce");
+  var donnees = [{"id":"vieille-ville","jour":"Jour 1 · la vieille ville","trajet":"Royal Mile, Victoria Street, Grassmarket","note":"On descend la grande rue pavée jusqu'à la cathédrale, on tourne dans Victoria Street et ses façades de toutes les couleurs, puis on se pose au Grassmarket. L'après-midi au Musée national : c'est gratuit, c'est chauffé, il y a des ascenseurs partout et Hector peut y courir.","astuce":"Le Royal Mile est pavé : ça secoue. Le musée est le refuge idéal.","chiffres":[{"valeur":"Royal Mile","libelle":"Matin"},{"valeur":"Grassmarket","libelle":"Midi"},{"valeur":"Musée national","libelle":"Après-midi"},{"valeur":"Victoria St","libelle":"Fin de jour"}],"photo":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Edinburgh_Victora_Street_20211019.jpg/1280px-Edinburgh_Victora_Street_20211019.jpg","credit":"Victoria Street · Daniel Kraft, CC BY-SA 3.0"},{"id":"chateau","jour":"Jour 2 · le château et la ville géorgienne","trajet":"Le rocher, la New Town, Calton Hill","note":"Le château dès l'ouverture, avant la foule. L'après-midi, les larges rues géorgiennes de la New Town et les jardins de Princes Street, plats et faciles. Puis Calton Hill quand la ville s'allume, vers seize heures.","astuce":"Une navette gratuite monte au château. La New Town est plate et lisse.","chiffres":[{"valeur":"Le château","libelle":"Matin"},{"valeur":"Princes St","libelle":"Midi"},{"valeur":"New Town","libelle":"Après-midi"},{"valeur":"Calton Hill","libelle":"Coucher"}],"photo":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Edinburgh_Castle_from_Esplanade_20211019.jpg/1280px-Edinburgh_Castle_from_Esplanade_20211019.jpg","credit":"Le château depuis l'esplanade · Daniel Kraft, CC BY-SA 3.0"},{"id":"dean-village","jour":"Jour 3 · les villages dans la ville","trajet":"Dean Village, l'eau, Stockbridge","note":"L'ancien hameau des meuniers et ses maisons de grès rouge, puis le chemin qui longe le Water of Leith — plat, pavé, à l'abri du vent. On remonte à Stockbridge pour ses boutiques et ses cafés, sans se presser.","astuce":"La journée la plus facile du séjour : tout est plat et roulant.","chiffres":[{"valeur":"Dean Village","libelle":"Matin"},{"valeur":"Water of Leith","libelle":"Midi"},{"valeur":"Stockbridge","libelle":"Après-midi"},{"valeur":"Retour","libelle":"Fin de jour"}],"photo":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg/1280px-Well_Court%2C_Dean_Village_-_geograph.org.uk_-_7095759.jpg","credit":"Well Court, Dean Village · M J Richardson, CC BY-SA 2.0"}];
   var jourActif = 1;
 
   function activer(n) {
@@ -1079,12 +1026,16 @@
     titres.forEach(function (t) {
       t.classList.toggle("actif", Number(t.dataset.jour) === n);
     });
+    var e = donnees[n - 1];
+    if (!e || !infoAstuce) return;
+    infoPhoto.src = e.photo;
+    infoPhoto.alt = e.trajet;
+    infoAstuce.textContent = e.astuce || "";
   }
   activer(1);
 
   // Fait avancer le marcheur le long du tracé du jour actif, à la fraction
-  // de défilement de son étape — plutôt qu'un chemin séparé sans rapport
-  // avec la géographie affichée.
+  // de défilement de sa zone.
   function positionner() {
     if (!marcheusePlan) return;
     var path = document.querySelector('.jour[data-jour="' + jourActif + '"] .jour-trace');
@@ -1099,7 +1050,7 @@
     var suivant = path.getPointAtLength(Math.min(len, (f + 0.02) * len));
     var sens = suivant.x >= p.x ? 1 : -1;
     marcheusePlan.setAttribute("transform",
-      "translate(" + p.x + "," + p.y + ") scale(" + (0.3 * sens) + ",0.3)");
+      "translate(" + p.x + "," + p.y + ") scale(" + (0.46 * sens) + ",0.46)");
   }
 
   var observer = new IntersectionObserver(function (entrees) {

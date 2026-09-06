@@ -17,6 +17,8 @@ writeFileSync("docs/31/index.html", PAGE_31_HTML);
 
 mkdirSync("docs/60", { recursive: true });
 writeFileSync("docs/60/index.html", PAGE_60_HTML);
+// Même fond de plan OpenStreetMap que /61.
+copyFileSync("src/assets/edimbourg/plan-fond.png", "docs/60/plan-fond.png");
 
 mkdirSync("docs/61", { recursive: true });
 writeFileSync("docs/61/index.html", PAGE_61_HTML);
