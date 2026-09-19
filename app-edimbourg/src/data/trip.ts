@@ -69,13 +69,6 @@ export const FLIGHT = {
   toExploration: ["Maintenant...", "découvrons Édimbourg."],
 } as const;
 
-/** Rappel du sens du voyage, glissé entre le jour 1 et le jour 2. */
-export const BIRTHDAY_BEAT = {
-  lead: "Au fait...",
-  title: "Ce voyage est pour toi.",
-  line: "Parce que 60 ans, ça mérite quand même un petit détour par l'Écosse.",
-} as const;
-
 /**
  * Clôture : résumé, puis fond sombre et dernier mot.
  *

@@ -143,30 +143,32 @@ export const DAYS: Day[] = [
         id: "britannia",
         title: "Royal Yacht Britannia",
         description:
-          "Le yacht royal, amarré à Leith. On visite au chaud, à son rythme, et il y a un salon de thé à bord.",
+          "Le yacht royal, amarré à Leith, au bout de la ligne de tram. On visite au chaud, à son rythme, et il y a un salon de thé à bord.",
         time: "Matin",
         lat: 55.98215,
         lng: -3.17731,
+        aside: "On y va en tram depuis le centre 🚊",
+        babyFriendly: true,
+      },
+      {
+        id: "stockbridge",
+        title: "Stockbridge",
+        description:
+          "Retour vers la ville, dans le quartier le plus tranquille d'Édimbourg : des boutiques, des cafés, et la rivière qui le traverse.",
+        time: "Midi",
+        lat: 55.95797,
+        lng: -3.20934,
+        aside: "On continue ?",
         babyFriendly: true,
       },
       {
         id: "dean-village",
         title: "Dean Village",
         description:
-          "Un ancien hameau de meuniers resté au bord de l'eau, en pleine ville. Maisons de grès, silence, et le bruit de la rivière.",
-        time: "Midi",
+          "On descend le long du Water of Leith jusqu'à l'ancien hameau des meuniers : maisons de grès, silence, et le bruit de la rivière. Le chemin est plat, pavé, à l'abri du vent.",
+        time: "Après-midi",
         lat: 55.95226,
         lng: -3.21822,
-      },
-      {
-        id: "stockbridge",
-        title: "Stockbridge",
-        description:
-          "Le quartier d'à côté, ses boutiques et ses cafés. On remonte le long du Water of Leith : plat, abrité, facile.",
-        time: "Après-midi",
-        lat: 55.95797,
-        lng: -3.20934,
-        aside: "On continue ?",
         babyFriendly: true,
       },
       {
@@ -175,8 +177,8 @@ export const DAYS: Day[] = [
         description:
           "Une table quelque part, tous les trois, avant de rentrer. Le lieu reste à choisir — c'est bien la seule chose que je n'ai pas réservée.",
         time: "Le soir",
-        lat: 55.95797,
-        lng: -3.20934,
+        lat: 55.95226,
+        lng: -3.21822,
         toDecide: true,
       },
     ],
