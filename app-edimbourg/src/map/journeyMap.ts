@@ -14,6 +14,7 @@ import { FONDS } from "../data/backdrops.generated";
 import couloirUrl from "../assets/fonds/couloir.webp";
 import franceUrl from "../assets/fonds/france.webp";
 import ecosseUrl from "../assets/fonds/ecosse.webp";
+import edimbourgUrl from "../assets/fonds/edimbourg.webp";
 import europeUrl from "../assets/fonds/europe.webp";
 
 // Le fond n'est pas une couche de tuiles mais trois images livrées avec le
@@ -38,6 +39,7 @@ const IMAGES = [
   { id: "france", url: franceUrl },
   { id: "ecosse", url: ecosseUrl },
   { id: "couloir", url: couloirUrl },
+  { id: "edimbourg", url: edimbourgUrl },
 ] as const;
 
 let map: L.Map | null = null;
@@ -144,9 +146,10 @@ function setBackdropForSpan(km: number): void {
     Math.min(Math.max((km - debut) / (fin - debut), 0), 1);
 
   // Chaque seuil correspond à ce que la fenêtre de l'image couvre vraiment :
-  // le couloir tient jusqu'à 120 km de large, la France et l'Écosse
-  // jusqu'à 420 et 620. Les fenêtres françaises et écossaises ne se
-  // recouvrant pas, l'ordre entre elles est sans conséquence.
+  // la ville tient jusqu'à 6 km de large, le couloir jusqu'à 120, la France
+  // et l'Écosse jusqu'à 420 et 620. Les fenêtres qui ne se recouvrent pas
+  // géographiquement peuvent être allumées en même temps sans dommage.
+  regler("edimbourg", 1 - rampe(6, 9));
   regler("couloir", 1 - rampe(120, 155));
   regler("ecosse", 1 - rampe(620, 800));
   regler("france", 1 - rampe(420, 560));
@@ -250,6 +253,20 @@ export function createPlaceMarker(place: Place) {
 
 export function setMarkerOpacity(marqueur: L.Marker | null, valeur: number): void {
   marqueur?.setOpacity(valeur);
+}
+
+/**
+ * Montre ou tait le nom d'un repère.
+ *
+ * En ville, les étapes sont à quelques centaines de mètres les unes des
+ * autres : afficher tous les noms les empilerait. Les arrêts déjà visités
+ * restent donc de simples points, et seul celui dont on parle porte son nom.
+ */
+export function setMarkerLabel(marqueur: L.Marker | null, visible: boolean): void {
+  marqueur?.getElement()?.firstElementChild?.classList.toggle(
+    "place-marker--muet",
+    !visible
+  );
 }
 
 /** Recalcule la taille du canevas après un changement de viewport. */

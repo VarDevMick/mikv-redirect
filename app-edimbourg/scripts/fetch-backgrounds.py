@@ -17,6 +17,7 @@ l'étendue visible à l'écran (voir setBackdropForSpan dans journeyMap.ts) :
 
     couloir   niveau 10   le trajet Reims → Roissy, vu de près
     france    niveau 8    la montée de l'avion, la Manche
+    edimbourg niveau 14   les trois journées, à hauteur de rue
     ecosse    niveau 8    la descente et la révélation
     europe    niveau 6    la croisière
 
@@ -64,6 +65,17 @@ FONDS = [
         "ouest": -2.00,
         "nord": 53.00,
         "est": 7.00,
+    },
+    {
+        # La ville, à hauteur de rue. La fenêtre tient les douze étapes, de
+        # Dean Village à l'ouest au Britannia à Leith, plus la marge que
+        # réclame un cadrage de 2 km de large sur un téléphone.
+        "id": "edimbourg",
+        "zoom": 14,
+        "sud": 55.925,
+        "ouest": -3.245,
+        "nord": 56.005,
+        "est": -3.150,
     },
     {
         # L'arrivée est le sommet du récit : elle mérite un fond net, et non

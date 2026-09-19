@@ -76,7 +76,17 @@ Aucun texte, aucune étiquette ne doit vendre la mèche avant.
 
 ```
 Intro → Buildup → RoadTrip → Flight → DestinationReveal
+      → CityTransition → Jour 1 → BirthdayBeat → Jour 2 → Jour 3 → Final
 ```
 
-Reste à écrire : les trois journées et leurs douze étapes, le clin d'œil
-anniversaire entre le jour 1 et le jour 2, et la fin.
+Une journée se marche : le scroll fait avancer un chemin piéton continu
+(`walks.generated.ts`, calculé par OSRM), la caméra suit le pas, et chaque
+arrêt allume son repère puis sa fiche. On s'arrête plus longtemps qu'on ne
+marche — c'est à l'arrêt qu'il y a quelque chose à lire.
+
+Le voyage s'accumule vers l'avant : une scène traversée garde son dernier
+état, ce qui laisse les tracés et les repères en place pour la carte finale.
+En remontant, chaque scène efface ce qu'elle avait posé.
+
+Reste à faire : choisir le dernier lieu du jour 3 (`toDecide` dans
+`itinerary.ts`), puis geler `/60` et graver la plaque QR.

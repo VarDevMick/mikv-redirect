@@ -31,6 +31,15 @@ export const FONDS = {
     width: 1638,
     height: 2098,
   },
+  edimbourg: {
+    bounds: [
+      [55.925, -3.245],
+      [56.005, -3.15],
+    ],
+    zoom: 14,
+    width: 1107,
+    height: 1665,
+  },
   ecosse: {
     bounds: [
       [53.5, -8.5],

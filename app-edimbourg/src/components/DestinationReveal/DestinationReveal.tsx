@@ -47,15 +47,22 @@ export function DestinationReveal() {
     const approche = lerp(ECOSSE.km, ECOSSE.km * 0.82, p);
     camera(ECOSSE.lat, ECOSSE.lng, approche);
 
-    // Le voile assombrit le pays le temps de la révélation, puis se retire.
+    // Le voile assombrit le pays le temps de la révélation, puis se retire
+    // avant la suite : sans cela il restait tendu sur toute l'exploration de
+    // la ville, une scène gardant son dernier état une fois traversée.
     if (voile.current) {
       voile.current.style.opacity = String(
-        lerp(0, 0.82, range(p, 0, 0.12))
+        0.82 * range(p, 0, 0.12) * (1 - range(p, 0.9, 1))
       );
     }
 
-    // Le point de la ville s'allume juste avant que son nom n'apparaisse.
-    setMarkerOpacity(repere.current, range(p, 0.05, 0.14));
+    // Le point de la ville s'allume juste avant que son nom n'apparaisse,
+    // et s'efface quand la caméra part se poser dans les rues : la scène
+    // suivante y pose ses propres repères.
+    setMarkerOpacity(
+      repere.current,
+      range(p, 0.05, 0.14) * (1 - range(p, 0.88, 1))
+    );
 
     showBeat(ville.current, p, 0.14, 1, { fade: 0.04, rise: 0, scale: 0.84 });
     showBeat(pays.current, p, 0.26, 1, { rise: 10 });

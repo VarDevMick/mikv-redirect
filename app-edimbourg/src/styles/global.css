@@ -183,6 +183,134 @@ body {
   color: var(--pierre);
 }
 
+/* --- Journées et étapes --------------------------------------------------
+   La carte occupe tout l'écran ; la fiche d'étape se pose par-dessus, en
+   bas, là où le pouce ne masque rien d'important. */
+
+.jour-titre {
+  text-align: center;
+}
+
+.display--jour {
+  font-size: clamp(1.8rem, 8vw, 3.2rem);
+  font-weight: 400;
+  text-transform: none;
+  margin: 0.4rem 0 0.6rem;
+}
+
+.beat--carte {
+  top: auto;
+  bottom: max(env(safe-area-inset-bottom), 1.5rem);
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 1rem 1.2rem 1.15rem;
+  text-align: left;
+  background: rgba(6, 15, 25, 0.88);
+  border: 1px solid rgba(212, 169, 74, 0.18);
+  border-radius: 3px;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5);
+}
+
+.carte__entete {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 0.35rem;
+}
+
+.carte__rang {
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--dore);
+}
+
+.carte__titre {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.45rem, 6vw, 2rem);
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+
+.carte__texte {
+  margin: 0;
+  font-size: clamp(0.9rem, 3.6vw, 1rem);
+  line-height: 1.55;
+  color: var(--pierre-clair);
+}
+
+.carte__aparte {
+  margin: 0.75rem 0 0;
+  font-size: clamp(0.82rem, 3.2vw, 0.92rem);
+  color: var(--dore);
+}
+
+.carte__repli {
+  margin: 0.8rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(125, 135, 150, 0.22);
+  font-size: clamp(0.76rem, 3vw, 0.85rem);
+  line-height: 1.5;
+  color: var(--pierre);
+}
+
+.carte__repli-mot {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Sur un écran large, la fiche prend la colonne de gauche et laisse la
+   ville respirer à droite — la mise en page cinématographique du brief. */
+@media (min-width: 900px) {
+  .beat--carte {
+    left: 5vw;
+    right: auto;
+    bottom: auto;
+    width: min(28rem, 38vw);
+    margin: 0;
+  }
+}
+
+/* --- Clôture -------------------------------------------------------------- */
+
+.bilan {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.bilan__ligne {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+  margin: 0;
+}
+
+.bilan__valeur {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 14vw, 5rem);
+  line-height: 1;
+  color: var(--dore);
+}
+
+/* « Joyeux 60 ans Maman ❤️ » fait une ligne longue : le mot doit pouvoir se
+   couper sans jamais déborder. */
+.display--voeu {
+  font-size: clamp(1.9rem, 9vw, 4rem);
+  line-height: 1.12;
+  text-transform: none;
+}
+
+.signature {
+  line-height: 1.8;
+}
+
 /* --- Indice de défilement ----------------------------------------------- */
 
 .scroll-hint {
@@ -340,7 +468,14 @@ body {
   box-shadow: 0 0 0 3px rgba(212, 169, 74, 0.22);
 }
 
+/* Un arrêt déjà visité reste un point : seul celui dont on parle porte son
+   nom, sinon les étapes d'une même journée s'empilent. */
+.place-marker--muet .place-label {
+  opacity: 0;
+}
+
 .place-label {
+  transition: opacity 0.4s ease;
   font-family: var(--sans);
   font-size: 0.7rem;
   letter-spacing: 0.18em;

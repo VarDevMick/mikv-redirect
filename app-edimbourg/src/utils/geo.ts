@@ -38,6 +38,26 @@ export function cumulativeLengths(path: LatLng[]): number[] {
   return cumul.map((d) => d / total);
 }
 
+/**
+ * Centre et dimensions d'un tracé, en kilomètres. Sert à cadrer une journée
+ * entière avant d'en parcourir les étapes.
+ */
+export function pathBounds(path: LatLng[]) {
+  const lats = path.map(([lat]) => lat);
+  const lngs = path.map(([, lng]) => lng);
+  const sud = Math.min(...lats);
+  const nord = Math.max(...lats);
+  const ouest = Math.min(...lngs);
+  const est = Math.max(...lngs);
+  const lat = (sud + nord) / 2;
+  return {
+    lat,
+    lng: (ouest + est) / 2,
+    largeurKm: distance([lat, ouest], [lat, est]),
+    hauteurKm: distance([sud, 0], [nord, 0]),
+  };
+}
+
 /** Interpolation linéaire entre deux positions. */
 export function lerpLatLng(a: LatLng, b: LatLng, t: number): LatLng {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
