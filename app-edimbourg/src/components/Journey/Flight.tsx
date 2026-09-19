@@ -2,11 +2,11 @@ import { useLayoutEffect, useRef } from "react";
 import type L from "leaflet";
 import { FLIGHT } from "../../data/trip";
 import { EDINBURGH_AIRPORT, ROISSY } from "../../data/places";
-import { ECOSSE, FLOU_NUAGES } from "../../map/framings";
+import { ECOSSE, VOILE_ARRIVEE, VOILE_VOL } from "../../map/framings";
 import {
   camera,
   createRouteLine,
-  setMapBlur,
+  setMapVeil,
   setMapOpacity,
   setRoute,
   zoomForSpan,
@@ -19,6 +19,7 @@ import {
   lerpLatLng,
   pointAt,
   traveled,
+  unwrapAngle,
 } from "../../utils/geo";
 import { clamp01, easeInOut, lerp, range, showBeat } from "../../utils/beats";
 import { PlaneIcon } from "./icons";
@@ -39,7 +40,7 @@ const ATTERRISSAGE = 0.86;
 const ETENDUE_SOL = 10;
 const ETENDUE_MONTEE = 70;
 const ETENDUE_CROISIERE = 1250;
-const ETENDUE_DESCENTE = 320;
+const ETENDUE_DESCENTE = 460;
 
 /**
  * Paris-Roissy → Édimbourg, en avion.
@@ -56,6 +57,8 @@ export function Flight() {
   const descend = useRef<HTMLParagraphElement>(null);
   const avion = useRef<HTMLDivElement>(null);
 
+  const cap = useRef(Number.NaN);
+
   const ligne = useRef<L.Polyline | null>(null);
 
   useLayoutEffect(() => {
@@ -69,9 +72,15 @@ export function Flight() {
     section,
     (p) => {
       setMapOpacity(1);
-      // On monte dans les nuages : le sol devient flou, et les noms de
-      // villes avec lui. C'est ce qui garde Édimbourg secrète jusqu'au bout.
-      setMapBlur(lerp(0, FLOU_NUAGES, range(p, DECOLLAGE, 0.3)));
+      // On prend de l'altitude et le pays passe dans la pénombre : ses noms
+      // de villes deviennent illisibles, et Édimbourg reste une surprise. En
+      // approche, la pénombre se lève à demi : l'Écosse se découvre, sans se
+      // nommer encore.
+      setMapVeil(
+        p < ATTERRISSAGE
+          ? lerp(0, VOILE_VOL, range(p, DECOLLAGE, 0.3))
+          : lerp(VOILE_VOL, VOILE_ARRIVEE, range(p, ATTERRISSAGE, 1))
+      );
 
       if (p < DECOLLAGE) {
         // Encore au sol : la piste s'éloigne doucement.
@@ -122,8 +131,8 @@ export function Flight() {
         setRoute(ligne.current, traveled(ARC, CUMUL, vol));
 
         if (avion.current) {
-          const cap = bearingAt(ARC, CUMUL, vol);
-          avion.current.style.transform = `translate(-50%, -50%) rotate(${cap.toFixed(1)}deg)`;
+          cap.current = unwrapAngle(cap.current, bearingAt(ARC, CUMUL, vol));
+          avion.current.style.transform = `translate(-50%, -50%) rotate(${cap.current.toFixed(2)}deg)`;
         }
       }
 
@@ -144,7 +153,7 @@ export function Flight() {
       // une carte nette.
       onLeaveBack: () => {
         setRoute(ligne.current, []);
-        setMapBlur(0);
+        setMapVeil(0);
       },
     }
   );

@@ -21,6 +21,7 @@ const ATTRIBUTION =
 
 let map: L.Map | null = null;
 let layer: HTMLElement | null = null;
+let veil: HTMLElement | null = null;
 let dernierZoom = Number.NaN;
 
 export function initMap(canvas: HTMLElement, wrapper: HTMLElement): L.Map {
@@ -48,7 +49,18 @@ export function initMap(canvas: HTMLElement, wrapper: HTMLElement): L.Map {
   L.tileLayer(TUILES, {
     attribution: ATTRIBUTION,
     maxZoom: 19,
+    // La caméra n'arrête jamais de bouger : on garde une plus large marge
+    // de tuiles autour de l'écran, sinon elles s'effacent et réapparaissent
+    // au fil du déplacement — c'est l'essentiel du scintillement.
+    keepBuffer: 4,
   }).addTo(map);
+
+  // Le voile du vol vit dans la carte, entre les tuiles et les tracés : il
+  // doit éteindre le fond sans jamais ternir le trait doré du voyage. Un
+  // calque Leaflet est le seul endroit où l'on peut se glisser entre les
+  // deux, la carte formant son propre contexte d'empilement.
+  veil = map.createPane("voile");
+  veil.classList.add("map-veil");
 
   layer = wrapper;
   return map;
@@ -61,9 +73,9 @@ export function getMap(): L.Map | null {
 /** Place la caméra. Appelée à chaque image : aucune animation Leaflet. */
 export function camera(lat: number, lng: number, zoom: number): void {
   if (!map) return;
-  // Le zoom est arrondi au vingtième : assez fin pour que le mouvement
-  // reste continu, assez grossier pour épargner des recalculs de tuiles.
-  const arrondi = Math.round(zoom * 20) / 20;
+  // La caméra n'est plus écrite qu'une fois par image (voir useScrollScene) :
+  // le zoom peut donc être fin sans noyer Leaflet de recalculs.
+  const arrondi = Math.round(zoom * 100) / 100;
   const centre = map.getCenter();
   if (
     arrondi === dernierZoom &&
@@ -95,10 +107,10 @@ export function zoomForSpan(lat: number, lng: number, km: number): number {
   return map.getBoundsZoom(bounds, false);
 }
 
-// Opacité et flou sont réécrits à chaque image du scroll : on ne touche au
+// Opacité et voile sont réécrits à chaque image du scroll : on ne touche au
 // style que lorsque la valeur a réellement bougé.
 let derniereOpacite = Number.NaN;
-let dernierFlou = Number.NaN;
+let dernierVoile = Number.NaN;
 
 /** Opacité du calque entier : la carte entre et sort du récit. */
 export function setMapOpacity(valeur: number): void {
@@ -109,18 +121,18 @@ export function setMapOpacity(valeur: number): void {
 }
 
 /**
- * Flou du fond de carte, en pixels.
+ * Voile posé sur le fond de carte, de 0 à 1.
  *
  * Il sert le récit avant de servir l'image : les tuiles OpenStreetMap
  * écrivent « Edinburgh » en clair, et la ville ne doit pas être lisible
- * avant d'être nommée. Pendant le vol on vole donc dans les nuages, et la
- * carte se pose en même temps que l'avion.
+ * avant d'être nommée. Pendant le vol, le pays reste donc dans la pénombre,
+ * et le jour se lève sur lui au moment de la révélation.
  */
-export function setMapBlur(pixels: number): void {
-  const arrondi = Math.round(pixels * 10) / 10;
-  if (!layer || arrondi === dernierFlou) return;
-  dernierFlou = arrondi;
-  layer.style.setProperty("--flou-carte", `${arrondi}px`);
+export function setMapVeil(valeur: number): void {
+  const arrondi = Math.round(valeur * 100) / 100;
+  if (!veil || arrondi === dernierVoile) return;
+  dernierVoile = arrondi;
+  veil.style.opacity = String(arrondi);
 }
 
 /**

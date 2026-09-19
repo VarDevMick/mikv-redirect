@@ -2,11 +2,11 @@ import { useLayoutEffect, useRef } from "react";
 import type L from "leaflet";
 import { REVEAL } from "../../data/trip";
 import { EDINBURGH } from "../../data/places";
-import { ECOSSE, FLOU_NUAGES } from "../../map/framings";
+import { ECOSSE, VOILE_ARRIVEE } from "../../map/framings";
 import {
   camera,
   createPlaceMarker,
-  setMapBlur,
+  setMapVeil,
   setMapOpacity,
   setMarkerOpacity,
   zoomForSpan,
@@ -42,9 +42,8 @@ export function DestinationReveal() {
 
   useScrollScene(section, (p) => {
     setMapOpacity(1);
-    // L'avion s'est posé, mais la carte reste dans les nuages le temps que
-    // la ville soit nommée : elle ne redevient nette qu'ensuite.
-    setMapBlur(lerp(FLOU_NUAGES, 0, range(p, 0.55, 0.95)));
+    // Le jour se lève sur le pays au moment où son nom apparaît.
+    setMapVeil(lerp(VOILE_ARRIVEE, 0, range(p, 0.08, 0.45)));
 
     const approche = lerp(ECOSSE.km, ECOSSE.km * 0.82, p);
     camera(ECOSSE.lat, ECOSSE.lng, zoomForSpan(ECOSSE.lat, ECOSSE.lng, approche));

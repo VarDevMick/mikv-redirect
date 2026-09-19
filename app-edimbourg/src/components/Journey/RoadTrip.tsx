@@ -7,7 +7,7 @@ import {
   camera,
   createPlaceMarker,
   createRouteLine,
-  setMapBlur,
+  setMapVeil,
   setMapOpacity,
   setMarkerOpacity,
   setRoute,
@@ -20,6 +20,7 @@ import {
   lerpLatLng,
   pointAt,
   traveled,
+  unwrapAngle,
 } from "../../utils/geo";
 import { clamp01, easeInOut, lerp, range, showBeat } from "../../utils/beats";
 import { CarIcon } from "./icons";
@@ -39,7 +40,7 @@ const FIN_ROUTE = 0.78;
 // puis revient se poser à l'arrivée.
 const VUE_LARGE: [number, number] = [49.13, 3.3];
 const ETENDUE_LARGE = 260;
-const ETENDUE_DEPART = 14;
+const ETENDUE_DEPART = 24;
 const ETENDUE_ROUTE = 95;
 const ETENDUE_ARRIVEE = 7;
 
@@ -60,6 +61,9 @@ export function RoadTrip() {
   const decolle = useRef<HTMLParagraphElement>(null);
   const voiture = useRef<HTMLDivElement>(null);
 
+  // Dernier cap appliqué, pour que la voiture tourne toujours du bon côté.
+  const cap = useRef(Number.NaN);
+
   const ligne = useRef<L.Polyline | null>(null);
   const repereReims = useRef<L.Marker | null>(null);
   const repereRoissy = useRef<L.Marker | null>(null);
@@ -78,10 +82,10 @@ export function RoadTrip() {
   useScrollScene(
     section,
     (p) => {
-      // La carte entre dans le récit, nette : rien à cacher tant qu'on
+      // La carte entre dans le récit à découvert : rien à cacher tant qu'on
       // roule en France.
       setMapOpacity(range(p, 0, 0.06));
-      setMapBlur(0);
+      setMapVeil(0);
       setMarkerOpacity(repereReims.current, range(p, 0.06, 0.14));
       setMarkerOpacity(repereRoissy.current, range(p, 0.66, 0.76));
 
@@ -116,8 +120,11 @@ export function RoadTrip() {
         setRoute(ligne.current, traveled(ROUTE_REIMS_ROISSY, CUMUL, t));
 
         if (voiture.current) {
-          const cap = bearingAt(ROUTE_REIMS_ROISSY, CUMUL, t);
-          voiture.current.style.transform = `translate(-50%, -50%) rotate(${cap.toFixed(1)}deg)`;
+          cap.current = unwrapAngle(
+            cap.current,
+            bearingAt(ROUTE_REIMS_ROISSY, CUMUL, t)
+          );
+          voiture.current.style.transform = `translate(-50%, -50%) rotate(${cap.current.toFixed(2)}deg)`;
         }
       } else {
         // Arrivée : la caméra se pose sur l'aéroport, le tracé est entier.

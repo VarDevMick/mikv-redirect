@@ -50,17 +50,42 @@ export function pointAt(path: LatLng[], cumul: number[], t: number): LatLng {
   return lerpLatLng(path[index - 1], path[index], local);
 }
 
-/** Cap suivi à l'avancement t, en degrés depuis le nord. */
-export function bearingAt(path: LatLng[], cumul: number[], t: number): number {
-  const { index } = segmentAt(cumul, t);
-  const [lat1, lng1] = path[index - 1];
-  const [lat2, lng2] = path[index];
+/**
+ * Cap suivi à l'avancement t, en degrés depuis le nord.
+ *
+ * Le cap est pris entre deux points encadrant t, et non sur le segment qui
+ * le contient : un tracé routier change de direction à chaque sommet, et
+ * lire le segment brut faisait tressauter le véhicule à chaque virage.
+ * L'encadrement lisse ces à-coups sans mentir sur la direction.
+ */
+export function bearingAt(
+  path: LatLng[],
+  cumul: number[],
+  t: number,
+  fenetre = 0.015
+): number {
+  const [lat1, lng1] = pointAt(path, cumul, t - fenetre);
+  const [lat2, lng2] = pointAt(path, cumul, t + fenetre);
   const dLng = rad(lng2 - lng1);
   const y = Math.sin(dLng) * Math.cos(rad(lat2));
   const x =
     Math.cos(rad(lat1)) * Math.sin(rad(lat2)) -
     Math.sin(rad(lat1)) * Math.cos(rad(lat2)) * Math.cos(dLng);
   return (deg(Math.atan2(y, x)) + 360) % 360;
+}
+
+/**
+ * Ramène un cap au plus près du précédent, quitte à sortir de [0, 360[.
+ *
+ * Sans cela, un véhicule qui passe du cap 359° au cap 1° fait un tour
+ * complet sur lui-même à l'écran.
+ */
+export function unwrapAngle(precedent: number, cap: number): number {
+  if (!Number.isFinite(precedent)) return cap;
+  let ecart = (cap - precedent) % 360;
+  if (ecart > 180) ecart -= 360;
+  if (ecart < -180) ecart += 360;
+  return precedent + ecart;
 }
 
 /** Portion déjà parcourue, prête à être donnée à une polyligne. */

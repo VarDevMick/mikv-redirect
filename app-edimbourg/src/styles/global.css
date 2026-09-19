@@ -253,12 +253,32 @@ body {
      deviennent des gris. Le sépia rendu au bleu par la rotation de teinte
      reteinte ensuite l'ensemble en nuit d'hiver.
 
-     Le flou, lui, est piloté par le récit (voir setMapBlur) : pendant le
-     vol, il tient les noms de villes illisibles — les tuiles portent
-     « Edinburgh » en toutes lettres, et la destination doit rester une
-     surprise jusqu'à l'atterrissage. */
+     Ce filtre est fixe, et il doit le rester : toute valeur animée ici
+     (un flou, par exemple) oblige le navigateur à refabriquer l'image des
+     tuiles à chaque image du scroll, et la carte se met à scintiller. Pour
+     voiler le pays pendant le vol, voir .map-layer__veil. */
   filter: invert(1) grayscale(1) brightness(0.72) contrast(1.2) sepia(0.45)
-    hue-rotate(175deg) saturate(1.8) blur(var(--flou-carte, 0px));
+    hue-rotate(175deg) saturate(1.8);
+  backface-visibility: hidden;
+}
+
+/* Voile de vol : un aplat sombre glissé entre les tuiles et les tracés. Il
+   éteint les noms de villes — les tuiles écrivent « Edinburgh » en clair —
+   sans toucher au trait doré du voyage, et seule son opacité change, ce qui
+   ne coûte rien au compositeur.
+
+   Il est largement plus grand que l'écran : Leaflet décale ce calque à
+   chaque déplacement, et le voile doit couvrir quoi qu'il arrive. */
+.map-veil {
+  left: -50vw;
+  top: -50vh;
+  width: 200vw;
+  height: 200vh;
+  z-index: 300;
+  background: var(--nuit-profond);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
 }
 
 .leaflet-control-attribution {
