@@ -36,9 +36,9 @@ export const FONDS = {
       [55.925, -3.245],
       [56.005, -3.15],
     ],
-    zoom: 14,
-    width: 1107,
-    height: 1665,
+    zoom: 15,
+    width: 2214,
+    height: 3331,
   },
   ecosse: {
     bounds: [

@@ -14,9 +14,14 @@ export const TRIP = {
   nights: 2,
 } as const;
 
-/** Ouverture : fond sombre, un souffle entre chaque phrase. */
+/**
+ * Ouverture : fond sombre, un souffle entre chaque phrase.
+ *
+ * Chloé ne dit jamais « Carol » : elle parle à sa mère. Le prénom n'existe
+ * que dans les données, pour savoir de qui l'on parle.
+ */
 export const INTRO = [
-  "Carol,",
+  "Maman,",
   "Pour tes 60 ans...",
   "J'avais envie de t'offrir quelque chose qu'on ne peut pas vraiment emballer.",
   "Alors j'ai préparé un petit voyage.",
@@ -42,7 +47,7 @@ export const REVEAL = {
   country: `🏴 ${TRIP.country}`,
   dates: TRIP.dates,
   lines: ["Trois jours.", "Tous ensemble."],
-  signature: `${TRIP.giver} + ${TRIP.celebrant} + ${TRIP.baby.name} ❤️`,
+  signature: `Toi, moi et ${TRIP.baby.name} ❤️`,
 } as const;
 
 /** Reims → Paris-Roissy, en voiture. */
@@ -71,7 +76,12 @@ export const BIRTHDAY_BEAT = {
   line: "Parce que 60 ans, ça mérite quand même un petit détour par l'Écosse.",
 } as const;
 
-/** Clôture : résumé, puis fond sombre et dernier mot. */
+/**
+ * Clôture : résumé, puis fond sombre et dernier mot.
+ *
+ * Le site s'arrête sur la signature de Chloé, et sur rien d'autre : après
+ * « Joyeux anniversaire Maman », plus une ligne.
+ */
 export const FINAL = {
   summary: [
     { value: "3", label: "jours" },
@@ -79,12 +89,7 @@ export const FINAL = {
     { value: "1", label: "nouvelle ville" },
   ],
   pivot: "Mais surtout...",
-  lines: [
-    "Des souvenirs à créer ensemble.",
-    "Joyeux 60 ans Maman ❤️",
-    "Ce voyage est pour toi.",
-  ],
-  signature: ["Avec tout mon amour,", TRIP.giver],
-  last: "On part à Édimbourg.",
-  recap: "Reims → Édimbourg",
+  lines: ["Des souvenirs à créer ensemble.", "Ce voyage est pour toi."],
+  signature: "Avec tout mon amour,",
+  voeu: "Joyeux anniversaire Maman ❤️",
 } as const;

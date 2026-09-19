@@ -35,11 +35,13 @@ const ATTRIBUTION =
 // découvre celle du dessous, qui reste pleinement opaque — les fondus ne
 // creusent donc jamais de trou sombre.
 const IMAGES = [
-  { id: "europe", url: europeUrl },
-  { id: "france", url: franceUrl },
-  { id: "ecosse", url: ecosseUrl },
-  { id: "couloir", url: couloirUrl },
-  { id: "edimbourg", url: edimbourgUrl },
+  { id: "europe", url: europeUrl, classe: "" },
+  { id: "france", url: franceUrl, classe: "" },
+  { id: "ecosse", url: ecosseUrl, classe: "" },
+  { id: "couloir", url: couloirUrl, classe: "" },
+  // La ville se regarde de près et longtemps : elle porte un filtre plus
+  // clair que les fonds lointains, sinon les rues se confondent.
+  { id: "edimbourg", url: edimbourgUrl, classe: "fond--ville" },
 ] as const;
 
 let map: L.Map | null = null;
@@ -82,6 +84,7 @@ export function initMap(canvas: HTMLElement, wrapper: HTMLElement): L.Map {
   for (const image of IMAGES) {
     fonds[image.id] = L.imageOverlay(image.url, FONDS[image.id].bounds, {
       pane: "fond",
+      className: `fond ${image.classe}`,
       interactive: false,
       // Chargées d'emblée, toutes les trois : elles pèsent moins qu'une
       // poignée de tuiles, et aucune ne doit se faire attendre en route.
@@ -212,8 +215,9 @@ export function createRouteLine(pointille = false): L.Polyline | null {
   if (!map) return null;
   return L.polyline([], {
     color: "#d4a94a",
-    weight: 2.5,
-    opacity: 0.9,
+    // Le trait doit tenir sur la ville, plus claire que les fonds lointains.
+    weight: 3.5,
+    opacity: 0.95,
     lineCap: "round",
     lineJoin: "round",
     dashArray: pointille ? "5 7" : undefined,
@@ -245,6 +249,29 @@ export function createPlaceMarker(place: Place) {
   });
   return L.marker([place.lat, place.lng], {
     icon: icone,
+    interactive: false,
+    keyboard: false,
+    opacity: 0,
+  }).addTo(map);
+}
+
+/**
+ * Étiquette posée au milieu d'un tracé : la distance, et comment on la
+ * franchit. C'est ce qui donne l'échelle d'une journée — trois cents mètres
+ * entre deux étapes, ce n'est pas la même journée que quatre kilomètres.
+ */
+export function createDistanceMarker(
+  point: LatLng,
+  texte: string
+): L.Marker | null {
+  if (!map) return null;
+  return L.marker(point, {
+    icon: L.divIcon({
+      className: "",
+      html: `<span class="distance-label">${texte}</span>`,
+      iconSize: [0, 0],
+      iconAnchor: [0, 0],
+    }),
     interactive: false,
     keyboard: false,
     opacity: 0,

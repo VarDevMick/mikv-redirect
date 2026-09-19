@@ -6,8 +6,8 @@
   --nuit-profond: #060f19;
   --nuit: #0b1826;
   --nuit-clair: #14283c;
-  --pierre: #7d8796;
-  --pierre-clair: #aab3bf;
+  --pierre: #939dab;
+  --pierre-clair: #ccd4de;
   --blanc-casse: #f2ece1;
   --dore: #d4a94a;
   --bordeaux: #7a2733;
@@ -36,7 +36,7 @@ body {
   background: var(--nuit-profond);
   color: var(--blanc-casse);
   font-family: var(--sans);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -140,13 +140,16 @@ body {
 
 .line {
   font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(1.5rem, 6.5vw, 2.5rem);
+  /* Le Cormorant en maigre disparaissait sur la carte : il tient sa ligne à
+     partir de 400, et l'ombre portée lui donne un fond partout. */
+  font-weight: 400;
+  font-size: clamp(1.6rem, 6.8vw, 2.6rem);
   line-height: 1.35;
   letter-spacing: 0.01em;
+  text-shadow: 0 2px 18px rgba(6, 15, 25, 0.9);
 }
 
-/* Le prénom de Carol, à l'ouverture : un peu plus grand que le récit, mais
+/* L'appel à sa mère, à l'ouverture : un peu plus grand que le récit, mais
    sans l'emphase réservée à la révélation d'Édimbourg. */
 .line--name {
   font-size: clamp(2.25rem, 10vw, 3.5rem);
@@ -163,6 +166,7 @@ body {
 .display {
   font-family: var(--serif);
   font-weight: 600;
+  text-shadow: 0 2px 22px rgba(6, 15, 25, 0.85);
   /* « ÉDIMBOURG » fait neuf caractères : au-delà de 12vw, le mot déborde de
      l'écran d'un téléphone. */
   font-size: clamp(2.4rem, 12vw, 6rem);
@@ -177,10 +181,13 @@ body {
 
 .eyebrow {
   font-family: var(--sans);
-  font-size: clamp(0.7rem, 3vw, 0.85rem);
-  letter-spacing: 0.35em;
+  font-size: clamp(0.72rem, 3vw, 0.88rem);
+  font-weight: 500;
+  /* Un interlettrage large réclame du contraste, sinon il se délave. */
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--pierre);
+  color: var(--pierre-clair);
+  text-shadow: 0 2px 14px rgba(6, 15, 25, 0.9);
 }
 
 /* --- Journées et étapes --------------------------------------------------
@@ -205,8 +212,8 @@ body {
   margin: 0 auto;
   padding: 1rem 1.2rem 1.15rem;
   text-align: left;
-  background: rgba(6, 15, 25, 0.88);
-  border: 1px solid rgba(212, 169, 74, 0.18);
+  background: rgba(6, 15, 25, 0.93);
+  border: 1px solid rgba(212, 169, 74, 0.22);
   border-radius: 3px;
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5);
 }
@@ -235,9 +242,9 @@ body {
 
 .carte__texte {
   margin: 0;
-  font-size: clamp(0.9rem, 3.6vw, 1rem);
-  line-height: 1.55;
-  color: var(--pierre-clair);
+  font-size: clamp(0.95rem, 3.8vw, 1.05rem);
+  line-height: 1.6;
+  color: var(--blanc-casse);
 }
 
 .carte__aparte {
@@ -249,10 +256,10 @@ body {
 .carte__repli {
   margin: 0.8rem 0 0;
   padding-top: 0.6rem;
-  border-top: 1px solid rgba(125, 135, 150, 0.22);
-  font-size: clamp(0.76rem, 3vw, 0.85rem);
-  line-height: 1.5;
-  color: var(--pierre);
+  border-top: 1px solid rgba(147, 157, 171, 0.3);
+  font-size: clamp(0.8rem, 3.1vw, 0.88rem);
+  line-height: 1.55;
+  color: var(--pierre-clair);
 }
 
 .carte__repli-mot {
@@ -369,6 +376,23 @@ body {
   inset: 0;
 }
 
+/* Dégradé au pied de l'écran : c'est là que se range la narration dès que
+   la carte est présente, et elle doit se lire sur n'importe quelle rue. */
+.map-layer::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 42svh;
+  background: linear-gradient(
+    to top,
+    rgba(6, 15, 25, 0.92) 0%,
+    rgba(6, 15, 25, 0.62) 38%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 500;
+}
+
 /* Voile qui assombrit les tuiles pour que le texte reste lisible par-dessus. */
 .map-layer::after {
   content: "";
@@ -392,18 +416,30 @@ body {
    éteintes. C'est ce qui évite l'aspect « outil de navigation » sans
    dépendre d'un fournisseur de fond sombre à clé. */
 .leaflet-fond-pane {
-  /* Inversion puis désaturation complète : forêts, routes et zones bâties
-     deviennent des gris. Le sépia rendu au bleu par la rotation de teinte
-     reteinte ensuite l'ensemble en nuit d'hiver.
+  z-index: 190;
+}
 
-     Ce filtre est fixe, et il doit le rester : toute valeur animée ici
-     (un flou, par exemple) oblige le navigateur à refabriquer l'image du
-     fond à chaque image du scroll, et la carte se met à scintiller. Pour
-     voiler le pays pendant le vol, voir .map-veil. */
+/* Inversion puis désaturation complète : forêts, routes et zones bâties
+   deviennent des gris. Le sépia rendu au bleu par la rotation de teinte
+   reteinte ensuite l'ensemble en nuit d'hiver.
+
+   Le filtre est porté par chaque fond et non par le calque, pour que la
+   ville puisse avoir le sien. Il est fixe, et doit le rester : toute valeur
+   animée sur un filtre oblige le navigateur à refabriquer l'image à chaque
+   frame, et la carte se met à scintiller. Pour voiler le pays pendant le
+   vol, voir .map-veil. */
+.fond {
   filter: invert(1) grayscale(1) brightness(0.72) contrast(1.2) sepia(0.45)
     hue-rotate(175deg) saturate(1.8);
   backface-visibility: hidden;
-  z-index: 190;
+}
+
+/* La ville est le seul fond qu'on lit vraiment : on y cherche une rue, un
+   parc, la distance d'un arrêt au suivant. Elle est donc nettement plus
+   claire que les fonds lointains, qui ne sont que des silhouettes. */
+.fond--ville {
+  filter: invert(1) grayscale(1) brightness(0.95) contrast(1.02) sepia(0.42)
+    hue-rotate(178deg) saturate(1.75);
 }
 
 /* Voile de vol : un aplat sombre glissé entre les fonds et les tracés. Il
@@ -433,6 +469,44 @@ body {
 
 .leaflet-control-attribution a {
   color: var(--pierre-clair);
+}
+
+/* Distance d'un tracé, posée en son milieu. */
+.distance-label {
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  padding: 0.14rem 0.45rem;
+  border-radius: 2px;
+  background: rgba(6, 15, 25, 0.82);
+  border: 1px solid rgba(212, 169, 74, 0.22);
+  color: var(--dore);
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+/* La poussette avance en cahotant : les pavés d'Édimbourg. */
+.vehicle__secousse {
+  display: block;
+  animation: cahoter 0.9s ease-in-out infinite;
+}
+
+@keyframes cahoter {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(-1.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vehicle__secousse {
+    animation: none;
+  }
 }
 
 /* --- Véhicule ------------------------------------------------------------

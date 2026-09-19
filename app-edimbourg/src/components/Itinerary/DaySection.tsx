@@ -4,6 +4,7 @@ import type { Day } from "../../data/itinerary";
 import { MARCHES } from "../../data/walks.generated";
 import {
   camera,
+  createDistanceMarker,
   createPlaceMarker,
   createRouteLine,
   setMapOpacity,
@@ -13,9 +14,16 @@ import {
   setRoute,
 } from "../../map/journeyMap";
 import { useScrollScene } from "../../hooks/useScrollScene";
-import { cumulativeLengths, pathBounds, pointAt, traveled } from "../../utils/geo";
+import {
+  bearingAt,
+  cumulativeLengths,
+  pathBounds,
+  pointAt,
+  traveled,
+} from "../../utils/geo";
 import { easeInOut, lerp, range, showBeat } from "../../utils/beats";
 import { ActivityCard } from "./ActivityCard";
+import { BusIcon, StrollerIcon } from "../Journey/icons";
 
 // La journée s'ouvre sur son titre, puis se marche. Le dernier dixième
 // laisse la dernière étape à l'écran avant de passer à la suite.
@@ -27,9 +35,20 @@ const FIN_MARCHE = 0.96;
 // quelque chose à lire.
 const PART_ARRET = 0.62;
 
-// Cadrages de la ville, en kilomètres visibles.
-const ETENDUE_ARRET = 2.1;
-const ETENDUE_TRAJET = 3;
+// Cadrages de la ville, en kilomètres visibles. On reste près du sol : la
+// ville est ce qu'on est venu voir, et les noms de rue doivent se lire.
+const ETENDUE_ARRET = 1.15;
+const ETENDUE_TRAJET = 1.9;
+
+// Au-delà, on ne traverse plus la ville à pied : le Britannia est à Leith,
+// à quatre kilomètres et demi de Dean Village, ce qui ne se marche pas avec
+// une poussette et un bébé de onze mois.
+const SEUIL_BUS_KM = 2;
+
+const enDistance = (km: number) =>
+  km < 1
+    ? `${Math.round((km * 1000) / 10) * 10} m`
+    : `${km.toFixed(1).replace(".", ",")} km`;
 
 interface Props {
   day: Day;
@@ -50,22 +69,39 @@ export function DaySection({ day, ecrans }: Props) {
   const titre = useRef<HTMLDivElement>(null);
   const voile = useRef<HTMLDivElement>(null);
   const cartes = useRef<(HTMLElement | null)[]>([]);
+  const poussette = useRef<HTMLDivElement>(null);
+  const autobus = useRef<HTMLDivElement>(null);
 
   const ligne = useRef<L.Polyline | null>(null);
   const reperes = useRef<(L.Marker | null)[]>([]);
+  const distances = useRef<(L.Marker | null)[]>([]);
 
   const marche = MARCHES[day.id];
   const cumul = useRef(cumulativeLengths(marche.chemin)).current;
   const cadre = useRef(pathBounds(marche.chemin)).current;
 
+  // Chaque trajet entre deux étapes : sa longueur, son milieu — où se pose
+  // l'étiquette — et la façon dont on le franchit.
+  const trajets = useRef(
+    day.activities.slice(0, -1).map((_, i) => {
+      const km = (marche.arrets[i + 1] - marche.arrets[i]) * marche.km;
+      return {
+        km,
+        bus: km > SEUIL_BUS_KM,
+        milieu: pointAt(
+          marche.chemin,
+          cumul,
+          (marche.arrets[i] + marche.arrets[i + 1]) / 2
+        ),
+      };
+    })
+  ).current;
+
   // De quoi tenir la journée entière à l'écran : l'écran est plus haut que
   // large, une journée étirée du nord au sud tient donc dans une étendue
   // plus étroite que sa hauteur. Plafonnée à ce que couvre le fond de ville.
-  // Jamais moins de 2,6 km : une journée qui tient en huit cents mètres —
-  // la vieille ville — serait montrée de si près qu'on ne verrait pas où
-  // elle se trouve. Jamais plus de 5, c'est ce que couvre le fond de ville.
   const etendueJour = Math.min(
-    Math.max(cadre.largeurKm, cadre.hauteurKm / 2, 1.75) * 1.5,
+    Math.max(cadre.largeurKm, cadre.hauteurKm / 2, 1.5) * 1.5,
     5
   );
 
@@ -79,11 +115,20 @@ export function DaySection({ day, ecrans }: Props) {
         ? null
         : createPlaceMarker({ name: etape.title, lat: etape.lat, lng: etape.lng })
     );
+    distances.current = trajets.map((trajet) =>
+      trajet.km > 0
+        ? createDistanceMarker(
+            trajet.milieu,
+            `${enDistance(trajet.km)} · ${trajet.bus ? "en bus" : "à pied"}`
+          )
+        : null
+    );
     return () => {
       ligne.current?.remove();
       reperes.current.forEach((repere) => repere?.remove());
+      distances.current.forEach((etiquette) => etiquette?.remove());
     };
-  }, [day]);
+  }, [day, trajets]);
 
   useScrollScene(
     section,
@@ -99,9 +144,7 @@ export function DaySection({ day, ecrans }: Props) {
       let active = 0;
       let enTrajet = false;
 
-      if (p <= DEBUT_MARCHE) {
-        avancement = 0;
-      } else {
+      if (p > DEBUT_MARCHE) {
         const local = (Math.min(p, FIN_MARCHE) - DEBUT_MARCHE) / creneau;
         active = Math.min(Math.floor(local), nombre - 1);
         const dans = local - active;
@@ -126,13 +169,26 @@ export function DaySection({ day, ecrans }: Props) {
         enTrajet ? ETENDUE_TRAJET : ETENDUE_ARRET,
         ouverture
       );
-      const [centreLat, centreLng] = [
+      camera(
         lerp(cadre.lat, lat, ouverture),
         lerp(cadre.lng, lng, ouverture),
-      ];
-      camera(centreLat, centreLng, etendue);
+        etendue
+      );
 
       setRoute(ligne.current, traveled(marche.chemin, cumul, avancement));
+
+      // Poussette ou bus, selon le trajet en cours. Tous deux sont de
+      // profil : ils ne pivotent pas, ils se retournent selon le sens de la
+      // marche.
+      const trajet = enTrajet ? trajets[active] : null;
+      const sens =
+        trajet && bearingAt(marche.chemin, cumul, avancement) > 180 ? -1 : 1;
+      [poussette.current, autobus.current].forEach((element, index) => {
+        if (!element) return;
+        const montre = trajet ? (index === 1) === trajet.bus : false;
+        element.style.opacity = montre ? "1" : "0";
+        element.style.transform = `translate(-50%, -50%) scaleX(${sens})`;
+      });
 
       day.activities.forEach((_, i) => {
         // Un repère s'allume quand la marche l'atteint, et ne s'éteint plus.
@@ -143,10 +199,21 @@ export function DaySection({ day, ecrans }: Props) {
         setMarkerLabel(reperes.current[i], i === active && !enTrajet && p < 0.9);
 
         const debut = DEBUT_MARCHE + i * creneau;
-        showBeat(cartes.current[i], p, debut + creneau * 0.06, debut + creneau * PART_ARRET, {
-          fade: creneau * 0.12,
-          rise: 12,
-        });
+        showBeat(
+          cartes.current[i],
+          p,
+          debut + creneau * 0.06,
+          debut + creneau * PART_ARRET,
+          { fade: creneau * 0.12, rise: 12 }
+        );
+      });
+
+      // L'étiquette d'un trajet apparaît quand on s'y engage, et reste.
+      trajets.forEach((_, i) => {
+        setMarkerOpacity(
+          distances.current[i],
+          range(avancement, marche.arrets[i], marche.arrets[i + 1])
+        );
       });
 
       showBeat(titre.current, p, 0.01, DEBUT_MARCHE * 0.75, { fade: 0.04 });
@@ -163,6 +230,7 @@ export function DaySection({ day, ecrans }: Props) {
       onLeaveBack: () => {
         setRoute(ligne.current, []);
         reperes.current.forEach((repere) => setMarkerOpacity(repere, 0));
+        distances.current.forEach((etiquette) => setMarkerOpacity(etiquette, 0));
       },
     }
   );
@@ -192,6 +260,15 @@ export function DaySection({ day, ecrans }: Props) {
             }}
           />
         ))}
+      </div>
+
+      <div className="vehicle" ref={poussette}>
+        <span className="vehicle__secousse">
+          <StrollerIcon />
+        </span>
+      </div>
+      <div className="vehicle" ref={autobus}>
+        <BusIcon />
       </div>
     </section>
   );

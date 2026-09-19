@@ -36,12 +36,16 @@ Deux règles y tiennent tout le reste :
 demandent un point et **une étendue en kilomètres** — jamais un niveau de
 zoom, qui ne montrerait pas la même chose selon la taille de l'écran.
 
-Le fond n'est pas une couche de tuiles mais **trois images livrées avec le
+Le fond n'est pas une couche de tuiles mais **cinq images livrées avec le
 site**, fabriquées par `scripts/fetch-backgrounds.py` à partir
 d'OpenStreetMap. En tuiles, le récit réclamait près de 1 700 tuiles — une
 cinquantaine de méga-octets — demandées pendant le scroll : trop lourd, et
-le décor arrivait en retard. Les trois images pèsent 1,8 Mo à elles toutes,
+le décor arrivait en retard. Les cinq images pèsent 3,4 Mo à elles toutes,
 se chargent une fois, et l'étendue visible décide laquelle est à l'écran.
+
+La ville porte son propre filtre, plus clair que celui des fonds lointains
+(`.fond--ville`) : c'est le seul fond qu'on lise vraiment — on y cherche une
+rue, un parc, la distance d'un arrêt au suivant.
 
 Deux calques se glissent entre le fond et les tracés :
 
@@ -83,6 +87,10 @@ Une journée se marche : le scroll fait avancer un chemin piéton continu
 (`walks.generated.ts`, calculé par OSRM), la caméra suit le pas, et chaque
 arrêt allume son repère puis sa fiche. On s'arrête plus longtemps qu'on ne
 marche — c'est à l'arrêt qu'il y a quelque chose à lire.
+
+Chaque trajet porte sa distance au milieu du tracé, et la poussette d'Hector
+le parcourt à l'écran. Au-delà de deux kilomètres, c'est un bus : le
+Britannia est à Leith, et cette étape-là ne se marche pas.
 
 Le voyage s'accumule vers l'avant : une scène traversée garde son dernier
 état, ce qui laisse les tracés et les repères en place pour la carte finale.
