@@ -9,7 +9,6 @@ import {
   setMapVeil,
   setMapOpacity,
   setMarkerOpacity,
-  zoomForSpan,
 } from "../../map/journeyMap";
 import { useScrollScene } from "../../hooks/useScrollScene";
 import { lerp, range, showBeat } from "../../utils/beats";
@@ -46,7 +45,7 @@ export function DestinationReveal() {
     setMapVeil(lerp(VOILE_ARRIVEE, 0, range(p, 0.08, 0.45)));
 
     const approche = lerp(ECOSSE.km, ECOSSE.km * 0.82, p);
-    camera(ECOSSE.lat, ECOSSE.lng, zoomForSpan(ECOSSE.lat, ECOSSE.lng, approche));
+    camera(ECOSSE.lat, ECOSSE.lng, approche);
 
     // Le voile assombrit le pays le temps de la révélation, puis se retire.
     if (voile.current) {

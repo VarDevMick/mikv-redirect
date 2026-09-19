@@ -11,7 +11,6 @@ import {
   setMapOpacity,
   setMarkerOpacity,
   setRoute,
-  zoomForSpan,
 } from "../../map/journeyMap";
 import { useScrollScene } from "../../hooks/useScrollScene";
 import {
@@ -40,9 +39,9 @@ const FIN_ROUTE = 0.78;
 // puis revient se poser à l'arrivée.
 const VUE_LARGE: [number, number] = [49.13, 3.3];
 const ETENDUE_LARGE = 260;
-const ETENDUE_DEPART = 24;
+const ETENDUE_DEPART = 40;
 const ETENDUE_ROUTE = 95;
-const ETENDUE_ARRIVEE = 7;
+const ETENDUE_ARRIVEE = 30;
 
 /**
  * Reims → Paris-Roissy, en voiture.
@@ -93,30 +92,14 @@ export function RoadTrip() {
         // Descente sur Reims, depuis une vue qui tient Paris et Reims.
         const t = easeInOut(range(p, 0, DEBUT_ROUTE));
         const [lat, lng] = lerpLatLng(VUE_LARGE, [REIMS.lat, REIMS.lng], t);
-        camera(
-          lat,
-          lng,
-          lerp(
-            zoomForSpan(lat, lng, ETENDUE_LARGE),
-            zoomForSpan(lat, lng, ETENDUE_DEPART),
-            t
-          )
-        );
+        camera(lat, lng, lerp(ETENDUE_LARGE, ETENDUE_DEPART, t));
         setRoute(ligne.current, []);
       } else if (p < FIN_ROUTE) {
         // Le trajet lui-même.
         const t = range(p, DEBUT_ROUTE, FIN_ROUTE);
         const [lat, lng] = pointAt(ROUTE_REIMS_ROISSY, CUMUL, t);
         const recul = Math.sin(Math.PI * t);
-        camera(
-          lat,
-          lng,
-          lerp(
-            zoomForSpan(lat, lng, ETENDUE_DEPART),
-            zoomForSpan(lat, lng, ETENDUE_ROUTE),
-            recul
-          )
-        );
+        camera(lat, lng, lerp(ETENDUE_DEPART, ETENDUE_ROUTE, recul));
         setRoute(ligne.current, traveled(ROUTE_REIMS_ROISSY, CUMUL, t));
 
         if (voiture.current) {
@@ -134,15 +117,7 @@ export function RoadTrip() {
           [ROISSY.lat, ROISSY.lng],
           t
         );
-        camera(
-          lat,
-          lng,
-          lerp(
-            zoomForSpan(lat, lng, ETENDUE_DEPART),
-            zoomForSpan(lat, lng, ETENDUE_ARRIVEE),
-            t
-          )
-        );
+        camera(lat, lng, lerp(ETENDUE_DEPART, ETENDUE_ARRIVEE, t));
         setRoute(ligne.current, ROUTE_REIMS_ROISSY);
       }
 

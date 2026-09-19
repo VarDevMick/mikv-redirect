@@ -259,26 +259,27 @@ body {
   font-family: var(--sans);
 }
 
-/* Les tuiles OpenStreetMap arrivent en couleurs de plein jour. Le filtre les
+/* Les fonds OpenStreetMap arrivent en couleurs de plein jour. Le filtre les
    retourne en nuit d'hiver : bleu profond, routes pâles, étiquettes
    éteintes. C'est ce qui évite l'aspect « outil de navigation » sans
    dépendre d'un fournisseur de fond sombre à clé. */
-.leaflet-tile-pane {
+.leaflet-fond-pane {
   /* Inversion puis désaturation complète : forêts, routes et zones bâties
      deviennent des gris. Le sépia rendu au bleu par la rotation de teinte
      reteinte ensuite l'ensemble en nuit d'hiver.
 
      Ce filtre est fixe, et il doit le rester : toute valeur animée ici
-     (un flou, par exemple) oblige le navigateur à refabriquer l'image des
-     tuiles à chaque image du scroll, et la carte se met à scintiller. Pour
-     voiler le pays pendant le vol, voir .map-layer__veil. */
+     (un flou, par exemple) oblige le navigateur à refabriquer l'image du
+     fond à chaque image du scroll, et la carte se met à scintiller. Pour
+     voiler le pays pendant le vol, voir .map-veil. */
   filter: invert(1) grayscale(1) brightness(0.72) contrast(1.2) sepia(0.45)
     hue-rotate(175deg) saturate(1.8);
   backface-visibility: hidden;
+  z-index: 190;
 }
 
-/* Voile de vol : un aplat sombre glissé entre les tuiles et les tracés. Il
-   éteint les noms de villes — les tuiles écrivent « Edinburgh » en clair —
+/* Voile de vol : un aplat sombre glissé entre les fonds et les tracés. Il
+   éteint les noms de villes — le fond écrit « Edinburgh » en clair —
    sans toucher au trait doré du voyage, et seule son opacité change, ce qui
    ne coûte rien au compositeur.
 

@@ -9,7 +9,6 @@ import {
   setMapVeil,
   setMapOpacity,
   setRoute,
-  zoomForSpan,
 } from "../../map/journeyMap";
 import { useScrollScene } from "../../hooks/useScrollScene";
 import {
@@ -42,7 +41,7 @@ const ATTERRISSAGE = 0.86;
 
 // Le vol respire : on quitte le sol, la carte s'ouvre jusqu'à tenir la
 // France et la Manche, puis se referme sur le pays d'arrivée.
-const ETENDUE_SOL = 10;
+const ETENDUE_SOL = 30;
 const ETENDUE_MONTEE = 70;
 const ETENDUE_CROISIERE = 1250;
 const ETENDUE_DESCENTE = 460;
@@ -96,15 +95,7 @@ export function Flight() {
       if (p < DECOLLAGE) {
         // Encore au sol : la piste s'éloigne doucement.
         const t = easeInOut(range(p, 0, DECOLLAGE));
-        camera(
-          ROISSY.lat,
-          ROISSY.lng,
-          lerp(
-            zoomForSpan(ROISSY.lat, ROISSY.lng, ETENDUE_SOL),
-            zoomForSpan(ROISSY.lat, ROISSY.lng, ETENDUE_MONTEE),
-            t
-          )
-        );
+        camera(ROISSY.lat, ROISSY.lng, lerp(ETENDUE_SOL, ETENDUE_MONTEE, t));
         setRoute(ligne.current, []);
       } else {
         const vol = range(p, DECOLLAGE, ATTERRISSAGE);
@@ -129,15 +120,7 @@ export function Flight() {
           [ECOSSE.lat, ECOSSE.lng],
           pose
         );
-        camera(
-          centreLat,
-          centreLng,
-          lerp(
-            zoomForSpan(centreLat, centreLng, etendue),
-            zoomForSpan(centreLat, centreLng, ECOSSE.km),
-            pose
-          )
-        );
+        camera(centreLat, centreLng, lerp(etendue, ECOSSE.km, pose));
 
         setRoute(ligne.current, traveled(ARC, CUMUL, vol));
 

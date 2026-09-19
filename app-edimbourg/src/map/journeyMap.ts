@@ -10,19 +10,41 @@
 import L from "leaflet";
 import type { LatLng } from "../utils/geo";
 import type { Place } from "../data/places";
+import { FONDS } from "../data/backdrops.generated";
+import couloirUrl from "../assets/fonds/couloir.webp";
+import franceUrl from "../assets/fonds/france.webp";
+import ecosseUrl from "../assets/fonds/ecosse.webp";
+import europeUrl from "../assets/fonds/europe.webp";
 
-// Tuiles OpenStreetMap, comme le reste du site. Elles arrivent en couleurs
-// vives : c'est un filtre CSS (voir .leaflet-tile-pane) qui les bascule en
-// nuit d'hiver, plutôt qu'un fournisseur de fond sombre — lesquels réclament
-// tous une clé désormais.
-const TUILES = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+// Le fond n'est pas une couche de tuiles mais trois images livrées avec le
+// site, fabriquées à partir d'OpenStreetMap par scripts/fetch-backgrounds.py.
+//
+// La caméra ne s'arrête jamais de bouger : en tuiles, le récit réclamait près
+// de 1 700 tuiles — une cinquantaine de méga-octets — demandées en flux tendu
+// pendant le scroll, ce qui coûtait cher et faisait apparaître le décor en
+// retard. Trois images d'un méga-octet et demi à elles toutes, chargées une
+// fois, suffisent : plus rien n'arrive pendant le voyage.
+//
+// Elles arrivent en couleurs de plein jour ; c'est un filtre CSS (voir
+// .leaflet-fond-pane) qui les bascule en nuit d'hiver.
 const ATTRIBUTION =
   '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+// Du plus large au plus serré : l'ordre d'empilement. Une image qui s'efface
+// découvre celle du dessous, qui reste pleinement opaque — les fondus ne
+// creusent donc jamais de trou sombre.
+const IMAGES = [
+  { id: "europe", url: europeUrl },
+  { id: "france", url: franceUrl },
+  { id: "ecosse", url: ecosseUrl },
+  { id: "couloir", url: couloirUrl },
+] as const;
 
 let map: L.Map | null = null;
 let layer: HTMLElement | null = null;
 let veil: HTMLElement | null = null;
 let dernierZoom = Number.NaN;
+const fonds: Record<string, L.ImageOverlay> = {};
 
 export function initMap(canvas: HTMLElement, wrapper: HTMLElement): L.Map {
   if (map) return map;
@@ -46,14 +68,24 @@ export function initMap(canvas: HTMLElement, wrapper: HTMLElement): L.Map {
     attributionControl: true,
   });
 
-  L.tileLayer(TUILES, {
-    attribution: ATTRIBUTION,
-    maxZoom: 19,
-    // La caméra n'arrête jamais de bouger : on garde une plus large marge
-    // de tuiles autour de l'écran, sinon elles s'effacent et réapparaissent
-    // au fil du déplacement — c'est l'essentiel du scintillement.
-    keepBuffer: 4,
-  }).addTo(map);
+  // Les fonds viennent d'OpenStreetMap : le crédit reste dû, même si ce sont
+  // désormais des images et non plus une couche de tuiles.
+  map.attributionControl.addAttribution(ATTRIBUTION);
+
+  // Les fonds vivent dans leur propre calque, sous les tracés : le filtre de
+  // nuit ne doit toucher qu'eux, et surtout pas le trait doré du voyage.
+  const calqueFond = map.createPane("fond");
+  calqueFond.classList.add("map-fond");
+
+  for (const image of IMAGES) {
+    fonds[image.id] = L.imageOverlay(image.url, FONDS[image.id].bounds, {
+      pane: "fond",
+      interactive: false,
+      // Chargées d'emblée, toutes les trois : elles pèsent moins qu'une
+      // poignée de tuiles, et aucune ne doit se faire attendre en route.
+      opacity: 1,
+    }).addTo(map);
+  }
 
   // Le voile du vol vit dans la carte, entre les tuiles et les tracés : il
   // doit éteindre le fond sans jamais ternir le trait doré du voyage. Un
@@ -70,33 +102,67 @@ export function getMap(): L.Map | null {
   return map;
 }
 
-/** Place la caméra. Appelée à chaque image : aucune animation Leaflet. */
-export function camera(lat: number, lng: number, zoom: number): void {
+/**
+ * Place la caméra : un point, et l'étendue qu'on veut voir, en kilomètres.
+ *
+ * Le cadrage ne s'exprime jamais en niveau de zoom, qui ne montrerait pas la
+ * même chose sur un téléphone et sur un écran large. On dit « je veux voir
+ * 40 km » et le zoom s'en déduit de la taille réelle du conteneur. L'étendue
+ * choisit aussi lequel des trois fonds est à l'écran.
+ *
+ * Appelée à chaque image : aucune animation Leaflet.
+ */
+export function camera(lat: number, lng: number, etendueKm: number): void {
   if (!map) return;
-  // La caméra n'est plus écrite qu'une fois par image (voir useScrollScene) :
-  // le zoom peut donc être fin sans noyer Leaflet de recalculs.
-  const arrondi = Math.round(zoom * 100) / 100;
+
+  setBackdropForSpan(etendueKm);
+
+  // La caméra n'est écrite qu'une fois par image (voir useScrollScene) : le
+  // zoom peut donc être fin sans noyer Leaflet de recalculs.
+  const zoom = Math.round(zoomForSpan(lat, lng, etendueKm) * 100) / 100;
   const centre = map.getCenter();
   if (
-    arrondi === dernierZoom &&
+    zoom === dernierZoom &&
     Math.abs(centre.lat - lat) < 1e-6 &&
     Math.abs(centre.lng - lng) < 1e-6
   ) {
     return;
   }
-  dernierZoom = arrondi;
-  map.setView([lat, lng], arrondi, { animate: false });
+  dernierZoom = zoom;
+  map.setView([lat, lng], zoom, { animate: false });
 }
 
 /**
- * Zoom qui fait tenir à l'écran une étendue donnée, en kilomètres.
+ * Choisit le fond selon l'étendue visible.
  *
- * C'est la clé du cadrage : on ne fixe jamais un niveau de zoom en dur,
- * puisqu'il ne montrerait pas la même chose sur un téléphone et sur un
- * écran large. On dit « je veux voir 40 km », et Leaflet en déduit le zoom
- * à partir de la taille réelle du conteneur.
+ * Chaque image a été fabriquée pour une échelle : au-delà, elle serait
+ * étirée et floue ; en deçà, elle ne couvrirait pas l'écran. Les bascules se
+ * font en fondu, sur une plage assez large pour qu'aucune ne se remarque.
  */
-export function zoomForSpan(lat: number, lng: number, km: number): number {
+function setBackdropForSpan(km: number): void {
+  const rampe = (debut: number, fin: number) =>
+    Math.min(Math.max((km - debut) / (fin - debut), 0), 1);
+
+  // Chaque seuil correspond à ce que la fenêtre de l'image couvre vraiment :
+  // le couloir tient jusqu'à 120 km de large, la France et l'Écosse
+  // jusqu'à 420 et 620. Les fenêtres françaises et écossaises ne se
+  // recouvrant pas, l'ordre entre elles est sans conséquence.
+  regler("couloir", 1 - rampe(120, 155));
+  regler("ecosse", 1 - rampe(620, 800));
+  regler("france", 1 - rampe(420, 560));
+}
+
+const opacites: Record<string, number> = {};
+
+function regler(id: string, valeur: number): void {
+  const arrondi = Math.round(valeur * 100) / 100;
+  if (opacites[id] === arrondi) return;
+  opacites[id] = arrondi;
+  fonds[id]?.setOpacity(arrondi);
+}
+
+/** Zoom qui fait tenir à l'écran une étendue donnée, en kilomètres. */
+function zoomForSpan(lat: number, lng: number, km: number): number {
   if (!map) return 10;
   const degresLat = km / 111;
   const degresLng = km / (111 * Math.cos((lat * Math.PI) / 180) || 1);
