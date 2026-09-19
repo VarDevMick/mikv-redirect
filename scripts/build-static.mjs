@@ -4,7 +4,6 @@
 import { PAGE_30_HTML } from "../src/page-30.js";
 import { PAGE_31_HTML } from "../src/pages/page-31.js";
 import { PAGE_60_HTML } from "../src/pages/page-60.js";
-import { PAGE_61_HTML } from "../src/pages/page-61.js";
 import { writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 
 const DOMAINE = "mikv.io";
@@ -20,11 +19,9 @@ writeFileSync("docs/60/index.html", PAGE_60_HTML);
 // Même fond de plan OpenStreetMap que /61.
 copyFileSync("src/assets/edimbourg/plan-fond.png", "docs/60/plan-fond.png");
 
-mkdirSync("docs/61", { recursive: true });
-writeFileSync("docs/61/index.html", PAGE_61_HTML);
-// Fond de plan d'Édimbourg (vraies tuiles OpenStreetMap) : image fixe,
-// régénérée par scripts/fetch-map-edimbourg.py, pas par ce script.
-copyFileSync("src/assets/edimbourg/plan-fond.png", "docs/61/plan-fond.png");
+// docs/61 n'est plus écrit ici : la page de travail est devenue une
+// application à part entière (app-edimbourg/, React + Leaflet), que Vite
+// construit directement dans docs/61. Voir `npm run build:61`.
 
 // Indique à GitHub Pages le domaine personnalisé à servir.
 writeFileSync("docs/CNAME", `${DOMAINE}\n`);
@@ -62,6 +59,5 @@ console.log("Export statique :");
 console.log("  docs/30/index.html  ->  https://mikv.io/30  (gelée)");
 console.log("  docs/31/index.html  ->  https://mikv.io/31  (travail)");
 console.log("  docs/60/index.html  ->  https://mikv.io/60  (Carol)");
-console.log("  docs/61/index.html  ->  https://mikv.io/61  (travail)");
 console.log("  docs/index.html     ->  https://mikv.io");
 console.log(`  docs/CNAME          ->  ${DOMAINE}`);

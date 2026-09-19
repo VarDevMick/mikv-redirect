@@ -1,0 +1,325 @@
+/* Direction artistique : hiver écossais, bleu nuit, pierre et doré.
+   Tout part du téléphone en portrait ; le desktop élargit, il ne commande
+   pas. */
+
+:root {
+  --nuit-profond: #060f19;
+  --nuit: #0b1826;
+  --nuit-clair: #14283c;
+  --pierre: #7d8796;
+  --pierre-clair: #aab3bf;
+  --blanc-casse: #f2ece1;
+  --dore: #d4a94a;
+  --bordeaux: #7a2733;
+
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Gouttière latérale : la même partout, jamais moins de 16 px. */
+  --gouttiere: clamp(1rem, 6vw, 3rem);
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  /* La narration est pilotée au scroll : pas de scroll fluide natif qui
+     viendrait se superposer à ScrollTrigger. */
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--nuit-profond);
+  color: var(--blanc-casse);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Structure d'un acte -------------------------------------------------
+   Un acte est une section haute de N × 100 svh. Son enfant collant occupe
+   un écran : le scroll à l'intérieur de la section fait donc avancer la
+   scène sans qu'aucune valeur en pixels n'intervienne. */
+
+.act {
+  position: relative;
+}
+
+.act__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: max(env(safe-area-inset-top), 2rem) var(--gouttiere)
+    max(env(safe-area-inset-bottom), 2rem);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* --- Textes du récit ---------------------------------------------------- */
+
+.beat {
+  position: absolute;
+  left: var(--gouttiere);
+  right: var(--gouttiere);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.beat--flow {
+  position: static;
+}
+
+/* Plusieurs phrases visibles en même temps, empilées et centrées. */
+.stack {
+  position: absolute;
+  left: var(--gouttiere);
+  right: var(--gouttiere);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* Phrase posée en bas de l'écran, pendant qu'une scène se joue au centre. */
+.beat--bottom {
+  top: auto;
+  bottom: max(env(safe-area-inset-bottom), 3.5rem);
+  text-shadow: 0 2px 16px rgba(6, 15, 25, 0.95);
+}
+
+.beat p,
+.beat h1,
+.beat h2 {
+  margin: 0;
+}
+
+.line {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 6.5vw, 2.5rem);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+/* Le prénom de Carol, à l'ouverture : un peu plus grand que le récit, mais
+   sans l'emphase réservée à la révélation d'Édimbourg. */
+.line--name {
+  font-size: clamp(2.25rem, 10vw, 3.5rem);
+  letter-spacing: 0.06em;
+}
+
+.line--small {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 4.2vw, 1.25rem);
+  color: var(--pierre-clair);
+  letter-spacing: 0.02em;
+}
+
+.display {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(3rem, 16vw, 7rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.display--gold {
+  color: var(--dore);
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: clamp(0.7rem, 3vw, 0.85rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--pierre);
+}
+
+/* --- Indice de défilement ----------------------------------------------- */
+
+.scroll-hint {
+  position: fixed;
+  left: 50%;
+  bottom: max(env(safe-area-inset-bottom), 1.5rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--pierre);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.scroll-hint__arrow {
+  width: 1px;
+  height: 2rem;
+  background: linear-gradient(to bottom, transparent, var(--pierre));
+  animation: descendre 2.4s ease-in-out infinite;
+}
+
+@keyframes descendre {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    transform-origin: top;
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+
+/* --- Carte -------------------------------------------------------------- */
+
+.map-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  will-change: opacity;
+  /* Le récit conduit la carte : aucun geste ne doit la saisir, et le scroll
+     vertical reste prioritaire sur mobile. */
+  pointer-events: none;
+}
+
+.map-layer__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* Voile qui assombrit les tuiles pour que le texte reste lisible par-dessus. */
+.map-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(6, 15, 25, 0.15) 0%,
+    rgba(6, 15, 25, 0.75) 100%
+  );
+  pointer-events: none;
+}
+
+.leaflet-container {
+  background: var(--nuit-profond);
+  font-family: var(--sans);
+}
+
+/* Les tuiles OpenStreetMap arrivent en couleurs de plein jour. Le filtre les
+   retourne en nuit d'hiver : bleu profond, routes pâles, étiquettes
+   éteintes. C'est ce qui évite l'aspect « outil de navigation » sans
+   dépendre d'un fournisseur de fond sombre à clé. */
+.leaflet-tile-pane {
+  /* Inversion puis désaturation complète : forêts, routes et zones bâties
+     deviennent des gris. Le sépia rendu au bleu par la rotation de teinte
+     reteinte ensuite l'ensemble en nuit d'hiver. */
+  filter: invert(1) grayscale(1) brightness(0.72) contrast(1.2) sepia(0.45)
+    hue-rotate(175deg) saturate(1.8);
+}
+
+.leaflet-control-attribution {
+  background: rgba(6, 15, 25, 0.6);
+  color: var(--pierre);
+  font-size: 0.6rem;
+}
+
+.leaflet-control-attribution a {
+  color: var(--pierre-clair);
+}
+
+/* --- Véhicule ------------------------------------------------------------
+   Il reste au centre de l'écran : c'est la carte qui défile dessous. */
+
+.vehicle {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+/* --- Repère de lieu ----------------------------------------------------- */
+
+.place-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  /* Le point doit tomber sur la coordonnée : le bloc est donc remonté de sa
+     propre hauteur, étiquette comprise. */
+  transform: translate(-50%, calc(-100% + 4px));
+}
+
+.place-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dore);
+  box-shadow: 0 0 0 3px rgba(212, 169, 74, 0.22);
+}
+
+.place-label {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blanc-casse);
+  white-space: nowrap;
+  text-shadow: 0 1px 6px rgba(6, 15, 25, 0.9);
+}
+
+/* --- Contenu au-dessus de la carte -------------------------------------- */
+
+.story {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Bandeau de travail ------------------------------------------------- */
+
+.dev-badge {
+  position: fixed;
+  top: max(env(safe-area-inset-top), 0.5rem);
+  right: 0.75rem;
+  z-index: 10;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid rgba(212, 169, 74, 0.5);
+  border-radius: 2px;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--dore);
+  pointer-events: none;
+}
+
+/* --- Mouvement réduit ----------------------------------------------------
+   Le récit reste entier : seuls les déplacements sont coupés. */
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint__arrow {
+    animation: none;
+  }
+
+  .beat {
+    transition: none !important;
+  }
+}

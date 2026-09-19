@@ -3,8 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-static.mjs",
-    "preview": "node scripts/build-static.mjs && cd docs && python3 -m http.server 8080",
+    "build": "npm run build:pages && npm run build:61",
+    "build:pages": "node scripts/build-static.mjs",
+    "build:61": "npm --prefix app-edimbourg install --silent && npm --prefix app-edimbourg run build",
+    "dev:61": "npm --prefix app-edimbourg run dev",
+    "preview": "npm run build && cd docs && python3 -m http.server 8080",
     "qr": "node scripts/generate-plaque.mjs"
   },
   "devDependencies": {
