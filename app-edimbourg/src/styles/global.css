@@ -110,6 +110,21 @@ body {
   gap: 0.9rem;
 }
 
+/* Compteur de kilomètres, juste au-dessus de la ligne de narration : il
+   tourne pendant toute la traversée, sans jamais entrer en concurrence avec
+   les phrases qui se succèdent en dessous. */
+.beat--compteur {
+  top: auto;
+  /* Au-dessus de la ligne de narration, dont la hauteur suit la taille de
+     l'écran : l'écart doit suivre aussi, sinon les deux se chevauchent. */
+  bottom: calc(
+    max(env(safe-area-inset-bottom), 3.5rem) + clamp(3.2rem, 10vw, 4.8rem)
+  );
+  color: var(--dore);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 16px rgba(6, 15, 25, 0.95);
+}
+
 /* Phrase posée en bas de l'écran, pendant qu'une scène se joue au centre. */
 .beat--bottom {
   top: auto;

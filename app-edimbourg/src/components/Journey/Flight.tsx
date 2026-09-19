@@ -17,6 +17,7 @@ import {
   cumulativeLengths,
   greatCircle,
   lerpLatLng,
+  pathDistance,
   pointAt,
   traveled,
   unwrapAngle,
@@ -31,6 +32,10 @@ const ARC = greatCircle(
   [EDINBURGH_AIRPORT.lat, EDINBURGH_AIRPORT.lng]
 );
 const CUMUL = cumulativeLengths(ARC);
+
+// Distance réelle du vol, arrondie au kilomètre : c'est elle qui défile à
+// l'écran pendant la traversée.
+const DISTANCE_KM = Math.round(pathDistance(ARC));
 
 const DECOLLAGE = 0.12;
 const ATTERRISSAGE = 0.86;
@@ -55,6 +60,7 @@ export function Flight() {
   const etiquette = useRef<HTMLParagraphElement>(null);
   const patience = useRef<HTMLParagraphElement>(null);
   const descend = useRef<HTMLParagraphElement>(null);
+  const compteur = useRef<HTMLParagraphElement>(null);
   const avion = useRef<HTMLDivElement>(null);
 
   const cap = useRef(Number.NaN);
@@ -81,6 +87,11 @@ export function Flight() {
           ? lerp(0, VOILE_VOL, range(p, DECOLLAGE, 0.3))
           : lerp(VOILE_VOL, VOILE_ARRIVEE, range(p, ATTERRISSAGE, 1))
       );
+
+      // Kilomètres avalés depuis Paris. Le texte est réécrit directement :
+      // aucun rendu React ne doit avoir lieu à chaque image.
+      const parcourus = Math.round(DISTANCE_KM * range(p, DECOLLAGE, ATTERRISSAGE));
+      if (compteur.current) compteur.current.textContent = `${parcourus} km`;
 
       if (p < DECOLLAGE) {
         // Encore au sol : la piste s'éloigne doucement.
@@ -147,6 +158,7 @@ export function Flight() {
       showBeat(etiquette.current, p, 0.22, 0.45, { rise: 8 });
       showBeat(patience.current, p, 0.55, 0.64);
       showBeat(descend.current, p, 0.76, 0.84);
+      showBeat(compteur.current, p, 0.3, 0.93, { rise: 6 });
     },
     {
       // En remontant avant le vol, le ciel se dégage : la voiture roule sur
@@ -172,6 +184,10 @@ export function Flight() {
         </p>
         <p className="beat beat--bottom line" ref={descend}>
           {FLIGHT.beats[2]}
+        </p>
+
+        <p className="beat beat--compteur eyebrow" ref={compteur}>
+          0 km
         </p>
       </div>
 

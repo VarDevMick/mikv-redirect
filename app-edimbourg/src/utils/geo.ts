@@ -17,6 +17,13 @@ export function distance([lat1, lng1]: LatLng, [lat2, lng2]: LatLng): number {
   return 2 * R * Math.asin(Math.sqrt(a));
 }
 
+/** Longueur totale d'un tracé, en kilomètres. */
+export function pathDistance(path: LatLng[]): number {
+  let total = 0;
+  for (let i = 1; i < path.length; i++) total += distance(path[i - 1], path[i]);
+  return total;
+}
+
 /**
  * Longueurs cumulées le long d'un tracé, normalisées entre 0 et 1.
  * Calculées une fois, pour que l'avancement au scroll soit régulier en
