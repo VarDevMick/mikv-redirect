@@ -1,44 +1,77 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import type L from "leaflet";
 import { REVEAL } from "../../data/trip";
+import { EDINBURGH } from "../../data/places";
+import { ECOSSE, FLOU_NUAGES } from "../../map/framings";
+import {
+  camera,
+  createPlaceMarker,
+  setMapBlur,
+  setMapOpacity,
+  setMarkerOpacity,
+  zoomForSpan,
+} from "../../map/journeyMap";
 import { useScrollScene } from "../../hooks/useScrollScene";
-import { showBeat } from "../../utils/beats";
+import { lerp, range, showBeat } from "../../utils/beats";
 
 /**
- * La révélation. Deux phrases qui font monter l'attente, puis le nom de la
- * ville qui prend tout l'écran. C'est le premier moment où l'on doit avoir
- * envie de crier — le reste du site peut ensuite prendre son temps.
+ * La révélation, à l'arrivée.
+ *
+ * L'Écosse est déjà à l'écran, le voyage entier tracé derrière : il ne
+ * reste qu'à nommer la ville. La caméra ne bouge presque pas — un lent
+ * rapprochement, rien de plus — pour que toute l'attention aille au texte.
  */
 export function DestinationReveal() {
   const section = useRef<HTMLElement>(null);
-  const valise = useRef<HTMLParagraphElement>(null);
-  const onPart = useRef<HTMLParagraphElement>(null);
+  const voile = useRef<HTMLDivElement>(null);
   const ville = useRef<HTMLHeadingElement>(null);
   const pays = useRef<HTMLParagraphElement>(null);
   const dates = useRef<HTMLParagraphElement>(null);
+  const trois = useRef<HTMLParagraphElement>(null);
+  const ensemble = useRef<HTMLParagraphElement>(null);
+  const signature = useRef<HTMLParagraphElement>(null);
+
+  const repere = useRef<L.Marker | null>(null);
+
+  useLayoutEffect(() => {
+    repere.current = createPlaceMarker(EDINBURGH);
+    return () => {
+      repere.current?.remove();
+    };
+  }, []);
 
   useScrollScene(section, (p) => {
-    showBeat(valise.current, p, 0.04, 0.2);
-    showBeat(onPart.current, p, 0.3, 0.44);
-    // Le nom arrive en grossissant très légèrement, puis ne repart plus :
-    // il reste à l'écran pendant que le pays et les dates se posent sous
-    // lui, et ne s'efface qu'en quittant la scène.
-    showBeat(ville.current, p, 0.56, 1, { fade: 0.05, rise: 0, scale: 0.86 });
-    showBeat(pays.current, p, 0.7, 1, { rise: 10 });
-    showBeat(dates.current, p, 0.82, 1, { rise: 10 });
+    setMapOpacity(1);
+    // L'avion s'est posé, mais la carte reste dans les nuages le temps que
+    // la ville soit nommée : elle ne redevient nette qu'ensuite.
+    setMapBlur(lerp(FLOU_NUAGES, 0, range(p, 0.55, 0.95)));
+
+    const approche = lerp(ECOSSE.km, ECOSSE.km * 0.82, p);
+    camera(ECOSSE.lat, ECOSSE.lng, zoomForSpan(ECOSSE.lat, ECOSSE.lng, approche));
+
+    // Le voile assombrit le pays le temps de la révélation, puis se retire.
+    if (voile.current) {
+      voile.current.style.opacity = String(
+        lerp(0, 0.82, range(p, 0, 0.12))
+      );
+    }
+
+    // Le point de la ville s'allume juste avant que son nom n'apparaisse.
+    setMarkerOpacity(repere.current, range(p, 0.05, 0.14));
+
+    showBeat(ville.current, p, 0.14, 1, { fade: 0.04, rise: 0, scale: 0.84 });
+    showBeat(pays.current, p, 0.26, 1, { rise: 10 });
+    showBeat(dates.current, p, 0.38, 1, { rise: 10 });
+    showBeat(trois.current, p, 0.58, 1, { rise: 10 });
+    showBeat(ensemble.current, p, 0.68, 1, { rise: 10 });
+    showBeat(signature.current, p, 0.82, 1, { rise: 10 });
   });
 
   return (
-    <section className="act" ref={section} style={{ height: "500svh" }}>
+    <section className="act" ref={section} style={{ height: "550svh" }}>
       <div className="act__stage">
-        <p className="beat line" ref={valise}>
-          {REVEAL.buildup[0]}
-        </p>
-        <p className="beat line" ref={onPart}>
-          {REVEAL.buildup[1]}
-        </p>
+        <div className="scrim" ref={voile} />
 
-        {/* Ville, pays et dates se posent l'un sous l'autre : ils partagent
-            un même bloc centré, et n'apparaissent qu'à leur tour. */}
         <div className="stack">
           <h1 className="beat beat--flow display display--gold" ref={ville}>
             {REVEAL.destination}
@@ -48,6 +81,16 @@ export function DestinationReveal() {
           </p>
           <p className="beat beat--flow eyebrow" ref={dates}>
             {REVEAL.dates}
+          </p>
+
+          <p className="beat beat--flow line reveal__gap" ref={trois}>
+            {REVEAL.lines[0]}
+          </p>
+          <p className="beat beat--flow line" ref={ensemble}>
+            {REVEAL.lines[1]}
+          </p>
+          <p className="beat beat--flow line line--small" ref={signature}>
+            {REVEAL.signature}
           </p>
         </div>
       </div>

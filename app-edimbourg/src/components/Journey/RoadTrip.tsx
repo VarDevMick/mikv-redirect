@@ -7,6 +7,7 @@ import {
   camera,
   createPlaceMarker,
   createRouteLine,
+  setMapBlur,
   setMapOpacity,
   setMarkerOpacity,
   setRoute,
@@ -77,8 +78,10 @@ export function RoadTrip() {
   useScrollScene(
     section,
     (p) => {
-      // La carte entre dans le récit.
+      // La carte entre dans le récit, nette : rien à cacher tant qu'on
+      // roule en France.
       setMapOpacity(range(p, 0, 0.06));
+      setMapBlur(0);
       setMarkerOpacity(repereReims.current, range(p, 0.06, 0.14));
       setMarkerOpacity(repereRoissy.current, range(p, 0.66, 0.76));
 

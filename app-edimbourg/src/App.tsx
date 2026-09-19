@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MapLayer } from "./components/Map/MapLayer";
 import { Intro } from "./components/Intro/Intro";
-import { DestinationReveal } from "./components/DestinationReveal/DestinationReveal";
+import { Buildup } from "./components/Buildup/Buildup";
 import { RoadTrip } from "./components/Journey/RoadTrip";
+import { Flight } from "./components/Journey/Flight";
+import { DestinationReveal } from "./components/DestinationReveal/DestinationReveal";
 
 export default function App() {
   useEffect(() => {
@@ -16,10 +18,14 @@ export default function App() {
     <>
       <MapLayer />
 
+      {/* L'ordre du récit : on part sans savoir où, et la ville ne se
+          nomme qu'une fois l'avion posé. */}
       <main className="story">
         <Intro />
-        <DestinationReveal />
+        <Buildup />
         <RoadTrip />
+        <Flight />
+        <DestinationReveal />
       </main>
 
       <span className="dev-badge">Dev</span>

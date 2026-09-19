@@ -32,17 +32,26 @@ export function useScrollScene(
     const element = ref.current;
     if (!element) return;
 
+    // Une scène ne peint que si on l'a atteinte. Sans cette règle, toutes
+    // les scènes s'annoncent au chargement et la dernière de la page impose
+    // son décor : on se retrouvait avec l'Écosse derrière l'ouverture.
+    // Une scène déjà traversée garde le droit d'écrire, à l'avancement 1 :
+    // c'est ce qui laisse la carte allumée et le tracé en place.
+    const jouer = (self: ScrollTrigger) => {
+      if (self.scroll() >= self.start - 1) onProgress(self.progress);
+    };
+
     const trigger = ScrollTrigger.create({
       trigger: element,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: (self) => onProgress(self.progress),
-      onRefresh: (self) => onProgress(self.progress),
+      onUpdate: jouer,
+      onRefresh: jouer,
       onLeaveBack: options.onLeaveBack,
       onLeave: options.onLeave,
     });
 
-    onProgress(trigger.progress);
+    jouer(trigger);
     return () => trigger.kill();
     // Les rappels sont lus une seule fois, au montage : les scènes sont
     // fixes pour la durée de vie de la page.

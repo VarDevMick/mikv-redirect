@@ -95,20 +95,47 @@ export function zoomForSpan(lat: number, lng: number, km: number): number {
   return map.getBoundsZoom(bounds, false);
 }
 
+// Opacité et flou sont réécrits à chaque image du scroll : on ne touche au
+// style que lorsque la valeur a réellement bougé.
+let derniereOpacite = Number.NaN;
+let dernierFlou = Number.NaN;
+
 /** Opacité du calque entier : la carte entre et sort du récit. */
 export function setMapOpacity(valeur: number): void {
-  if (layer) layer.style.opacity = String(valeur);
+  const arrondi = Math.round(valeur * 100) / 100;
+  if (!layer || arrondi === derniereOpacite) return;
+  derniereOpacite = arrondi;
+  layer.style.opacity = String(arrondi);
 }
 
-/** Trait du voyage, qui se dessine au fur et à mesure. */
-export function createRouteLine(couleur = "#d4a94a"): L.Polyline | null {
+/**
+ * Flou du fond de carte, en pixels.
+ *
+ * Il sert le récit avant de servir l'image : les tuiles OpenStreetMap
+ * écrivent « Edinburgh » en clair, et la ville ne doit pas être lisible
+ * avant d'être nommée. Pendant le vol on vole donc dans les nuages, et la
+ * carte se pose en même temps que l'avion.
+ */
+export function setMapBlur(pixels: number): void {
+  const arrondi = Math.round(pixels * 10) / 10;
+  if (!layer || arrondi === dernierFlou) return;
+  dernierFlou = arrondi;
+  layer.style.setProperty("--flou-carte", `${arrondi}px`);
+}
+
+/**
+ * Trait du voyage, qui se dessine au fur et à mesure. En pointillé pour le
+ * vol : une route aérienne n'est pas une route.
+ */
+export function createRouteLine(pointille = false): L.Polyline | null {
   if (!map) return null;
   return L.polyline([], {
-    color: couleur,
+    color: "#d4a94a",
     weight: 2.5,
     opacity: 0.9,
     lineCap: "round",
     lineJoin: "round",
+    dashArray: pointille ? "5 7" : undefined,
     // Le tracé ne doit pas intercepter le geste de défilement.
     interactive: false,
   }).addTo(map);

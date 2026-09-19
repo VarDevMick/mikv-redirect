@@ -80,6 +80,25 @@ body {
   position: static;
 }
 
+/* Voile posé sur la carte le temps d'une révélation : le texte passe devant
+   sans que le pays disparaisse tout à fait. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(6, 15, 25, 0.92) 0%,
+    rgba(6, 15, 25, 0.55) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Respiration entre la révélation et ce qui la suit. */
+.reveal__gap {
+  margin-top: 1.4rem;
+}
+
 /* Plusieurs phrases visibles en même temps, empilées et centrées. */
 .stack {
   position: absolute;
@@ -129,7 +148,9 @@ body {
 .display {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: clamp(3rem, 16vw, 7rem);
+  /* « ÉDIMBOURG » fait neuf caractères : au-delà de 12vw, le mot déborde de
+     l'écran d'un téléphone. */
+  font-size: clamp(2.4rem, 12vw, 6rem);
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -230,9 +251,14 @@ body {
 .leaflet-tile-pane {
   /* Inversion puis désaturation complète : forêts, routes et zones bâties
      deviennent des gris. Le sépia rendu au bleu par la rotation de teinte
-     reteinte ensuite l'ensemble en nuit d'hiver. */
+     reteinte ensuite l'ensemble en nuit d'hiver.
+
+     Le flou, lui, est piloté par le récit (voir setMapBlur) : pendant le
+     vol, il tient les noms de villes illisibles — les tuiles portent
+     « Edinburgh » en toutes lettres, et la destination doit rester une
+     surprise jusqu'à l'atterrissage. */
   filter: invert(1) grayscale(1) brightness(0.72) contrast(1.2) sepia(0.45)
-    hue-rotate(175deg) saturate(1.8);
+    hue-rotate(175deg) saturate(1.8) blur(var(--flou-carte, 0px));
 }
 
 .leaflet-control-attribution {

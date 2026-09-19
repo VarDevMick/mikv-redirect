@@ -24,12 +24,25 @@ export const INTRO = [
 
 export const SCROLL_HINT = "Fais défiler";
 
-/** Révélation de la destination : le premier moment « waouh ». */
+/**
+ * Montée d'attente, avant le départ. Rien n'est nommé : la destination
+ * reste secrète pendant tout le trajet.
+ */
+export const BUILDUP = ["Prépare ta valise...", "On part..."] as const;
+
+/**
+ * Révélation, à l'atterrissage seulement.
+ *
+ * Carol voit d'abord le pays se dessiner sous l'avion, le voyage entier
+ * tracé derrière — et c'est là que la ville prend enfin son nom. Le
+ * « waouh » est à l'arrivée, pas au départ.
+ */
 export const REVEAL = {
-  buildup: ["Prépare ta valise...", "On part..."],
   destination: TRIP.destination,
   country: `🏴 ${TRIP.country}`,
   dates: TRIP.dates,
+  lines: ["Trois jours.", "Tous ensemble."],
+  signature: `${TRIP.giver} + ${TRIP.celebrant} + ${TRIP.baby.name} ❤️`,
 } as const;
 
 /** Reims → Paris-Roissy, en voiture. */
@@ -41,14 +54,13 @@ export const ROAD = {
   arrival: ["Paris-Roissy", "Bon...", "Maintenant, on décolle."],
 } as const;
 
-/** Le vol, puis l'arrivée. */
+/**
+ * Le vol. Aucun de ces textes ne nomme la destination — ni l'étiquette, ni
+ * les phrases : tout le suspense du site tient à ce silence.
+ */
 export const FLIGHT = {
-  label: "✈️ Paris-Roissy → Édimbourg",
-  arrival: {
-    title: "Bienvenue à Édimbourg",
-    lines: ["Trois jours.", "Tous ensemble."],
-    signature: `${TRIP.giver} + ${TRIP.celebrant} + ${TRIP.baby.name} ❤️`,
-  },
+  label: "✈️ Cap au nord",
+  beats: ["On décolle.", "Encore un peu de patience...", "On descend."],
   toExploration: ["Maintenant...", "découvrons Édimbourg."],
 } as const;
 
