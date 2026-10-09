@@ -40,9 +40,8 @@ const PART_ARRET = 0.62;
 const ETENDUE_ARRET = 1.15;
 const ETENDUE_TRAJET = 1.9;
 
-// Au-delà, on ne traverse plus la ville à pied : le Britannia est à Leith,
-// à quatre kilomètres et demi de Dean Village, ce qui ne se marche pas avec
-// une poussette et un bébé de onze mois.
+// Au-delà, on ne traverse plus la ville à pied : avec une poussette, une
+// étape trop lointaine se fait en bus.
 const SEUIL_BUS_KM = 2;
 
 const enDistance = (km: number) =>

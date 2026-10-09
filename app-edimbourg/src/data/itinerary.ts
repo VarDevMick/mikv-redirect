@@ -1,10 +1,15 @@
 // Le programme : trois journées, quatre étapes chacune.
 //
-// Ce ne sont pas des horaires. Hector a 11 mois et voyage en poussette :
+// Ce ne sont pas des horaires. Hector est petit et voyage en poussette :
 // chaque journée est une suite de grands moments, avec de la place pour les
-// pauses, les repas et le froid de décembre.
+// pauses, les repas et les averses de printemps.
 //
-// Coordonnées : Nominatim (OpenStreetMap), relevées le 2026-09-19.
+// Le 27 avril est le jour du voyage (atterrissage à 14 h 20), le 30 celui
+// du retour (vol à 18 h 25) : la dernière journée s'arrête en début
+// d'après-midi, à l'ouest de la ville, sur la route de l'aéroport.
+//
+// Coordonnées : Nominatim (OpenStreetMap), relevées le 2026-09-19, et le
+// 2026-10-09 pour The Meadows et le Royal Botanic Garden.
 
 export interface Activity {
   id: string;
@@ -35,7 +40,7 @@ export interface Day {
 export const DAYS: Day[] = [
   {
     id: "jour-1",
-    date: "1er décembre",
+    date: "28 avril",
     title: "Premiers pas à Édimbourg",
     subtitle: "On découvre la ville tranquillement.",
     activities: [
@@ -73,7 +78,7 @@ export const DAYS: Day[] = [
         id: "grassmarket",
         title: "Grassmarket",
         description:
-          "La place au pied du château, avec ses cafés et ses pubs. On s'assoit, on regarde le rocher, et on ne fait rien de plus.",
+          "La place au pied du château, avec ses cafés et ses pubs. On s'installe en terrasse, on regarde le rocher, et on ne fait rien de plus.",
         time: "Fin de journée",
         lat: 55.94748,
         lng: -3.19625,
@@ -84,28 +89,29 @@ export const DAYS: Day[] = [
   },
   {
     id: "jour-2",
-    date: "2 décembre",
-    title: "Édimbourg en hiver",
-    subtitle: "Aujourd'hui, on profite de l'ambiance de décembre.",
+    date: "29 avril",
+    title: "Édimbourg au printemps",
+    subtitle: "Aujourd'hui, la ville est en fleurs.",
     activities: [
+      {
+        id: "calton-hill",
+        title: "Calton Hill",
+        description:
+          "La colline aux colonnes, juste au bout de la ville. On y monte le matin, quand l'air est encore frais : toute la ville est à nos pieds, jusqu'à la mer.",
+        time: "Matin",
+        lat: 55.95525,
+        lng: -3.1828,
+        fallback:
+          "S'il pleut ou si la montée est pénible avec la poussette : St Andrew Square et ses pelouses, à plat.",
+      },
       {
         id: "princes-gardens",
         title: "Princes Street Gardens",
         description:
-          "Les jardins en contrebas du château, plats et larges. En décembre, la ville s'y installe pour l'hiver.",
-        time: "Matin",
+          "Les jardins en contrebas du château, plats et larges. Fin avril, les massifs sont en fleurs et les bancs reprennent du service.",
+        time: "Fin de matinée",
         lat: 55.95025,
         lng: -3.19949,
-        babyFriendly: true,
-      },
-      {
-        id: "christmas-market",
-        title: "Marché de Noël",
-        description:
-          "Chalets, grande roue, vin chaud, et le château illuminé au-dessus. Difficile de trouver plus écossais en décembre.",
-        time: "Midi",
-        lat: 55.9514,
-        lng: -3.19464,
         aside: "Hector valide.",
         babyFriendly: true,
       },
@@ -113,72 +119,71 @@ export const DAYS: Day[] = [
         id: "national-museum",
         title: "National Museum of Scotland",
         description:
-          "Gratuit, immense et chauffé. Des ascenseurs partout, de la place pour courir, et un toit-terrasse avec vue sur la ville.",
+          "Gratuit, immense et lumineux. Des ascenseurs partout, de la place pour courir, et un toit-terrasse avec vue sur la ville.",
         time: "Après-midi",
         lat: 55.94707,
         lng: -3.18934,
-        aside: "Il fait froid ? On rentre se réchauffer.",
+        aside: "Une averse ? On rentre au sec.",
         babyFriendly: true,
       },
       {
-        id: "calton-hill",
-        title: "Calton Hill",
+        id: "meadows",
+        title: "The Meadows",
         description:
-          "La colline aux colonnes, juste au bout de la ville. En décembre, le soleil se couche tôt : le panorama s'allume vers seize heures.",
-        time: "Coucher du soleil",
-        lat: 55.95525,
-        lng: -3.1828,
-        fallback:
-          "S'il pleut ou si la montée est pénible avec la poussette : St Andrew Square et ses lumières, à plat.",
+          "La grande allée des cerisiers, en pleine floraison à cette saison. Une couverture dans l'herbe, un goûter, et Hector qui découvre les pétales.",
+        time: "Fin de journée",
+        lat: 55.94392,
+        lng: -3.19132,
+        aside: "Petite pause poussette 👶",
+        babyFriendly: true,
       },
     ],
   },
   {
     id: "jour-3",
-    date: "3 décembre",
+    date: "30 avril",
     title: "Une dernière journée",
     subtitle: "Avant de reprendre l'avion...",
     activities: [
       {
-        id: "britannia",
-        title: "Royal Yacht Britannia",
+        id: "dean-village",
+        title: "Dean Village",
         description:
-          "Le yacht royal, amarré à Leith, au bout de la ligne de tram. On visite au chaud, à son rythme, et il y a un salon de thé à bord.",
+          "On descend le long du Water of Leith jusqu'à l'ancien hameau des meuniers : maisons de grès, silence, et le bruit de la rivière. Le chemin est plat et pavé.",
         time: "Matin",
-        lat: 55.98215,
-        lng: -3.17731,
-        aside: "On y va en tram depuis le centre 🚊",
+        lat: 55.95226,
+        lng: -3.21822,
         babyFriendly: true,
       },
       {
         id: "stockbridge",
         title: "Stockbridge",
         description:
-          "Retour vers la ville, dans le quartier le plus tranquille d'Édimbourg : des boutiques, des cafés, et la rivière qui le traverse.",
-        time: "Midi",
+          "On suit la rivière jusqu'au quartier le plus tranquille d'Édimbourg : des boutiques, des cafés, et des terrasses au soleil.",
+        time: "Fin de matinée",
         lat: 55.95797,
         lng: -3.20934,
         aside: "On continue ?",
         babyFriendly: true,
       },
       {
-        id: "dean-village",
-        title: "Dean Village",
+        id: "botanic-garden",
+        title: "Royal Botanic Garden",
         description:
-          "On descend le long du Water of Leith jusqu'à l'ancien hameau des meuniers : maisons de grès, silence, et le bruit de la rivière. Le chemin est plat, pavé, à l'abri du vent.",
-        time: "Après-midi",
-        lat: 55.95226,
-        lng: -3.21822,
+          "Le jardin botanique, à deux pas de Stockbridge. Fin avril, c'est la saison des rhododendrons : des allées entières en fleurs, et des pelouses où l'on peut s'arrêter.",
+        time: "Midi",
+        lat: 55.96529,
+        lng: -3.20886,
         babyFriendly: true,
       },
       {
         id: "dernier-moment",
         title: "Un dernier moment ensemble",
         description:
-          "Une table quelque part, tous les trois, avant de rentrer. Le lieu reste à choisir — c'est bien la seule chose que je n'ai pas réservée.",
-        time: "Le soir",
-        lat: 55.95226,
-        lng: -3.21822,
+          "Une table quelque part, tous les trois, avant l'aéroport. Le lieu reste à choisir — c'est bien la seule chose que je n'ai pas réservée.",
+        time: "Avant l'avion",
+        lat: 55.96529,
+        lng: -3.20886,
         toDecide: true,
       },
     ],

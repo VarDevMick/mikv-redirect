@@ -493,6 +493,32 @@ body {
   animation: cahoter 0.9s ease-in-out infinite;
 }
 
+/* Les jambes des promeneuses se croisent au rythme du cahot, en pivotant
+   à la hanche. */
+.vehicle__secousse .jambe {
+  transform-box: fill-box;
+  transform-origin: top center;
+  transform: rotate(18deg);
+  animation: marcher 0.45s ease-in-out infinite alternate;
+}
+
+.vehicle__secousse .jambe--arriere {
+  animation-direction: alternate-reverse;
+}
+
+.vehicle__secousse .jambe--arriere {
+  transform: rotate(-18deg);
+}
+
+@keyframes marcher {
+  from {
+    transform: rotate(18deg);
+  }
+  to {
+    transform: rotate(-18deg);
+  }
+}
+
 @keyframes cahoter {
   0%,
   100% {
@@ -504,7 +530,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vehicle__secousse {
+  .vehicle__secousse,
+  .vehicle__secousse .jambe {
     animation: none;
   }
 }

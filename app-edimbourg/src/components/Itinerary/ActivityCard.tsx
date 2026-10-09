@@ -9,7 +9,7 @@ interface Props {
 /**
  * Une étape du séjour, posée sous la carte.
  *
- * Elle ne porte jamais d'horaire : Hector a 11 mois, il y a une poussette,
+ * Elle ne porte jamais d'horaire : Hector est petit, il y a une poussette,
  * et le programme est une suite de grands moments, pas un emploi du temps.
  */
 export function ActivityCard({ activity, rang, carte }: Props) {

@@ -2,23 +2,36 @@
 // haut. C'est la rotation appliquée au conteneur qui leur donne leur cap.
 
 /**
- * La poussette d'Hector, de profil.
+ * Carol et Chloé qui poussent Hector, de profil.
  *
- * Contrairement à la voiture et à l'avion, elle n'est pas vue du dessus :
- * une poussette vue de haut n'est qu'une tache. Elle ne pivote donc pas non
- * plus — elle se retourne simplement selon le sens de la marche.
+ * Contrairement à la voiture et à l'avion, la scène n'est pas vue du
+ * dessus : une poussette vue de haut n'est qu'une tache. Elle ne pivote donc
+ * pas non plus — elle se retourne simplement selon le sens de la marche.
  */
 export function StrollerIcon() {
   return (
-    <svg width="34" height="30" viewBox="0 0 34 30" aria-hidden="true">
+    <svg width="56" height="32" viewBox="0 0 60 34" aria-hidden="true">
       <g fill="none" stroke="#d4a94a" strokeWidth="2" strokeLinecap="round">
-        <path d="M6 21 L14 7" />
-        <path d="M9.5 15 C13 5.5 22 4.5 26.5 9 L14.5 15 Z" fill="#d4a94a" stroke="none" />
-        <path d="M9.5 15 L27 15" />
-        <path d="M20 15 L24.5 21" />
+        {/* Carol, un pas derrière */}
+        <circle cx="11" cy="6" r="3" fill="#d4a94a" stroke="none" />
+        <path d="M11 10 L11 20 M11 12.5 L9 18.5 M11 12.5 L20.5 14.5" />
+        <path className="jambe" d="M11 20 L11 28.5" />
+        <path className="jambe jambe--arriere" d="M11 20 L11 28.5" />
+
+        {/* Chloé, aux poignées */}
+        <circle cx="25" cy="6" r="3" fill="#d4a94a" stroke="none" />
+        <path d="M25 10 L24.5 20 M25 12.5 L36 10.5" />
+        <path className="jambe" d="M24.5 20 L24.5 28.5" />
+        <path className="jambe jambe--arriere" d="M24.5 20 L24.5 28.5" />
+
+        {/* La poussette d'Hector */}
+        <path d="M30 25 L38 9" />
+        <path d="M33.5 19 C37 9.5 46 8.5 50.5 13 L38.5 19 Z" fill="#d4a94a" stroke="none" />
+        <path d="M33.5 19 L51 19" />
+        <path d="M44 19 L48.5 25" />
       </g>
-      <circle cx="8" cy="24" r="3" fill="none" stroke="#d4a94a" strokeWidth="2" />
-      <circle cx="25" cy="24" r="3" fill="none" stroke="#d4a94a" strokeWidth="2" />
+      <circle cx="32" cy="28" r="3" fill="none" stroke="#d4a94a" strokeWidth="2" />
+      <circle cx="49" cy="28" r="3" fill="none" stroke="#d4a94a" strokeWidth="2" />
     </svg>
   );
 }

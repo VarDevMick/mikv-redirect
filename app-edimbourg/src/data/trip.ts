@@ -10,8 +10,8 @@ export const TRIP = {
   baby: { name: "Hector", months: 11 },
   destination: "Édimbourg",
   country: "Écosse",
-  dates: "1er → 3 décembre 2026",
-  nights: 2,
+  dates: "27 → 30 avril 2027",
+  nights: 3,
 } as const;
 
 /**
@@ -47,7 +47,7 @@ export const REVEAL = {
   country: `🏴 ${TRIP.country}`,
   dates: TRIP.dates,
   lines: ["Trois jours.", "Tous ensemble."],
-  signature: `Toi, moi et ${TRIP.baby.name} ❤️`,
+  signature: `Toi, ${TRIP.baby.name} et moi ❤️`,
 } as const;
 
 /** Reims → Paris-Roissy, en voiture. */
