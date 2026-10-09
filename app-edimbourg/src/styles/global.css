@@ -358,6 +358,102 @@ body {
   }
 }
 
+/* --- Fil du voyage -------------------------------------------------------
+   Au bord droit : l'avancement du voyage, et une flèche qui relance quand on
+   s'arrête de défiler. */
+
+.fil {
+  position: fixed;
+  right: max(env(safe-area-inset-right), 0.6rem);
+  top: 50%;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  transform: translateY(-50%);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.fil--fini {
+  opacity: 0;
+}
+
+.fil__rail {
+  position: relative;
+  width: 2px;
+  height: 28svh;
+  border-radius: 1px;
+  background: rgba(204, 212, 222, 0.3);
+  overflow: hidden;
+}
+
+.fil__avance {
+  position: absolute;
+  inset: 0;
+  background: var(--dore);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+
+.fil__suite {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -0.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dore);
+  opacity: 0.35;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.4s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fil__suite::before {
+  content: "";
+  position: absolute;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid rgba(212, 169, 74, 0.45);
+  border-radius: 50%;
+  background: rgba(6, 15, 25, 0.75);
+}
+
+.fil__suite svg {
+  position: relative;
+}
+
+.fil--fini .fil__suite {
+  pointer-events: none;
+}
+
+.fil--relance .fil__suite {
+  opacity: 1;
+  animation: relancer 1.6s ease-in-out infinite;
+}
+
+@keyframes relancer {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fil--relance .fil__suite {
+    animation: none;
+  }
+}
+
 /* --- Carte -------------------------------------------------------------- */
 
 .map-layer {

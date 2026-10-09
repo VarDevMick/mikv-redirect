@@ -9,6 +9,7 @@ import { DestinationReveal } from "./components/DestinationReveal/DestinationRev
 import { CityTransition } from "./components/CityTransition/CityTransition";
 import { DaySection } from "./components/Itinerary/DaySection";
 import { Final } from "./components/Final/Final";
+import { ScrollGuide } from "./components/ScrollGuide/ScrollGuide";
 import { DAYS } from "./data/itinerary";
 
 export default function App() {
@@ -38,6 +39,8 @@ export default function App() {
         <DaySection day={DAYS[2]} ecrans={9} />
         <Final />
       </main>
+
+      <ScrollGuide />
 
       <span className="dev-badge">Dev</span>
     </>
