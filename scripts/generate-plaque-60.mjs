@@ -3,18 +3,24 @@
 //   node scripts/generate-plaque-60.mjs
 //
 // Dérivée du skill qr-3d (~/.claude/skills/qr-3d), avec ce qui est propre à
-// ce cadeau : un cartouche au centre du QR — un avion qui décolle, « 60 »,
-// le château d'Édimbourg —, et un support qui tient la plaque inclinée
-// comme un téléphone.
+// ce cadeau : « 60 » au centre, comme le « 30 » de la plaque de Charlotte,
+// et un support qui tient la plaque inclinée comme un téléphone.
 //
 // Produit dans qr/ :
-//   plaque-60-claire.stl  plaque, filament clair
-//   plaque-60-sombre.stl  QR + texte + dessins, filament sombre
+//   plaque-60-fond.stl    la plaque, filament noir
+//   plaque-60-relief.stl  QR + texte en relief, filament blanc
+//
+// Plaque noire, relief blanc : le QR est donc inversé (clair sur sombre).
+// Le décodeur de l'iPhone le lit aussi bien que l'autre sens — vérifié
+// jusqu'à 160 px —, mais de vieux lecteurs d'applications peuvent buter.
 //   support-60.stl        le support, à imprimer à part, couché sur le flanc
 //   geometrie.json        repères exacts pour le vérificateur du skill
 //
 // Avant d'imprimer, toujours vérifier :
-//   node <skill>/verifier.mjs https://mikv.io/birthday/60 qr/plaque-60-sombre.stl qr/apercu-60.png
+//   node scripts/verifier-plaque.mjs https://mikv.io/birthday/60 qr/plaque-60-relief.stl qr/apercu-60.png
+// puis décoder l'aperçu (scan.swift du skill), en lui rendant d'abord sa
+// marge blanche : l'aperçu est cadré au ras du motif, et sans marge le
+// décodeur échoue à tort.
 import QRCode from "qrcode";
 import opentype from "opentype.js";
 import earcut from "earcut";
@@ -23,24 +29,9 @@ import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 const URL_CIBLE = "https://mikv.io/birthday/60";
 const TEXTE = "Joyeux anniversaire !";
 const CENTRE_TEXTE = "60";
-// Cartouche évidé au centre du QR : avion | 60 | château. En modules,
-// colonnes 7 à 25 et lignes 13 à 19 : il évite les lignes de synchronisation
-// (ligne et colonne 6) et le motif d'alignement (autour de 26, 26).
-//
-// Sept lignes, pas neuf : à neuf, le code restait juste en théorie, mais le
-// décodeur d'Apple ne le trouvait plus dès que l'image rapetissait (300 px).
-// À sept, il le lit encore à 160 px, comme le « 60 » seul.
-//
-// Trois mises en page, au choix par QR_VARIANTE :
-//   cartouche  avion | 60 | château dans le QR
-//   coins      « 60 » seul au centre ; avion et château dans les coins
-//              libres de la plaque, en haut à droite et en bas à gauche
-//   agrandie   « 60 » seul au centre ; plaque rallongée en haut pour
-//              l'avion, à droite ; château en bas à gauche, devant le texte
-const VARIANTE = process.env.QR_VARIANTE || "cartouche";
-const CARTOUCHE = VARIANTE === "cartouche"
-  ? { x0: 7, x1: 25, y0: 13, y1: 19 }
-  : { x0: 11, x1: 21, y0: 11, y1: 21 }; // le carré 11 × 11 du « 60 » seul
+// Zone évidée au centre du QR pour le « 60 », 11 × 11 modules comme sur la
+// plaque de /30. Un avion et un château y ont été essayés, puis retirés.
+const CARTOUCHE = { x0: 11, x1: 21, y0: 11, y1: 21 };
 const POLICE = process.env.QR_POLICE || "/System/Library/Fonts/Supplemental/Arial Bold.ttf";
 
 // Dimensions (mm)
@@ -200,19 +191,16 @@ const largeur = grille * MODULE_MM;
 
 // Proportions calées sur la largeur, pour que tout grandisse ensemble.
 // Le bas de la plaque est pris dans la lèvre du support : une bande vide
-// de LEVRE_MM y est réservée, sous le texte et les dessins.
+// de LEVRE_MM y est réservée, sous le texte.
 const LEVRE_MM = 7;
 const ZONE_TEXTE_MM = 0.24 * largeur;
 const BANDE_TEXTE_MM = LEVRE_MM + ZONE_TEXTE_MM;
 const HAUTEUR_TEXTE_MM = 0.10 * largeur;  // hauteur visée pour un texte long
 const HAUTEUR_TEXTE_MAX = 0.15 * largeur; // un texte court grossit jusque-là
 const LARGEUR_TEXTE_MAX = 0.84 * largeur;
-// Dans la variante « coins », l'avion loge dans le coin : arrondi réduit.
-const RAYON_PLAQUE = (VARIANTE === "coins" ? 0.03 : 0.055) * largeur;
-// Bande ajoutée en haut pour l'avion, dans la variante « agrandie ».
-const BANDE_HAUT_MM = VARIANTE === "agrandie" ? 16 : 0;
+const RAYON_PLAQUE = 0.055 * largeur;     // arrondi des coins
 
-const hauteur = largeur + BANDE_TEXTE_MM + BANDE_HAUT_MM;
+const hauteur = largeur + BANDE_TEXTE_MM;
 
 const font = opentype.parse(readFileSync(POLICE).buffer);
 
@@ -322,81 +310,14 @@ for (const f of formes) {
   noir.push(...extruderGroupe(f, BASE_MM, BASE_MM + RELIEF_MM, { x: 0, y: 0 }));
 }
 
-// ---------- dessins du cartouche ----------
-//
-// Les dessins sont des silhouettes pleines, sans trou ni détail fin : en
-// 0,8 mm de relief avec une buse de 0,4, rien sous 1 mm ne sort proprement.
-// Coordonnées dans un repère libre, mises à l'échelle à la pose.
-
-/** Avion de ligne de profil, nez à droite, avant inclinaison. */
-const AVION = [
-  [100, 7], [96, 11], [88, 13], [24, 13], [11, 31], [3, 31], [7, 13],
-  [1, 11], [0, 8], [3, 4], [40, 3], [27, -15], [36, -15], [61, 3],
-  [92, 3], [98, 5],
-];
-
-/** Le château sur son rocher : tour centrale, remparts crénelés. */
-function chateau() {
-  const pts = [[0, 0], [100, 0], [97, 7], [90, 13], [82, 18], [80, 18]];
-  // Créneaux de droite à gauche, entre x0 et x1, à la hauteur y.
-  const creneaux = (x0, x1, y, n) => {
-    const pas = (x0 - x1) / (2 * n - 1);
-    for (let i = 0; i < 2 * n - 1; i++) {
-      const xa = x0 - i * pas, xb = x0 - (i + 1) * pas;
-      const h = i % 2 === 0 ? y + 6 : y;
-      pts.push([xa, h], [xb, h]);
-    }
-  };
-  pts.push([80, 40]);
-  creneaux(80, 60, 40, 2);
-  pts.push([60, 40], [60, 64]);
-  creneaux(60, 40, 64, 2);
-  pts.push([40, 64], [40, 40]);
-  creneaux(40, 20, 40, 2);
-  pts.push([20, 40], [20, 18], [14, 15], [6, 10], [2, 5]);
-  return pts;
-}
-
-const tourner = (pts, deg) => {
-  const a = (deg * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
-  return pts.map(([x, y]) => [x * c - y * s, x * s + y * c]);
-};
-
-/** Pose un contour dans une boîte (x, y, l, h), centré, proportions gardées. */
-function poser(pts, x, y, l, h) {
-  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
-  const x0 = Math.min(...xs), y0 = Math.min(...ys);
-  const lw = Math.max(...xs) - x0, lh = Math.max(...ys) - y0;
-  const k = Math.min(l / lw, h / lh);
-  const dx = x + (l - lw * k) / 2, dy = y + (h - lh * k) / 2;
-  let c = pts.map(([px, py]) => [dx + (px - x0) * k, dy + (py - y0) * k]);
-  if (aire(c) < 0) c = c.reverse(); // sens direct, comme les lettres
-  return c;
-}
-
-// Le cartouche : avion | 60 | château, dans la zone évidée.
+// Le « 60 » au centre du QR.
 {
   const zone = cellule(
     CARTOUCHE.x0, CARTOUCHE.y0,
     CARTOUCHE.x1 - CARTOUCHE.x0 + 1, CARTOUCHE.y1 - CARTOUCHE.y0 + 1
   );
-  const marge = 0.9 * M;  // blanc autour des dessins, pour les détacher du code
-  const ecart = 0.6 * M;  // entre deux dessins
-  const h = zone.h - 2 * marge;
-  const lDessin = 5.2 * M;
-  const lChiffre = zone.w - 2 * marge - 2 * (lDessin + ecart);
-  const x0 = zone.x + marge, y0 = zone.y + marge;
-
-  for (const contour of VARIANTE !== "cartouche" ? [] : [
-    poser(tourner(AVION, 22), x0, y0, lDessin, h),
-    poser(chateau(), zone.x + zone.w - marge - lDessin, y0, lDessin, h),
-  ]) {
-    noir.push(...extruderGroupe({ exterieur: contour, trous: [] }, BASE_MM, BASE_MM + RELIEF_MM, { x: 0, y: 0 }));
-  }
-
-  const t = VARIANTE === "cartouche"
-    ? preparerTexte(CENTRE_TEXTE, h, lChiffre, h)
-    : preparerTexte(CENTRE_TEXTE, zone.h - 2.2 * M, zone.w - 2.2 * M, zone.h - 2.2 * M);
+  const marge = 1.1 * M; // blanc autour des chiffres, pour les détacher du code
+  const t = preparerTexte(CENTRE_TEXTE, zone.h - 2 * marge, zone.w - 2 * marge, zone.h - 2 * marge);
   const dec = {
     x: zone.x + (zone.w - t.larg) / 2 - t.minX,
     y: zone.y + (zone.h - t.haut) / 2 - t.minY,
@@ -406,35 +327,11 @@ function poser(pts, x, y, l, h) {
   }
 }
 
-// Avion et château hors du QR, selon la variante. La marge blanche de
-// QUIET_MODULES autour du code est obligatoire : rien ne doit y entrer,
-// sauf dans la variante « coins », qui n'occupe que ses angles, en
-// diagonale des repères, là où les lignes de lecture ne passent pas.
-const finQR = { x: largeur - QUIET_MODULES * M, y: BANDE_TEXTE_MM + (size + QUIET_MODULES) * M };
-let texteX0 = (largeur - LARGEUR_TEXTE_MAX) / 2, texteL = LARGEUR_TEXTE_MAX;
-const dessins = [];
-if (VARIANTE === "coins") {
-  const c = QUIET_MODULES * M - 2.2;  // côté de la case de coin, sans toucher bord ni repère
-  dessins.push(poser(tourner(AVION, 35), finQR.x + 1.2, finQR.y + 1.2, c, c));
-  dessins.push(poser(chateau(), 1.2, BANDE_TEXTE_MM - 0.5 * c, c + 3, c));
-} else if (VARIANTE === "agrandie") {
-  const marge = 0.07 * largeur;
-  const h = BANDE_HAUT_MM - 3;
-  dessins.push(poser(tourner(AVION, 22), largeur - marge - 2.2 * h, hauteur - BANDE_HAUT_MM + 0.5, 2.2 * h, h));
-  const lc = 0.17 * largeur;
-  dessins.push(poser(chateau(), marge, LEVRE_MM + (ZONE_TEXTE_MM - 0.62 * lc) / 2, lc, 0.62 * lc));
-  texteX0 = marge + lc + 0.03 * largeur;
-  texteL = largeur - marge - texteX0;
-}
-for (const contour of dessins) {
-  noir.push(...extruderGroupe({ exterieur: contour, trous: [] }, BASE_MM, BASE_MM + RELIEF_MM, { x: 0, y: 0 }));
-}
-
 // Le texte sous le QR, sur une ligne, au-dessus de la lèvre du support.
 if (BANDE_TEXTE_MM > 0) {
-  const t = preparerTexte(TEXTE, HAUTEUR_TEXTE_MM, texteL, HAUTEUR_TEXTE_MAX);
+  const t = preparerTexte(TEXTE, HAUTEUR_TEXTE_MM, LARGEUR_TEXTE_MAX, HAUTEUR_TEXTE_MAX);
   const dec = {
-    x: texteX0 + (texteL - t.larg) / 2 - t.minX,
+    x: (largeur - t.larg) / 2 - t.minX,
     y: LEVRE_MM + (ZONE_TEXTE_MM - t.haut) / 2 - t.minY,
   };
   for (const g of grouperContours(t.contours)) {
@@ -455,12 +352,12 @@ writeFileSync("qr/geometrie.json", JSON.stringify({
   hauteurMm: hauteur,
   bandeTexteMm: BANDE_TEXTE_MM,
   centreModules: 0,
-  // Zone évidée rectangulaire, en modules, exclue de la comparaison.
+  // Zone évidée, en modules, exclue de la comparaison.
   evide: CARTOUCHE,
 }, null, 2));
 
-writeSTL("qr/plaque-60-claire.stl", blanc, "Plaque claire - mikv.io/birthday/60");
-writeSTL("qr/plaque-60-sombre.stl", noir, "QR + texte + dessins, sombre - mikv.io/birthday/60");
+writeSTL("qr/plaque-60-fond.stl", blanc, "Plaque, filament noir - mikv.io/birthday/60");
+writeSTL("qr/plaque-60-relief.stl", noir, "QR + texte en relief, filament blanc - mikv.io/birthday/60");
 
 
 // ---------- support incliné ----------
@@ -503,8 +400,8 @@ writeFileSync("qr/support-60.json", JSON.stringify({
 console.log(`Plaque ${largeur.toFixed(1)} x ${hauteur.toFixed(1)} x ${(BASE_MM + RELIEF_MM).toFixed(1)} mm`);
 console.log(`  Bas    : ${TEXTE ? `"${TEXTE}"` : "aucun"}`);
 const evides = (CARTOUCHE.x1 - CARTOUCHE.x0 + 1) * (CARTOUCHE.y1 - CARTOUCHE.y0 + 1);
-console.log(`  Centre : avion | "${CENTRE_TEXTE}" | château, ${evides} modules évidés (${((100 * evides) / (size * size)).toFixed(1)} % du code)`);
+console.log(`  Centre : "${CENTRE_TEXTE}", ${evides} modules évidés (${((100 * evides) / (size * size)).toFixed(1)} % du code)`);
 console.log(`  Blanc  : plaque de ${BASE_MM} mm`);
-console.log(`  Noir   : QR + texte + dessins, ${RELIEF_MM} mm de relief`);
+console.log(`  Noir   : QR + texte, ${RELIEF_MM} mm de relief`);
 console.log(`Support ${SUPPORT_L} x ${PROFONDEUR} x ${T[1].toFixed(1)} mm, plaque à ${ANGLE}°`);
 

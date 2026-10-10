@@ -1,9 +1,10 @@
-// Dessin coté : plaque de face, smartphone pour l'échelle, profil sur support.
+// Dessin coté de la plaque 60 (node scripts/dessin-plaque-60.mjs qr sortie.svg) :
+// plaque de face, smartphone pour l'échelle, profil sur support.
 import { readFileSync, writeFileSync } from "node:fs";
 const [, , dossier, sortie] = process.argv;
 const sup = JSON.parse(readFileSync(`${dossier}/support-60.json`, "utf8"));
 const { largeur: PL, hauteur: PH } = sup.plaque;
-const buf = readFileSync(`${dossier}/plaque-60-sombre.stl`);
+const buf = readFileSync(`${dossier}/plaque-60-relief.stl`);
 const n = buf.readUInt32LE(80);
 let zmax = -Infinity; const tris = [];
 for (let i = 0; i < n; i++) {
@@ -17,7 +18,7 @@ const fy = (y) => OY + (PH - y) * K;
 const fx = (x) => OX + x * K;
 const dessus = tris.filter((t) => t.every((p) => Math.abs(p[2] - zmax) < 1e-4))
   .map((t) => `M${t.map((p) => `${fx(p[0]).toFixed(1)},${fy(p[1]).toFixed(1)}`).join("L")}Z`).join("");
-const encre = "#1b2a41", plaqueC = "#f4ecd8", or = "#b8862e", gris = "#6b7280";
+const encre = "#1b2a41", plaqueC = "#16181c", relief = "#f5f3ee", or = "#b8862e", gris = "#6b7280";
 const fleche = (x1, y1, x2, y2, txt, tx, ty, rot = 0) => `
   <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${or}" stroke-width="1.5" marker-start="url(#f)" marker-end="url(#f)"/>
   <text x="${tx}" y="${ty}" fill="${or}" font-size="16" font-weight="600" text-anchor="middle" ${rot ? `transform="rotate(${rot} ${tx} ${ty})"` : ""}>${txt}</text>`;
@@ -44,7 +45,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 <text x="${OX}" y="38" fill="${encre}" font-size="22" font-weight="700">Plaque mikv.io/birthday/60 — dimensions</text>
 <text x="${OX}" y="${OY - 10}" fill="${gris}" font-size="15">De face</text>
 <rect x="${fx(0)}" y="${fy(PH)}" width="${PL * K}" height="${PH * K}" rx="${0.055 * PL * K}" fill="${plaqueC}" stroke="${encre}" stroke-width="1.5"/>
-<path d="${dessus}" fill="${encre}"/>
+<path d="${dessus}" fill="${relief}"/>
 <rect x="${fx(0)}" y="${fy(7)}" width="${PL * K}" height="${7 * K}" fill="${or}" opacity="0.18"/>
 <text x="${fx(PL / 2)}" y="${fy(3.5) + 5}" fill="${or}" font-size="12" text-anchor="middle">pris dans la lèvre du support</text>
 ${fleche(fx(0), fy(0) + 30, fx(PL), fy(0) + 30, `${PL.toFixed(0)} mm`, fx(PL / 2), fy(0) + 55)}
