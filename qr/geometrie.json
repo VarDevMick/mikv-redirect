@@ -1,0 +1,16 @@
+{
+  "url": "https://mikv.io/birthday/60",
+  "moduleMm": 2.7,
+  "quietModules": 4,
+  "modules": 33,
+  "largeurMm": 110.7,
+  "hauteurMm": 144.268,
+  "bandeTexteMm": 33.568,
+  "centreModules": 0,
+  "evide": {
+    "x0": 7,
+    "x1": 25,
+    "y0": 13,
+    "y1": 19
+  }
+}
