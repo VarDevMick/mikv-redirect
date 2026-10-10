@@ -7,7 +7,8 @@
 // Pour modifier une couleur ou un dessin : `src/themes/edimbourg/`.
 // Pour modifier un texte ou une étape : `src/data/edimbourg.js`.
 //
-// /60 sera la page offerte à Carol, gelée à l'impression de la plaque.
+// La page offerte à Carol est désormais mikv.io/birthday/60, construite
+// depuis app-edimbourg/.
 
 import { theme } from "../themes/edimbourg/index.js";
 import { ETAPES, PARCOURS, OUVERTURE, TEXTES, VIDEO, PLAN_LARGEUR, PLAN_HAUTEUR } from "../data/edimbourg.js";

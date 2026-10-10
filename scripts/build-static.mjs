@@ -3,8 +3,7 @@
 //   docs/31/index.html -> https://mikv.io/31  (page de travail)
 import { PAGE_30_HTML } from "../src/page-30.js";
 import { PAGE_31_HTML } from "../src/pages/page-31.js";
-import { PAGE_60_HTML } from "../src/pages/page-60.js";
-import { writeFileSync, mkdirSync, copyFileSync } from "node:fs";
+import { writeFileSync, mkdirSync } from "node:fs";
 
 const DOMAINE = "mikv.io";
 
@@ -14,14 +13,11 @@ writeFileSync("docs/30/index.html", PAGE_30_HTML);
 mkdirSync("docs/31", { recursive: true });
 writeFileSync("docs/31/index.html", PAGE_31_HTML);
 
-mkdirSync("docs/60", { recursive: true });
-writeFileSync("docs/60/index.html", PAGE_60_HTML);
-// Même fond de plan OpenStreetMap que /61.
-copyFileSync("src/assets/edimbourg/plan-fond.png", "docs/60/plan-fond.png");
-
 // docs/61 n'est plus écrit ici : la page de travail est devenue une
 // application à part entière (app-edimbourg/, React + Leaflet), que Vite
-// construit directement dans docs/61. Voir `npm run build:61`.
+// construit directement dans docs/61. Voir `npm run build:61`. La page
+// offerte à Carol en sort aussi, figée, dans docs/birthday/60 : voir
+// `npm run build:offert`. L'ancienne /60 n'existe plus.
 
 // Indique à GitHub Pages le domaine personnalisé à servir.
 writeFileSync("docs/CNAME", `${DOMAINE}\n`);
@@ -58,6 +54,5 @@ writeFileSync(
 console.log("Export statique :");
 console.log("  docs/30/index.html  ->  https://mikv.io/30  (gelée)");
 console.log("  docs/31/index.html  ->  https://mikv.io/31  (travail)");
-console.log("  docs/60/index.html  ->  https://mikv.io/60  (Carol)");
 console.log("  docs/index.html     ->  https://mikv.io");
 console.log(`  docs/CNAME          ->  ${DOMAINE}`);
