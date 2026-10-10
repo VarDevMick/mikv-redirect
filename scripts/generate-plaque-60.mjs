@@ -7,12 +7,12 @@
 // et un support qui tient la plaque inclinée comme un téléphone.
 //
 // Produit dans qr/ :
-//   plaque-60-fond.stl    la plaque, filament noir
-//   plaque-60-relief.stl  QR + texte en relief, filament blanc
+//   plaque-60-fond.stl    la plaque, filament blanc
+//   plaque-60-relief.stl  QR + texte en relief, filament noir
 //
-// Plaque noire, relief blanc : le QR est donc inversé (clair sur sombre).
-// Le décodeur de l'iPhone le lit aussi bien que l'autre sens — vérifié
-// jusqu'à 160 px —, mais de vieux lecteurs d'applications peuvent buter.
+// Plaque blanche, relief noir : le sens classique d'un QR, lisible par tous
+// les lecteurs. L'inverse (plaque noire) a été essayé : l'iPhone le lit,
+// mais de vieux lecteurs d'applications peuvent buter.
 //   support-60.stl        le support, à imprimer à part, couché sur le flanc
 //   geometrie.json        repères exacts pour le vérificateur du skill
 //
@@ -356,8 +356,8 @@ writeFileSync("qr/geometrie.json", JSON.stringify({
   evide: CARTOUCHE,
 }, null, 2));
 
-writeSTL("qr/plaque-60-fond.stl", blanc, "Plaque, filament noir - mikv.io/birthday/60");
-writeSTL("qr/plaque-60-relief.stl", noir, "QR + texte en relief, filament blanc - mikv.io/birthday/60");
+writeSTL("qr/plaque-60-fond.stl", blanc, "Plaque, filament blanc - mikv.io/birthday/60");
+writeSTL("qr/plaque-60-relief.stl", noir, "QR + texte en relief, filament noir - mikv.io/birthday/60");
 
 
 // ---------- support incliné ----------

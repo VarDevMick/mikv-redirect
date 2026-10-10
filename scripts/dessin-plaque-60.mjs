@@ -18,7 +18,7 @@ const fy = (y) => OY + (PH - y) * K;
 const fx = (x) => OX + x * K;
 const dessus = tris.filter((t) => t.every((p) => Math.abs(p[2] - zmax) < 1e-4))
   .map((t) => `M${t.map((p) => `${fx(p[0]).toFixed(1)},${fy(p[1]).toFixed(1)}`).join("L")}Z`).join("");
-const encre = "#1b2a41", plaqueC = "#16181c", relief = "#f5f3ee", or = "#b8862e", gris = "#6b7280";
+const encre = "#1b2a41", plaqueC = "#f5f3ee", relief = "#16181c", or = "#b8862e", gris = "#6b7280";
 const fleche = (x1, y1, x2, y2, txt, tx, ty, rot = 0) => `
   <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${or}" stroke-width="1.5" marker-start="url(#f)" marker-end="url(#f)"/>
   <text x="${tx}" y="${ty}" fill="${or}" font-size="16" font-weight="600" text-anchor="middle" ${rot ? `transform="rotate(${rot} ${tx} ${ty})"` : ""}>${txt}</text>`;
