@@ -40,7 +40,7 @@ export interface Day {
 export const DAYS: Day[] = [
   {
     id: "jour-1",
-    date: "28 avril",
+    date: "Mercredi 28 avril",
     title: "Premiers pas à Édimbourg",
     subtitle: "On découvre la ville tranquillement.",
     activities: [
@@ -89,7 +89,7 @@ export const DAYS: Day[] = [
   },
   {
     id: "jour-2",
-    date: "29 avril",
+    date: "Jeudi 29 avril",
     title: "Édimbourg au printemps",
     subtitle: "Aujourd'hui, la ville est en fleurs.",
     activities: [
@@ -141,7 +141,7 @@ export const DAYS: Day[] = [
   },
   {
     id: "jour-3",
-    date: "30 avril",
+    date: "Vendredi 30 avril",
     title: "Une dernière journée",
     subtitle: "Avant de reprendre l'avion...",
     activities: [

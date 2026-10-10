@@ -254,6 +254,7 @@ export function DaySection({ day, ecrans }: Props) {
             key={activity.id}
             activity={activity}
             rang={i + 1}
+            jour={day.date}
             carte={(element) => {
               cartes.current[i] = element;
             }}

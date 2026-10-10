@@ -225,6 +225,17 @@ body {
   margin: 0 0 0.35rem;
 }
 
+/* Jour et moment : sur un petit téléphone, la ligne se coupe entre les
+   deux, jamais au milieu de « fin de journée ». */
+.carte__quand {
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+}
+
+.carte__quand > span {
+  white-space: nowrap;
+}
+
 .carte__rang {
   font-family: var(--serif);
   font-size: 1rem;
