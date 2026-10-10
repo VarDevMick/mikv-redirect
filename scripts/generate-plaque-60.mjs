@@ -30,7 +30,17 @@ const CENTRE_TEXTE = "60";
 // Sept lignes, pas neuf : à neuf, le code restait juste en théorie, mais le
 // décodeur d'Apple ne le trouvait plus dès que l'image rapetissait (300 px).
 // À sept, il le lit encore à 160 px, comme le « 60 » seul.
-const CARTOUCHE = { x0: 7, x1: 25, y0: 13, y1: 19 };
+//
+// Trois mises en page, au choix par QR_VARIANTE :
+//   cartouche  avion | 60 | château dans le QR
+//   coins      « 60 » seul au centre ; avion et château dans les coins
+//              libres de la plaque, en haut à droite et en bas à gauche
+//   agrandie   « 60 » seul au centre ; plaque rallongée en haut pour
+//              l'avion, à droite ; château en bas à gauche, devant le texte
+const VARIANTE = process.env.QR_VARIANTE || "cartouche";
+const CARTOUCHE = VARIANTE === "cartouche"
+  ? { x0: 7, x1: 25, y0: 13, y1: 19 }
+  : { x0: 11, x1: 21, y0: 11, y1: 21 }; // le carré 11 × 11 du « 60 » seul
 const POLICE = process.env.QR_POLICE || "/System/Library/Fonts/Supplemental/Arial Bold.ttf";
 
 // Dimensions (mm)
@@ -197,9 +207,12 @@ const BANDE_TEXTE_MM = LEVRE_MM + ZONE_TEXTE_MM;
 const HAUTEUR_TEXTE_MM = 0.10 * largeur;  // hauteur visée pour un texte long
 const HAUTEUR_TEXTE_MAX = 0.15 * largeur; // un texte court grossit jusque-là
 const LARGEUR_TEXTE_MAX = 0.84 * largeur;
-const RAYON_PLAQUE = 0.055 * largeur;     // arrondi des coins
+// Dans la variante « coins », l'avion loge dans le coin : arrondi réduit.
+const RAYON_PLAQUE = (VARIANTE === "coins" ? 0.03 : 0.055) * largeur;
+// Bande ajoutée en haut pour l'avion, dans la variante « agrandie ».
+const BANDE_HAUT_MM = VARIANTE === "agrandie" ? 16 : 0;
 
-const hauteur = largeur + BANDE_TEXTE_MM;
+const hauteur = largeur + BANDE_TEXTE_MM + BANDE_HAUT_MM;
 
 const font = opentype.parse(readFileSync(POLICE).buffer);
 
@@ -374,14 +387,16 @@ function poser(pts, x, y, l, h) {
   const lChiffre = zone.w - 2 * marge - 2 * (lDessin + ecart);
   const x0 = zone.x + marge, y0 = zone.y + marge;
 
-  for (const contour of [
+  for (const contour of VARIANTE !== "cartouche" ? [] : [
     poser(tourner(AVION, 22), x0, y0, lDessin, h),
     poser(chateau(), zone.x + zone.w - marge - lDessin, y0, lDessin, h),
   ]) {
     noir.push(...extruderGroupe({ exterieur: contour, trous: [] }, BASE_MM, BASE_MM + RELIEF_MM, { x: 0, y: 0 }));
   }
 
-  const t = preparerTexte(CENTRE_TEXTE, h, lChiffre, h);
+  const t = VARIANTE === "cartouche"
+    ? preparerTexte(CENTRE_TEXTE, h, lChiffre, h)
+    : preparerTexte(CENTRE_TEXTE, zone.h - 2.2 * M, zone.w - 2.2 * M, zone.h - 2.2 * M);
   const dec = {
     x: zone.x + (zone.w - t.larg) / 2 - t.minX,
     y: zone.y + (zone.h - t.haut) / 2 - t.minY,
@@ -391,11 +406,35 @@ function poser(pts, x, y, l, h) {
   }
 }
 
+// Avion et château hors du QR, selon la variante. La marge blanche de
+// QUIET_MODULES autour du code est obligatoire : rien ne doit y entrer,
+// sauf dans la variante « coins », qui n'occupe que ses angles, en
+// diagonale des repères, là où les lignes de lecture ne passent pas.
+const finQR = { x: largeur - QUIET_MODULES * M, y: BANDE_TEXTE_MM + (size + QUIET_MODULES) * M };
+let texteX0 = (largeur - LARGEUR_TEXTE_MAX) / 2, texteL = LARGEUR_TEXTE_MAX;
+const dessins = [];
+if (VARIANTE === "coins") {
+  const c = QUIET_MODULES * M - 2.2;  // côté de la case de coin, sans toucher bord ni repère
+  dessins.push(poser(tourner(AVION, 35), finQR.x + 1.2, finQR.y + 1.2, c, c));
+  dessins.push(poser(chateau(), 1.2, BANDE_TEXTE_MM - 0.5 * c, c + 3, c));
+} else if (VARIANTE === "agrandie") {
+  const marge = 0.07 * largeur;
+  const h = BANDE_HAUT_MM - 3;
+  dessins.push(poser(tourner(AVION, 22), largeur - marge - 2.2 * h, hauteur - BANDE_HAUT_MM + 0.5, 2.2 * h, h));
+  const lc = 0.17 * largeur;
+  dessins.push(poser(chateau(), marge, LEVRE_MM + (ZONE_TEXTE_MM - 0.62 * lc) / 2, lc, 0.62 * lc));
+  texteX0 = marge + lc + 0.03 * largeur;
+  texteL = largeur - marge - texteX0;
+}
+for (const contour of dessins) {
+  noir.push(...extruderGroupe({ exterieur: contour, trous: [] }, BASE_MM, BASE_MM + RELIEF_MM, { x: 0, y: 0 }));
+}
+
 // Le texte sous le QR, sur une ligne, au-dessus de la lèvre du support.
 if (BANDE_TEXTE_MM > 0) {
-  const t = preparerTexte(TEXTE, HAUTEUR_TEXTE_MM, LARGEUR_TEXTE_MAX, HAUTEUR_TEXTE_MAX);
+  const t = preparerTexte(TEXTE, HAUTEUR_TEXTE_MM, texteL, HAUTEUR_TEXTE_MAX);
   const dec = {
-    x: (largeur - t.larg) / 2 - t.minX,
+    x: texteX0 + (texteL - t.larg) / 2 - t.minX,
     y: LEVRE_MM + (ZONE_TEXTE_MM - t.haut) / 2 - t.minY,
   };
   for (const g of grouperContours(t.contours)) {
@@ -458,7 +497,7 @@ if (gravite > PROFONDEUR - 5) throw new Error("Support trop court : la plaque ba
 
 writeFileSync("qr/support-60.json", JSON.stringify({
   angle: ANGLE, largeur: SUPPORT_L, profondeur: PROFONDEUR,
-  hauteur: +T[1].toFixed(1), profil, appui: A, plaque: { largeur, hauteur, epaisseur: EPAISSEUR_PLAQUE },
+  hauteur: +T[1].toFixed(1), profil, appui: A, plaque: { largeur, hauteur, epaisseur: EPAISSEUR_PLAQUE, rayon: RAYON_PLAQUE },
 }, null, 2));
 
 console.log(`Plaque ${largeur.toFixed(1)} x ${hauteur.toFixed(1)} x ${(BASE_MM + RELIEF_MM).toFixed(1)} mm`);
