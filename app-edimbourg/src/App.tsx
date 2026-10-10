@@ -42,7 +42,10 @@ export default function App() {
 
       <ScrollGuide />
 
-      <span className="dev-badge">Dev</span>
+      {/* La page offerte ne porte pas le bandeau de travail. */}
+      {import.meta.env.MODE !== "offert" && (
+        <span className="dev-badge">Dev</span>
+      )}
     </>
   );
 }
