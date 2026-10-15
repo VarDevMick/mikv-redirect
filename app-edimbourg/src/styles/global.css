@@ -705,7 +705,7 @@ body {
 .dev-badge {
   position: fixed;
   top: max(env(safe-area-inset-top), 0.5rem);
-  right: 0.75rem;
+  left: 0.75rem;
   z-index: 10;
   padding: 0.15rem 0.5rem;
   border: 1px solid rgba(212, 169, 74, 0.5);
@@ -714,6 +714,61 @@ body {
   letter-spacing: 0.25em;
   color: var(--dore);
   pointer-events: none;
+}
+
+/* --- Musique -------------------------------------------------------------
+   Le bouton coupe ou relance « Joyeux anniversaire ». Tant que le
+   navigateur a refusé le son, il pulse, et une mention le dit. */
+
+.son {
+  position: fixed;
+  top: max(env(safe-area-inset-top), 0.75rem);
+  right: 0.75rem;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 169, 74, 0.55);
+  background: rgba(6, 15, 25, 0.55);
+  color: var(--dore);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.son--coupe {
+  opacity: 0.45;
+}
+
+.son--attente {
+  animation: son-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes son-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 169, 74, 0.5); }
+  50% { box-shadow: 0 0 0 9px rgba(212, 169, 74, 0); }
+}
+
+.son-astuce {
+  position: fixed;
+  top: calc(max(env(safe-area-inset-top), 0.75rem) + 10px);
+  right: calc(0.75rem + 52px);
+  z-index: 10;
+  padding: 5px 9px;
+  border-radius: 12px;
+  background: rgba(212, 169, 74, 0.92);
+  color: var(--nuit-profond);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.son-astuce--visible {
+  opacity: 1;
 }
 
 /* --- Mouvement réduit ----------------------------------------------------
@@ -726,5 +781,9 @@ body {
 
   .beat {
     transition: none !important;
+  }
+
+  .son--attente {
+    animation: none;
   }
 }

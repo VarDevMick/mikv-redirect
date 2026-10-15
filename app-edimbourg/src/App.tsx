@@ -10,6 +10,7 @@ import { CityTransition } from "./components/CityTransition/CityTransition";
 import { DaySection } from "./components/Itinerary/DaySection";
 import { Final } from "./components/Final/Final";
 import { ScrollGuide } from "./components/ScrollGuide/ScrollGuide";
+import { Music } from "./components/Music/Music";
 import { DAYS } from "./data/itinerary";
 
 export default function App() {
@@ -41,6 +42,7 @@ export default function App() {
       </main>
 
       <ScrollGuide />
+      <Music />
 
       {/* La page offerte ne porte pas le bandeau de travail. */}
       {import.meta.env.MODE !== "offert" && (
