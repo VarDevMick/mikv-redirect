@@ -15,6 +15,7 @@
     <style id="expo-reset">
       html,
       body {
+        margin: 0;
         height: 100%;
         background: #0e1116;
       }
@@ -27,8 +28,10 @@
         flex: 1;
       }
       .boot { flex: 1; display: flex; flex-direction: column; gap: 18px; align-items: center; justify-content: center; background: #0e1116;
-        font-family: Overpass, -apple-system, system-ui, sans-serif; }
-      .boot-name { color: #f2f4f7; font-size: 34px; font-weight: 900; letter-spacing: -0.5px; }
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+      .boot-msg { height: 20px; line-height: 20px; }
+      .boot-name { color: #f2f4f7; font-size: 34px; line-height: 40px; height: 40px; font-weight: 900; letter-spacing: -0.5px; }
+      .boot svg { display: block; flex-shrink: 0; }
       .boot-name span { color: #7fa8f0; font-weight: 400; }
       .boot-track { position: relative; width: 120px; height: 4px; border-radius: 2px; background: #1e232b; overflow: hidden; }
       .boot-track i { position: absolute; top: 0; bottom: 0; width: 35%; border-radius: 2px; background: #2563c9;
@@ -78,8 +81,9 @@
         </svg>
         <div class="boot-name">carbu<span> live</span></div>
         <div class="boot-track"><i></i></div>
+        <div class="boot-msg"></div>
       </div>
     </div>
-  <script src="/carbu/_expo/static/js/web/entry-a7e975bfd145f4cea5d13d1928e0abe4.js" defer></script>
+  <script src="/carbu/_expo/static/js/web/entry-da3ec070168bd906f0b539143a15d17e.js" defer></script>
 </body>
 </html>
