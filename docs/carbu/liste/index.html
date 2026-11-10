@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <title>Carbu Live</title>
+    <!-- Installable sur l'écran d'accueil (PWA). Chemins en /carbu/ : site publié sur mikv.io/carbu. -->
+    <link rel="manifest" href="/carbu/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/carbu/icons/apple-touch-icon.png?v=5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Carbu" />
+    <style id="expo-reset">
+      html,
+      body {
+        height: 100%;
+        background: #0e1116;
+      }
+      body {
+        overflow: hidden;
+      }
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+      .boot { flex: 1; display: flex; flex-direction: column; gap: 18px; align-items: center; justify-content: center; background: #0e1116;
+        font-family: Overpass, -apple-system, system-ui, sans-serif; }
+      .boot-name { color: #f2f4f7; font-size: 34px; font-weight: 900; letter-spacing: -0.5px; }
+      .boot-name span { color: #7fa8f0; font-weight: 400; }
+      .boot-track { position: relative; width: 120px; height: 4px; border-radius: 2px; background: #1e232b; overflow: hidden; }
+      .boot-track i { position: absolute; top: 0; bottom: 0; width: 35%; border-radius: 2px; background: #2563c9;
+        animation: boot-bar 1.2s ease-in-out infinite; }
+      .boot-dot { animation: boot-blink 1.2s ease-in-out infinite; }
+      @keyframes boot-bar { from { left: -35%; } to { left: 100%; } }
+      @keyframes boot-blink { 50% { opacity: 0.25; } }
+      /* Sur mobile, 100 % passe sous la barre du navigateur : hauteur réellement visible. */
+      @supports (height: 100dvh) {
+        html,
+        body {
+          height: 100dvh;
+        }
+      }
+    </style>
+    <script>
+      // Invite d'installation de Chrome (Android) : gardée pour le bouton « Installer » de l'app.
+      window.__carbuInstall = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__carbuInstall = e;
+        window.dispatchEvent(new Event('carbu-installable'));
+      });
+      window.addEventListener('appinstalled', function () {
+        window.__carbuInstall = null;
+        window.dispatchEvent(new Event('carbu-installed'));
+      });
+    </script>
+  <meta name="theme-color" content="#0E1116">
+<link rel="icon" href="/carbu/favicon.ico"/><link rel="preload" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css" as="style">
+<link rel="stylesheet" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css"></head>
+  <body>
+    <noscript>Activez JavaScript pour utiliser Carbu Live.</noscript>
+    <div id="root">
+      <!-- Écran de démarrage, remplacé par l'app dès qu'elle est chargée (même dessin que Splash.tsx). -->
+      <div class="boot" role="progressbar" aria-label="Carbu Live, chargement">
+        <svg width="104" height="104" viewBox="0 0 48 48" aria-hidden="true">
+          <rect width="48" height="48" rx="11" fill="#1f5bb8"/>
+          <rect x="2.6" y="2.6" width="42.8" height="42.8" rx="8.6" fill="none" stroke="#fff" stroke-width="1.5"/>
+          <g transform="translate(8.6 7.4) scale(1.32)">
+            <path d="M5.5 3h7A1.5 1.5 0 0 1 14 4.5V19H4V4.5A1.5 1.5 0 0 1 5.5 3z" fill="#fff"/>
+            <rect x="6.3" y="5.3" width="5.4" height="4.2" rx="0.8" fill="#0b0d11"/>
+            <circle class="boot-dot" cx="9" cy="7.4" r="1.25" fill="#7ee0a8"/>
+            <rect x="2.8" y="18.6" width="12.4" height="2.6" rx="1.1" fill="#fff"/>
+            <path d="M14 8.5h1.6a1.6 1.6 0 0 1 1.6 1.6v6.2a1.4 1.4 0 0 0 2.8 0V8.2L17.6 5.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <div class="boot-name">carbu<span> live</span></div>
+        <div class="boot-track"><i></i></div>
+      </div>
+    </div>
+  <script src="/carbu/_expo/static/js/web/entry-c87af276555650e72dc9b3c0cff22a33.js" defer></script>
+</body>
+</html>
