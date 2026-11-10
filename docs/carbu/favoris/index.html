@@ -61,6 +61,14 @@
       }
     </style>
     <script>
+      // Remise à zéro : https://mikv.io/carbu/?reset efface les réglages (carburants, carte, trajet,
+      // premier lancement, cache des temps) et relance l'app comme au premier jour.
+      if (/[?&]reset\b/.test(location.search)) {
+        try { localStorage.clear(); sessionStorage.clear(); } catch (e) {}
+        location.replace(location.pathname);
+      }
+    </script>
+    <script>
       // Invite d'installation de Chrome (Android) : gardée pour le bouton « Installer » de l'app.
       window.__carbuInstall = null;
       window.addEventListener('beforeinstallprompt', function (e) {
