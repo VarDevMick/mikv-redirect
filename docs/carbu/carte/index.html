@@ -46,6 +46,19 @@
         }
       }
     </style>
+    <script>
+      // Invite d'installation de Chrome (Android) : gardée pour le bouton « Installer » de l'app.
+      window.__carbuInstall = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__carbuInstall = e;
+        window.dispatchEvent(new Event('carbu-installable'));
+      });
+      window.addEventListener('appinstalled', function () {
+        window.__carbuInstall = null;
+        window.dispatchEvent(new Event('carbu-installed'));
+      });
+    </script>
   <meta name="theme-color" content="#0F1B23">
 <link rel="icon" href="/carbu/favicon.ico"/><link rel="preload" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css" as="style">
 <link rel="stylesheet" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css"></head>
@@ -61,6 +74,6 @@
         </div>
       </div>
     </div>
-  <script src="/carbu/_expo/static/js/web/entry-a42db947539a388d4c78e3c6625ac0c6.js" defer></script>
+  <script src="/carbu/_expo/static/js/web/entry-0da13eb61e326ca10e0ea91ee59b4700.js" defer></script>
 </body>
 </html>
