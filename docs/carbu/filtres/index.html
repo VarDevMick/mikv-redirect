@@ -26,6 +26,13 @@
         height: 100%;
         flex: 1;
       }
+      /* Sur mobile, 100 % passe sous la barre du navigateur : hauteur réellement visible. */
+      @supports (height: 100dvh) {
+        html,
+        body {
+          height: 100dvh;
+        }
+      }
     </style>
   <meta name="theme-color" content="#0F1B23">
 <link rel="icon" href="/carbu/favicon.ico"/><link rel="preload" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css" as="style">
@@ -33,6 +40,6 @@
   <body>
     <noscript>Activez JavaScript pour utiliser Carbu Live.</noscript>
     <div id="root"></div>
-  <script src="/carbu/_expo/static/js/web/entry-e64cb0257e6513626a147c12df2edee7.js" defer></script>
+  <script src="/carbu/_expo/static/js/web/entry-4c1d9ba5d190d8a31eb8c1edab0a948a.js" defer></script>
 </body>
 </html>
