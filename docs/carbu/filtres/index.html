@@ -7,7 +7,7 @@
     <title>Carbu Live</title>
     <!-- Installable sur l'écran d'accueil (PWA). Chemins en /carbu/ : site publié sur mikv.io/carbu. -->
     <link rel="manifest" href="/carbu/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/carbu/icons/apple-touch-icon.png?v=3" />
+    <link rel="apple-touch-icon" href="/carbu/icons/apple-touch-icon.png?v=4" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -16,7 +16,7 @@
       html,
       body {
         height: 100%;
-        background: #0b0b10;
+        background: #0e1116;
       }
       body {
         overflow: hidden;
@@ -26,15 +26,16 @@
         height: 100%;
         flex: 1;
       }
-      .boot { flex: 1; display: flex; align-items: center; justify-content: center; background: #0b0b10; }
-      .boot-totem { width: 200px; border-radius: 18px; background: #211e33; border: 1px solid #3a3456; padding: 14px; box-sizing: border-box;
-        display: flex; flex-direction: column; gap: 12px; font-family: Inter, -apple-system, system-ui, sans-serif; }
+      .boot { flex: 1; display: flex; align-items: center; justify-content: center; background: #0e1116; }
+      .boot-totem { width: 200px; border-radius: 16px; background: #1f5bb8; padding: 5px; box-sizing: border-box; }
+      .boot-inner { border: 2px solid #fff; border-radius: 11px; padding: 12px;
+        display: flex; flex-direction: column; gap: 12px; font-family: Overpass, -apple-system, system-ui, sans-serif; }
       .boot-title { color: #fff; font-size: 36px; font-weight: 900; letter-spacing: 2px; text-align: center; }
       .boot-panel { height: 84px; border-radius: 8px; background: #050709; display: flex; align-items: center; justify-content: center; }
       .boot-panel span { color: #f4f7fa; font-size: 54px; font-weight: 800; letter-spacing: 4px;
          animation: boot-blink 1.2s ease-in-out infinite; }
-      .boot-track { position: relative; height: 14px; border-radius: 5px; background: #3a3456; overflow: hidden; }
-      .boot-track i { position: absolute; top: 0; bottom: 0; width: 35%; border-radius: 5px; background: #b7adff; opacity: 0.85;
+      .boot-track { position: relative; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.25); overflow: hidden; }
+      .boot-track i { position: absolute; top: 0; bottom: 0; width: 35%; border-radius: 5px; background: #fff; opacity: 0.85;
         animation: boot-bar 1.2s ease-in-out infinite; }
       @keyframes boot-bar { from { left: -35%; } to { left: 100%; } }
       @keyframes boot-blink { 50% { opacity: 0.55; } }
@@ -59,7 +60,7 @@
         window.dispatchEvent(new Event('carbu-installed'));
       });
     </script>
-  <meta name="theme-color" content="#0B0B10">
+  <meta name="theme-color" content="#0E1116">
 <link rel="icon" href="/carbu/favicon.ico"/><link rel="preload" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css" as="style">
 <link rel="stylesheet" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css"></head>
   <body>
@@ -67,13 +68,13 @@
     <div id="root">
       <!-- Écran de démarrage, remplacé par l'app dès qu'elle est chargée (même dessin que Splash.tsx). -->
       <div class="boot" role="progressbar" aria-label="Carbu Live, chargement">
-        <div class="boot-totem">
+        <div class="boot-totem"><div class="boot-inner">
           <div class="boot-title">CARBU</div>
           <div class="boot-panel"><span>LIVE</span></div>
           <div class="boot-track"><i></i></div>
-        </div>
+        </div></div>
       </div>
     </div>
-  <script src="/carbu/_expo/static/js/web/entry-096e409cbcd5968e01cf25e9e2428d45.js" defer></script>
+  <script src="/carbu/_expo/static/js/web/entry-3d6a7c7cd922267940ad36cf78e03d0b.js" defer></script>
 </body>
 </html>
