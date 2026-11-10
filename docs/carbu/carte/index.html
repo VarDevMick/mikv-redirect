@@ -1,36 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <title>Carbu Live</title>
-    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <!-- Installable sur l'écran d'accueil (PWA). Chemins en /carbu/ : site publié sur mikv.io/carbu. -->
+    <link rel="manifest" href="/carbu/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/carbu/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Carbu" />
     <style id="expo-reset">
-      /* These styles make the body full-height */
       html,
       body {
         height: 100%;
+        background: #0f1b23;
       }
-      /* These styles disable body scrolling if you are using <ScrollView> */
       body {
         overflow: hidden;
       }
-      /* These styles make the root element full-height */
       #root {
         display: flex;
         height: 100%;
         flex: 1;
       }
     </style>
-  <meta name="theme-color" content="#0B0D10">
+  <meta name="theme-color" content="#0F1B23">
 <link rel="icon" href="/carbu/favicon.ico"/><link rel="preload" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css" as="style">
 <link rel="stylesheet" href="/carbu/_expo/static/css/maplibre-gl-251fdbfda84eb147f0a36795135ef43b.css"></head>
-
   <body>
-    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
-    <noscript> You need to enable JavaScript to run this app. </noscript>
-    <!-- The root element for your Expo app. -->
+    <noscript>Activez JavaScript pour utiliser Carbu Live.</noscript>
     <div id="root"></div>
   <script src="/carbu/_expo/static/js/web/entry-e64cb0257e6513626a147c12df2edee7.js" defer></script>
 </body>
