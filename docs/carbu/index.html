@@ -8,7 +8,20 @@
     <!-- Installable sur l'écran d'accueil (PWA). Chemins en /carbu/ : site publié sur mikv.io/carbu. -->
     <link rel="manifest" href="/carbu/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/carbu/icons/apple-touch-icon.png?v=5" />
-    <meta name="theme-color" content="#0E1116" />
+    <meta name="theme-color" content="#F3F4F6" />
+    <script>
+      // Thème avant tout dessin (clair par défaut ; « Sombre », ou « Auto » avec un téléphone en sombre) :
+      // évite un écran de démarrage noir puis blanc. L'app reprend la main ensuite (ThemeGate).
+      try {
+        var p = JSON.parse(localStorage.getItem('carbu.prefs.v1') || '{}') || {};
+        var t = (p.themeDefault || 0) < 2 && p.theme === 'auto' ? 'light' : p.theme;
+        var d = t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+        if (d) {
+          document.documentElement.className = 'dark';
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0E1116');
+        }
+      } catch (e) {}
+    </script>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -18,6 +31,10 @@
       body {
         margin: 0;
         height: 100%;
+        background: #f3f4f6;
+      }
+      html.dark,
+      html.dark body {
         background: #0e1116;
       }
       body {
@@ -30,13 +47,17 @@
       }
       /* Écran de démarrage : affiché par-dessus l'app jusqu'à l'arrivée de la carte (retiré par l'app). */
       #boot { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; gap: 18px;
-        align-items: center; justify-content: center; background: #0e1116; transition: opacity 0.25s ease;
+        align-items: center; justify-content: center; background: #f3f4f6; transition: opacity 0.25s ease;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
       #boot.boot-out { opacity: 0; pointer-events: none; }
       #boot svg { display: block; flex-shrink: 0; }
-      .boot-name { color: #f2f4f7; font-size: 34px; line-height: 40px; height: 40px; font-weight: 900; letter-spacing: -0.5px; }
-      .boot-name span { color: #7fa8f0; font-weight: 400; }
-      .boot-msg { height: 20px; line-height: 20px; font-size: 15px; color: #8a93a3; }
+      html.dark #boot { background: #0e1116; }
+      html.dark .boot-name { color: #f2f4f7; }
+      html.dark .boot-name span { color: #7fa8f0; }
+      html.dark .boot-msg { color: #8a93a3; }
+      .boot-name { color: #0e1116; font-size: 34px; line-height: 40px; height: 40px; font-weight: 900; letter-spacing: -0.5px; }
+      .boot-name span { color: #1f5bb8; font-weight: 400; }
+      .boot-msg { height: 20px; line-height: 20px; font-size: 15px; color: #5b6575; }
       /* 1. Le panneau s'allume : le liseré blanc se trace (0,6 s) */
       .boot-sign { stroke-dasharray: 100; stroke-dashoffset: 100; animation: boot-draw 0.6s ease-out forwards; }
       @keyframes boot-draw { to { stroke-dashoffset: 0; } }
@@ -113,6 +134,6 @@
       // Filet de sécurité : si l'app ne démarre pas, on ne reste pas bloqué sur l'écran de démarrage.
       setTimeout(function () { var b = document.getElementById('boot'); if (b) b.classList.add('boot-out'); }, 20000);
     </script>
-  <script src="/carbu/_expo/static/js/web/entry-48a0db4dfd0f73534afb72772b982c16.js" defer></script>
+  <script src="/carbu/_expo/static/js/web/entry-135ba9079d0ee8d44532cb2dc2763766.js" defer></script>
 </body>
 </html>

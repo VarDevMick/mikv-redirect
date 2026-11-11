@@ -8,8 +8,8 @@
   "scope": "/carbu/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0E1116",
-  "theme_color": "#0E1116",
+  "background_color": "#F3F4F6",
+  "theme_color": "#F3F4F6",
   "icons": [
     {
       "src": "/carbu/icons/icon-192.png?v=5",
